@@ -14,15 +14,15 @@ class SearchPattern
 {
 
 public:
-	SearchPattern();
-	virtual ~SearchPattern();
-	Condition *m_Condition;
+    SearchPattern();
+    virtual ~SearchPattern();
+    Condition *m_Condition;
 
-	bool check(QVariantList other);
-	QString getTypesPattern();
+    bool check(QVariantList other);
+    QString getTypesPattern();
 
 private:
-	QString m_typePattern;
+    QString m_typePattern;
 
 };
 #endif // !defined(EA_CB41E0A0_6E76_4c34_90D8_0BD01E7DFAB7__INCLUDED_)

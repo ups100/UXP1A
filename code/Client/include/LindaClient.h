@@ -14,13 +14,13 @@ class LindaClient
 {
 
 public:
-	LindaClient();
-	virtual ~LindaClient();
-	ServerCommunication *m_ServerCommunication;
+    LindaClient();
+    virtual ~LindaClient();
+    ServerCommunication *m_ServerCommunication;
 
-	static QVariantList preview(QString pattern, long timeout);
-	static QVariantList pull(QString pattern, long timeout);
-	static void push(QVariant record);
+    static QVariantList preview(QString pattern, long timeout);
+    static QVariantList pull(QString pattern, long timeout);
+    static void push(QVariant record);
 
 };
 #endif // !defined(EA_BBD5C16D_5176_4930_BA02_6131DB72415B__INCLUDED_)

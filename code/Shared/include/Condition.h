@@ -14,15 +14,15 @@ class Condition
 {
 
 public:
-	Condition();
-	virtual ~Condition();
-	Functor *m_Functor;
+    Condition();
+    virtual ~Condition();
+    Functor *m_Functor;
 
-	Condition(Functor cmpFun, QVariant data);
-	bool check(QVariant data);
+    Condition(Functor cmpFun, QVariant data);
+    bool check(QVariant data);
 
 private:
-	QVariant m_value;
+    QVariant m_value;
 
 };
 #endif // !defined(EA_A18CDE82_D1C3_4028_91EE_C28369DCB05F__INCLUDED_)

@@ -7,22 +7,18 @@
 
 #include "Functor.h"
 
-
-Functor::Functor(){
-
-}
-
-
-
-Functor::~Functor(){
+Functor::Functor()
+{
 
 }
 
+Functor::~Functor()
+{
 
+}
 
+bool Functor::operator()(QVariant left, QVariant right)
+{
 
-
-bool Functor::operator()(QVariant left, QVariant right){
-
-	return false;
+    return false;
 }

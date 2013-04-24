@@ -7,27 +7,23 @@
 
 #include "Condition.h"
 
-
-Condition::Condition(){
-
-}
-
-
-
-Condition::~Condition(){
+Condition::Condition()
+{
 
 }
 
-
-
-
-
-Condition::Condition(Functor cmpFun, QVariant data){
+Condition::~Condition()
+{
 
 }
 
+Condition::Condition(Functor cmpFun, QVariant data)
+{
 
-bool Condition::check(QVariant data){
+}
 
-	return false;
+bool Condition::check(QVariant data)
+{
+
+    return false;
 }

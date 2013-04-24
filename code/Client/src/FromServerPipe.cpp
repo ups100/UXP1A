@@ -7,31 +7,27 @@
 
 #include "FromServerPipe.h"
 
-
-FromServerPipe::FromServerPipe(){
-
-}
-
-
-
-FromServerPipe::~FromServerPipe(){
+FromServerPipe::FromServerPipe()
+{
 
 }
 
+FromServerPipe::~FromServerPipe()
+{
 
-
-
-
-QString FromServerPipe::getPipeName(){
-
-	return  NULL;
 }
 
+QString FromServerPipe::getPipeName()
+{
+
+    return NULL;
+}
 
 /**
  * Pusta lista albo wyjatekjak po timeoucie
  */
-QVariantList FromServerPipe::waitForMessage(){
+QVariantList FromServerPipe::waitForMessage()
+{
 
-	return  NULL;
+    return NULL;
 }

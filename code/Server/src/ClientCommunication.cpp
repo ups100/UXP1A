@@ -7,26 +7,22 @@
 
 #include "ClientCommunication.h"
 
-
-ClientCommunication::ClientCommunication(){
-
-}
-
-
-
-ClientCommunication::~ClientCommunication(){
+ClientCommunication::ClientCommunication()
+{
 
 }
 
-
-
-
-
-void ClientCommunication::sendRecord(QString pattern, QVariant data){
+ClientCommunication::~ClientCommunication()
+{
 
 }
 
+void ClientCommunication::sendRecord(QString pattern, QVariant data)
+{
 
-void ClientCommunication::sendTimeoutInfo(){
+}
+
+void ClientCommunication::sendTimeoutInfo()
+{
 
 }

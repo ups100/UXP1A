@@ -15,11 +15,11 @@ class FromServerPipe
 {
 
 public:
-	FromServerPipe();
-	virtual ~FromServerPipe();
+    FromServerPipe();
+    virtual ~FromServerPipe();
 
-	QString getPipeName();
-	QVariantList waitForMessage();
+    QString getPipeName();
+    QVariantList waitForMessage();
 
 };
 #endif // !defined(EA_20C0297F_C43E_42ec_B37A_3F47C0968D67__INCLUDED_)

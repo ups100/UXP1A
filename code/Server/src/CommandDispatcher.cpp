@@ -7,31 +7,27 @@
 
 #include "CommandDispatcher.h"
 
-
-CommandDispatcher::CommandDispatcher(){
-
-}
-
-
-
-CommandDispatcher::~CommandDispatcher(){
+CommandDispatcher::CommandDispatcher()
+{
 
 }
 
-
-
-
-
-void CommandDispatcher::dispatchPreviewCommand(QString conditions, long timeout){
+CommandDispatcher::~CommandDispatcher()
+{
 
 }
 
-
-void CommandDispatcher::dispatchPullCommand(QString condition, long timeout){
+void CommandDispatcher::dispatchPreviewCommand(QString conditions, long timeout)
+{
 
 }
 
+void CommandDispatcher::dispatchPullCommand(QString condition, long timeout)
+{
 
-void CommandDispatcher::dispatchPushCommand(QString pattern, QVariantList data){
+}
+
+void CommandDispatcher::dispatchPushCommand(QString pattern, QVariantList data)
+{
 
 }

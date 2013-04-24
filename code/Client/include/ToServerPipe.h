@@ -12,12 +12,12 @@ class ToServerPipe
 {
 
 public:
-	ToServerPipe();
-	virtual ~ToServerPipe();
+    ToServerPipe();
+    virtual ~ToServerPipe();
 
-	void writePreviewMessage(QString pattern, long timeout);
-	void writePullDataMessage(QString condition, long timeout);
-	void writePushDataMessage(QString pattern, QVariantList data);
+    void writePreviewMessage(QString pattern, long timeout);
+    void writePullDataMessage(QString condition, long timeout);
+    void writePushDataMessage(QString pattern, QVariantList data);
 
 };
 #endif // !defined(EA_61525155_5086_42f4_A1F9_AB47015C5EA5__INCLUDED_)

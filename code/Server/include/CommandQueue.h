@@ -17,11 +17,11 @@ class CommandQueue
 {
 
 public:
-	CommandQueue();
-	virtual ~CommandQueue();
-	CommandDispatcher *m_CommandDispatcher;
+    CommandQueue();
+    virtual ~CommandQueue();
+    CommandDispatcher *m_CommandDispatcher;
 
-	void exec();
+    void exec();
 
 };
 #endif // !defined(EA_6F70F9D8_1D5A_4ea2_9FC3_CF3EB2298A5C__INCLUDED_)

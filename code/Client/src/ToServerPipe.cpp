@@ -7,31 +7,27 @@
 
 #include "ToServerPipe.h"
 
-
-ToServerPipe::ToServerPipe(){
-
-}
-
-
-
-ToServerPipe::~ToServerPipe(){
+ToServerPipe::ToServerPipe()
+{
 
 }
 
-
-
-
-
-void ToServerPipe::writePreviewMessage(QString pattern, long timeout){
+ToServerPipe::~ToServerPipe()
+{
 
 }
 
-
-void ToServerPipe::writePullDataMessage(QString condition, long timeout){
+void ToServerPipe::writePreviewMessage(QString pattern, long timeout)
+{
 
 }
 
+void ToServerPipe::writePullDataMessage(QString condition, long timeout)
+{
 
-void ToServerPipe::writePushDataMessage(QString pattern, QVariantList data){
+}
+
+void ToServerPipe::writePushDataMessage(QString pattern, QVariantList data)
+{
 
 }

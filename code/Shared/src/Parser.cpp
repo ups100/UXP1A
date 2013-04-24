@@ -7,37 +7,33 @@
 
 #include "Parser.h"
 
-
-Parser::Parser(){
-
-}
-
-
-
-Parser::~Parser(){
+Parser::Parser()
+{
 
 }
 
+Parser::~Parser()
+{
 
-
-
-
-bool Parser::checkCondition(QString conditions){
-
-	return false;
 }
 
+bool Parser::checkCondition(QString conditions)
+{
 
-SearchPattern Parser::parseConditions(QString conditions){
-
-	return  NULL;
+    return false;
 }
 
+SearchPattern Parser::parseConditions(QString conditions)
+{
+
+    return NULL;
+}
 
 /**
  * Makes a shorter pattern
  */
-QString Parser::parseStruct(QString pattern){
+QString Parser::parseStruct(QString pattern)
+{
 
-	return  NULL;
+    return NULL;
 }

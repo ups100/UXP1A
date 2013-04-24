@@ -7,21 +7,17 @@
 
 #include "CommandQueue.h"
 
-
-CommandQueue::CommandQueue(){
-
-}
-
-
-
-CommandQueue::~CommandQueue(){
+CommandQueue::CommandQueue()
+{
 
 }
 
+CommandQueue::~CommandQueue()
+{
 
+}
 
-
-
-void CommandQueue::exec(){
+void CommandQueue::exec()
+{
 
 }

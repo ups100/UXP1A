@@ -14,11 +14,11 @@ class ComparsionFactory
 {
 
 public:
-	ComparsionFactory();
-	virtual ~ComparsionFactory();
-	Functor *m_Functor;
+    ComparsionFactory();
+    virtual ~ComparsionFactory();
+    Functor *m_Functor;
 
-	static Functor getCmpFunctor(QString cmpSymbol);
+    static Functor getCmpFunctor(QString cmpSymbol);
 
 };
 #endif // !defined(EA_51FBBCB3_DBC3_4122_A5C4_FE817CB86CAC__INCLUDED_)

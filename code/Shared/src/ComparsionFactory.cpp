@@ -7,22 +7,18 @@
 
 #include "ComparsionFactory.h"
 
-
-ComparsionFactory::ComparsionFactory(){
-
-}
-
-
-
-ComparsionFactory::~ComparsionFactory(){
+ComparsionFactory::ComparsionFactory()
+{
 
 }
 
+ComparsionFactory::~ComparsionFactory()
+{
 
+}
 
+Functor ComparsionFactory::getCmpFunctor(QString cmpSymbol)
+{
 
-
-Functor ComparsionFactory::getCmpFunctor(QString cmpSymbol){
-
-	return  NULL;
+    return NULL;
 }

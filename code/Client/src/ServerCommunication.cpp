@@ -7,36 +7,32 @@
 
 #include "ServerCommunication.h"
 
-
-ServerCommunication::ServerCommunication(){
-
-}
-
-
-
-ServerCommunication::~ServerCommunication(){
+ServerCommunication::ServerCommunication()
+{
 
 }
 
+ServerCommunication::~ServerCommunication()
+{
 
-
-
-
-QVariantList ServerCommunication::sendPreview(QString pattern, long timeout){
-
-	return  NULL;
 }
 
+QVariantList ServerCommunication::sendPreview(QString pattern, long timeout)
+{
+
+    return NULL;
+}
 
 /**
  * Empty list after timeout
  */
-QVariantList ServerCommunication::sendPullData(QString pattern, long timeout){
+QVariantList ServerCommunication::sendPullData(QString pattern, long timeout)
+{
 
-	return  NULL;
+    return NULL;
 }
 
-
-void ServerCommunication::sendPushData(QString pattern, QVariantLis data){
+void ServerCommunication::sendPushData(QString pattern, QVariantLis data)
+{
 
 }
