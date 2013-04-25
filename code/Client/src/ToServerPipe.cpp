@@ -7,6 +7,9 @@
 
 #include "ToServerPipe.h"
 
+namespace UXP1A_project {
+namespace Client {
+
 ToServerPipe::ToServerPipe()
 {
 
@@ -17,17 +20,20 @@ ToServerPipe::~ToServerPipe()
 
 }
 
-void ToServerPipe::writePreviewMessage(QString pattern, long timeout)
+void ToServerPipe::writePreviewMessage(const QString& pattern, long timeout)
 {
 
 }
 
-void ToServerPipe::writePullDataMessage(QString condition, long timeout)
+void ToServerPipe::writePullDataMessage(const QString& condition, long timeout)
 {
 
 }
 
-void ToServerPipe::writePushDataMessage(QString pattern, QVariantList data)
+void ToServerPipe::writePushDataMessage(const QString& pattern, const QVariantList& data)
 {
 
 }
+
+}//namespace Client
+}//namespace UXP1A_project

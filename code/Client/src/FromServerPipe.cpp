@@ -7,6 +7,9 @@
 
 #include "FromServerPipe.h"
 
+namespace UXP1A_project {
+namespace Client {
+
 FromServerPipe::FromServerPipe()
 {
 
@@ -17,7 +20,7 @@ FromServerPipe::~FromServerPipe()
 
 }
 
-QString FromServerPipe::getPipeName()
+const QString& FromServerPipe::getPipeName()
 {
 
     return NULL;
@@ -29,5 +32,8 @@ QString FromServerPipe::getPipeName()
 QVariantList FromServerPipe::waitForMessage()
 {
 
-    return NULL;
+    return QVariantList();
 }
+
+}//namespace Client
+}//namespace UXP1A_project

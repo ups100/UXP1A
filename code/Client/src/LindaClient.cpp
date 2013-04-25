@@ -7,6 +7,11 @@
 
 #include "LindaClient.h"
 
+namespace UXP1A_project {
+namespace Client {
+
+ServerCommunication LindaClient::m_ServerCommunication;
+
 LindaClient::LindaClient()
 {
 
@@ -17,19 +22,22 @@ LindaClient::~LindaClient()
 
 }
 
-QVariantList LindaClient::preview(QString pattern, long timeout)
+QVariantList LindaClient::preview(const QString& pattern, long timeout)
 {
 
-    return NULL;
+    return QVariantList();
 }
 
-QVariantList LindaClient::pull(QString pattern, long timeout)
+QVariantList LindaClient::pull(const QString& pattern, long timeout)
 {
 
-    return NULL;
+    return QVariantList();
 }
 
-void LindaClient::push(QVariant record)
+void LindaClient::push(const QVariantList& record)
 {
 
 }
+
+}//namespace Client
+}//namespace UXP1A_project

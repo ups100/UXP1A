@@ -11,18 +11,30 @@
 #include "ToServerPipe.h"
 #include "FromServerPipe.h"
 
+#include <QString>
+#include <QVariantList>
+
+namespace UXP1A_project {
+namespace Client {
+
 class ServerCommunication
 {
 
 public:
     ServerCommunication();
     virtual ~ServerCommunication();
-    ToServerPipe *m_ToServerPipe;
-    FromServerPipe *m_FromServerPipe;
 
-    QVariantList sendPreview(QString pattern, long timeout);
-    QVariantList sendPullData(QString pattern, long timeout);
-    void sendPushData(QString pattern, QVariantLis data);
+    QVariantList sendPreview(const QString& pattern, long timeout);
+    QVariantList sendPullData(const QString& pattern, long timeout);
+    void sendPushData(const QString& pattern, const QVariantList& data);
+
+private:
+    ToServerPipe m_ToServerPipe;
+    FromServerPipe m_FromServerPipe;
 
 };
+
+}//namespace Client
+}//namespace UXP1A_project
+
 #endif // !defined(EA_CB6AB119_B8C2_46c4_ABFA_E406179A4D60__INCLUDED_)

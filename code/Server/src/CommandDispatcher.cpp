@@ -7,6 +7,9 @@
 
 #include "CommandDispatcher.h"
 
+namespace UXP1A_project {
+namespace Server {
+
 CommandDispatcher::CommandDispatcher()
 {
 
@@ -17,17 +20,20 @@ CommandDispatcher::~CommandDispatcher()
 
 }
 
-void CommandDispatcher::dispatchPreviewCommand(QString conditions, long timeout)
+void CommandDispatcher::dispatchPreviewCommand(const QString& conditions, long timeout)
 {
 
 }
 
-void CommandDispatcher::dispatchPullCommand(QString condition, long timeout)
+void CommandDispatcher::dispatchPullCommand(const QString& condition, long timeout)
 {
 
 }
 
-void CommandDispatcher::dispatchPushCommand(QString pattern, QVariantList data)
+void CommandDispatcher::dispatchPushCommand(const QString& pattern, const QVariantList& data)
 {
 
 }
+
+} //namespace Server
+} //namespace UXP1A_projec

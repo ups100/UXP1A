@@ -7,6 +7,9 @@
 
 #include "ClientCommunication.h"
 
+namespace UXP1A_project {
+namespace Server {
+
 ClientCommunication::ClientCommunication()
 {
 
@@ -17,7 +20,7 @@ ClientCommunication::~ClientCommunication()
 
 }
 
-void ClientCommunication::sendRecord(QString pattern, QVariant data)
+void ClientCommunication::sendRecord(const QString& pattern, const QVariantList& data)
 {
 
 }
@@ -26,3 +29,6 @@ void ClientCommunication::sendTimeoutInfo()
 {
 
 }
+
+} //namespace Server
+} //namespace UXP1A_project

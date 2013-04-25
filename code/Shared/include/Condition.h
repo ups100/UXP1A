@@ -10,19 +10,25 @@
 
 #include "Functor.h"
 
+namespace UXP1A_project {
+namespace Shared {
+
 class Condition
 {
 
 public:
     Condition();
     virtual ~Condition();
-    Functor *m_Functor;
 
-    Condition(Functor cmpFun, QVariant data);
-    bool check(QVariant data);
+    Condition(Functor cmpFun, const QVariant& data);
+    bool check(const QVariant& data);
 
 private:
     QVariant m_value;
-
+    Functor m_Functor;
 };
+
+}//namespace Shared
+}//namesoace UXP1A_project
+
 #endif // !defined(EA_A18CDE82_D1C3_4028_91EE_C28369DCB05F__INCLUDED_)

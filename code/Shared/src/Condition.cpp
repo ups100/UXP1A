@@ -7,6 +7,9 @@
 
 #include "Condition.h"
 
+namespace UXP1A_project {
+namespace Shared {
+
 Condition::Condition()
 {
 
@@ -17,13 +20,16 @@ Condition::~Condition()
 
 }
 
-Condition::Condition(Functor cmpFun, QVariant data)
+Condition::Condition(Functor cmpFun, const QVariant& data)
 {
 
 }
 
-bool Condition::check(QVariant data)
+bool Condition::check(const QVariant& data)
 {
 
     return false;
 }
+
+}//namespace Shared
+}//namesoace UXP1A_project

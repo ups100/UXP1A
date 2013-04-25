@@ -10,19 +10,25 @@
 
 #include "Condition.h"
 
+namespace UXP1A_project {
+namespace Shared {
+
 class SearchPattern
 {
 
 public:
     SearchPattern();
     virtual ~SearchPattern();
-    Condition *m_Condition;
 
-    bool check(QVariantList other);
-    QString getTypesPattern();
+    bool check(const QVariantList& other);
+    const QString& getTypesPattern();
 
 private:
     QString m_typePattern;
-
+    QList<Condition> m_conditions;
 };
+
+}//namespace Shared
+}//namesoace UXP1A_project
+
 #endif // !defined(EA_CB41E0A0_6E76_4c34_90D8_0BD01E7DFAB7__INCLUDED_)

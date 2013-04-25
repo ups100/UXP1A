@@ -8,6 +8,12 @@
 #if !defined(EA_E5ED41B2_C079_426d_84A5_B5150BB1C442__INCLUDED_)
 #define EA_E5ED41B2_C079_426d_84A5_B5150BB1C442__INCLUDED_
 
+#include <QString>
+#include <QVariant>
+
+namespace UXP1A_project {
+namespace Server {
+
 class ClientCommunication
 {
 
@@ -15,11 +21,14 @@ public:
     ClientCommunication();
     virtual ~ClientCommunication();
 
-    void sendRecord(QString pattern, QVariant data);
+    void sendRecord(const QString& pattern, const QVariantList& data);
     void sendTimeoutInfo();
 
 private:
     QString m_clientPath;
 
 };
+
+} //namespace Server
+} //namespace UXP1A_project
 #endif // !defined(EA_E5ED41B2_C079_426d_84A5_B5150BB1C442__INCLUDED_)

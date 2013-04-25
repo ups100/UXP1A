@@ -7,6 +7,9 @@
 
 #include "Functor.h"
 
+namespace UXP1A_project {
+namespace Shared {
+
 Functor::Functor()
 {
 
@@ -17,8 +20,11 @@ Functor::~Functor()
 
 }
 
-bool Functor::operator()(QVariant left, QVariant right)
+bool Functor::operator()(const QVariant& left, const QVariant& right)
 {
 
     return false;
 }
+
+}//namespace Shared
+}//namesoace UXP1A_project

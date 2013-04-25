@@ -7,6 +7,9 @@
 
 #include "RecordTable.h"
 
+namespace UXP1A_project {
+namespace Server {
+
 RecordTable::RecordTable()
 {
 
@@ -17,12 +20,12 @@ RecordTable::~RecordTable()
 
 }
 
-void RecordTable::addDemand(Demand * demand)
+void RecordTable::addDemand(Demand* demand)
 {
 
 }
 
-void RecordTable::addRecord(QVariant record)
+void RecordTable::addRecord(QVariantList* record)
 {
 
 }
@@ -31,3 +34,6 @@ void RecordTable::removeDemand(Demand* demand)
 {
 
 }
+
+} //namespace Server
+} //namespace UXP1A_project

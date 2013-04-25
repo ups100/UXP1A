@@ -7,6 +7,9 @@
 
 #include "Parser.h"
 
+namespace UXP1A_project {
+namespace Shared {
+
 Parser::Parser()
 {
 
@@ -17,23 +20,26 @@ Parser::~Parser()
 
 }
 
-bool Parser::checkCondition(QString conditions)
+bool Parser::checkCondition(const QString& conditions)
 {
 
     return false;
 }
 
-SearchPattern Parser::parseConditions(QString conditions)
+SearchPattern Parser::parseConditions(const QString& conditions)
 {
 
-    return NULL;
+    return SearchPattern();
 }
 
 /**
  * Makes a shorter pattern
  */
-QString Parser::parseStruct(QString pattern)
+QString Parser::parseStruct(const QString& pattern)
 {
 
-    return NULL;
+    return QString();
 }
+
+}//namespace Shared
+}//namesoace UXP1A_project

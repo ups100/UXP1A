@@ -7,6 +7,9 @@
 
 #include "ServerCommunication.h"
 
+namespace UXP1A_project {
+namespace Client {
+
 ServerCommunication::ServerCommunication()
 {
 
@@ -17,22 +20,25 @@ ServerCommunication::~ServerCommunication()
 
 }
 
-QVariantList ServerCommunication::sendPreview(QString pattern, long timeout)
+QVariantList ServerCommunication::sendPreview(const QString& pattern, long timeout)
 {
 
-    return NULL;
+    return QVariantList();
 }
 
 /**
  * Empty list after timeout
  */
-QVariantList ServerCommunication::sendPullData(QString pattern, long timeout)
+QVariantList ServerCommunication::sendPullData(const QString& pattern, long timeout)
 {
 
-    return NULL;
+    return QVariantList();
 }
 
-void ServerCommunication::sendPushData(QString pattern, QVariantLis data)
+void ServerCommunication::sendPushData(const QString& pattern, const QVariantList& data)
 {
 
 }
+
+}//namespace Client
+}//namespace UXP1A_project

@@ -9,16 +9,27 @@
 #define EA_51FBBCB3_DBC3_4122_A5C4_FE817CB86CAC__INCLUDED_
 
 #include "Functor.h"
+#include <QString>
+#include <QMap>
 
+namespace UXP1A_project {
+namespace Shared {
+
+//ma to byc singleton ukryty
 class ComparsionFactory
 {
 
 public:
-    ComparsionFactory();
     virtual ~ComparsionFactory();
-    Functor *m_Functor;
 
-    static Functor getCmpFunctor(QString cmpSymbol);
+    static Functor getCmpFunctor(const QString& cmpSymbol);
 
+private:
+    ComparsionFactory();
+    QMap<QString, Functor> m_functors;
 };
+
+}//namespace Shared
+}//namesoace UXP1A_project
+
 #endif // !defined(EA_51FBBCB3_DBC3_4122_A5C4_FE817CB86CAC__INCLUDED_)

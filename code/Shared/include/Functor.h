@@ -8,17 +8,27 @@
 #if !defined(EA_B52C6882_AFD6_43c1_9F81_465D6615CA83__INCLUDED_)
 #define EA_B52C6882_AFD6_43c1_9F81_465D6615CA83__INCLUDED_
 
-/**
- * dodac template constructor
- */
+#include <boost/function.hpp>
+#include <QVariant>
+
+namespace UXP1A_project {
+namespace Shared {
+
+
 class Functor
 {
 
 public:
     Functor();
     virtual ~Functor();
+    Functor(boost::function<bool(const QVariant&, const QVariant&)> cmpFunction);
+    bool operator()(const QVariant& left, const QVariant& right);
 
-    bool operator()(QVariant left, QVariant right);
-
+private:
+    boost::function<bool(const QVariant&,const QVariant&)> m_cmpFunction;
 };
+
+}//namespace Shared
+}//namesoace UXP1A_project
+
 #endif // !defined(EA_B52C6882_AFD6_43c1_9F81_465D6615CA83__INCLUDED_)

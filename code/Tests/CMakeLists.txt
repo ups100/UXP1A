@@ -12,7 +12,7 @@ SET( TESTS_SRC
 		${UXP1A_SOURCE_DIR}/Tests/src/main.cpp
 )
 
-add_executable( testProgram ${SERVER_SRC} )
+add_executable( testProgram ${TESTS_SRC} )
 
 #here add some additional qt modules
 TARGET_LINK_LIBRARIES(	testProgram

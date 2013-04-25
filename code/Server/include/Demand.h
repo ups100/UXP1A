@@ -10,6 +10,12 @@
 
 #include "ClientCommunication.h"
 #include "SearchPattern.h"
+#include <QVariant>
+#include <QString>
+#include <QTimer>
+
+namespace UXP1A_project {
+namespace Server {
 
 class Demand
 {
@@ -17,15 +23,15 @@ class Demand
 public:
     Demand();
     virtual ~Demand();
-    ClientCommunication *m_ClientCommunication;
-    SearchPattern *m_SearchPattern;
 
-    void checkRecord(QVariant record);
+    void checkRecord(const QVariantList& record);
     bool isPullDemand();
-    void sendRecord(QVariant record);
+    void sendRecord(QVariantList *record);
     void startTimer();
 
 private:
+    Shared::SearchPattern m_SearchPattern;
+    ClientCommunication m_ClientCommunication;
     bool m_finalized;
     bool m_isPullDemand;
     QString m_pattern;
@@ -33,4 +39,7 @@ private:
     QTimer m_timer;
 
 };
+
+} //namespace Server
+} //namespace UXP1A_project
 #endif // !defined(EA_B91FCB49_E030_4c12_B60E_CB447A493D12__INCLUDED_)

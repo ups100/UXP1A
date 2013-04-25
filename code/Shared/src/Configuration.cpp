@@ -7,6 +7,9 @@
 
 #include "Configuration.h"
 
+namespace UXP1A_project {
+namespace Shared {
+
 Configuration::Configuration()
 {
 
@@ -17,8 +20,11 @@ Configuration::~Configuration()
 
 }
 
-QString Configuration::getServerFifoPath()
+const QString& Configuration::getServerFifoPath()
 {
 
-    return NULL;
+    return QString();
 }
+
+}//namespace Shared
+}//namesoace UXP1A_project

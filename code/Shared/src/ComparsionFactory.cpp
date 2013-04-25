@@ -7,6 +7,9 @@
 
 #include "ComparsionFactory.h"
 
+namespace UXP1A_project {
+namespace Shared {
+
 ComparsionFactory::ComparsionFactory()
 {
 
@@ -17,8 +20,11 @@ ComparsionFactory::~ComparsionFactory()
 
 }
 
-Functor ComparsionFactory::getCmpFunctor(QString cmpSymbol)
+Functor ComparsionFactory::getCmpFunctor(const QString& cmpSymbol)
 {
 
-    return NULL;
+    return Functor();
 }
+
+}//namespace Shared
+}//namesoace UXP1A_project

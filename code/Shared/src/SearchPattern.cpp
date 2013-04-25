@@ -7,6 +7,10 @@
 
 #include "SearchPattern.h"
 
+namespace UXP1A_project {
+namespace Shared {
+
+
 SearchPattern::SearchPattern()
 {
 
@@ -17,14 +21,17 @@ SearchPattern::~SearchPattern()
 
 }
 
-bool SearchPattern::check(QVariantList other)
+bool SearchPattern::check(const QVariantList& other)
 {
 
     return false;
 }
 
-QString SearchPattern::getTypesPattern()
+const QString& SearchPattern::getTypesPattern()
 {
 
     return NULL;
 }
+
+}//namespace Shared
+}//namesoace UXP1A_project

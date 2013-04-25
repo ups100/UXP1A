@@ -9,6 +9,11 @@
 #define EA_EE4E919E_81D9_44ea_B28F_CBC84C61DC9D__INCLUDED_
 
 #include "Demand.h"
+#include <QList>
+#include <QVariant>
+
+namespace UXP1A_project {
+namespace Server {
 
 class RecordTable
 {
@@ -16,14 +21,16 @@ class RecordTable
 public:
     RecordTable();
     virtual ~RecordTable();
-    Demand *m_Demand;
 
-    void addDemand(Demand * demand);
-    void addRecord(QVariant record);
+    void addDemand(Demand* demand);
+    void addRecord(QVariantList* record);
     void removeDemand(Demand* demand);
 
 private:
-    QList<QVariantList> m_records;
-
+    QList<QVariantList*> m_records;
+    QList<Demand*> m_demands;
 };
+
+} //namespace Server
+} //namespace UXP1A_project
 #endif // !defined(EA_EE4E919E_81D9_44ea_B28F_CBC84C61DC9D__INCLUDED_)
