@@ -7,33 +7,29 @@
 
 #include "LindaClient.h"
 
-
-LindaClient::LindaClient(){
-
-}
-
-
-
-LindaClient::~LindaClient(){
+LindaClient::LindaClient()
+{
 
 }
 
+LindaClient::~LindaClient()
+{
 
-
-
-
-QVariantList LindaClient::preview(QString pattern, long timeout){
-
-	return  NULL;
 }
 
+QVariantList LindaClient::preview(QString pattern, long timeout)
+{
 
-QVariantList LindaClient::pull(QString pattern, long timeout){
-
-	return  NULL;
+    return NULL;
 }
 
+QVariantList LindaClient::pull(QString pattern, long timeout)
+{
 
-void LindaClient::push(QVariant record){
+    return NULL;
+}
+
+void LindaClient::push(QVariant record)
+{
 
 }

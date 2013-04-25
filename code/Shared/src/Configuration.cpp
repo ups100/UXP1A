@@ -7,22 +7,18 @@
 
 #include "Configuration.h"
 
-
-Configuration::Configuration(){
-
-}
-
-
-
-Configuration::~Configuration(){
+Configuration::Configuration()
+{
 
 }
 
+Configuration::~Configuration()
+{
 
+}
 
+QString Configuration::getServerFifoPath()
+{
 
-
-QString Configuration::getServerFifoPath(){
-
-	return  NULL;
+    return NULL;
 }

@@ -15,22 +15,22 @@ class Demand
 {
 
 public:
-	Demand();
-	virtual ~Demand();
-	ClientCommunication *m_ClientCommunication;
-	SearchPattern *m_SearchPattern;
+    Demand();
+    virtual ~Demand();
+    ClientCommunication *m_ClientCommunication;
+    SearchPattern *m_SearchPattern;
 
-	void checkRecord(QVariant record);
-	bool isPullDemand();
-	void sendRecord(QVariant record);
-	void startTimer();
+    void checkRecord(QVariant record);
+    bool isPullDemand();
+    void sendRecord(QVariant record);
+    void startTimer();
 
 private:
-	bool m_finalized;
-	bool m_isPullDemand;
-	QString m_pattern;
-	long m_timeout;
-	QTimer m_timer;
+    bool m_finalized;
+    bool m_isPullDemand;
+    QString m_pattern;
+    long m_timeout;
+    QTimer m_timer;
 
 };
 #endif // !defined(EA_B91FCB49_E030_4c12_B60E_CB447A493D12__INCLUDED_)

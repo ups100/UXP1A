@@ -7,28 +7,24 @@
 
 #include "SearchPattern.h"
 
-
-SearchPattern::SearchPattern(){
-
-}
-
-
-
-SearchPattern::~SearchPattern(){
+SearchPattern::SearchPattern()
+{
 
 }
 
+SearchPattern::~SearchPattern()
+{
 
-
-
-
-bool SearchPattern::check(QVariantList other){
-
-	return false;
 }
 
+bool SearchPattern::check(QVariantList other)
+{
 
-QString SearchPattern::getTypesPattern(){
+    return false;
+}
 
-	return  NULL;
+QString SearchPattern::getTypesPattern()
+{
+
+    return NULL;
 }

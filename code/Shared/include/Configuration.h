@@ -12,10 +12,10 @@ class Configuration
 {
 
 public:
-	Configuration();
-	virtual ~Configuration();
+    Configuration();
+    virtual ~Configuration();
 
-	static QString getServerFifoPath();
+    static QString getServerFifoPath();
 
 };
 #endif // !defined(EA_5B26D2EF_5E9E_4623_A7EB_9A8732F16065__INCLUDED_)

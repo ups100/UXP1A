@@ -12,14 +12,14 @@ class ClientCommunication
 {
 
 public:
-	ClientCommunication();
-	virtual ~ClientCommunication();
+    ClientCommunication();
+    virtual ~ClientCommunication();
 
-	void sendRecord(QString pattern, QVariant data);
-	void sendTimeoutInfo();
+    void sendRecord(QString pattern, QVariant data);
+    void sendTimeoutInfo();
 
 private:
-	QString m_clientPath;
+    QString m_clientPath;
 
 };
 #endif // !defined(EA_E5ED41B2_C079_426d_84A5_B5150BB1C442__INCLUDED_)

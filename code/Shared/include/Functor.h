@@ -15,10 +15,10 @@ class Functor
 {
 
 public:
-	Functor();
-	virtual ~Functor();
+    Functor();
+    virtual ~Functor();
 
-	bool operator()(QVariant left, QVariant right);
+    bool operator()(QVariant left, QVariant right);
 
 };
 #endif // !defined(EA_B52C6882_AFD6_43c1_9F81_465D6615CA83__INCLUDED_)

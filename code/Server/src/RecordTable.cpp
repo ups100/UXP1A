@@ -7,31 +7,27 @@
 
 #include "RecordTable.h"
 
-
-RecordTable::RecordTable(){
-
-}
-
-
-
-RecordTable::~RecordTable(){
+RecordTable::RecordTable()
+{
 
 }
 
-
-
-
-
-void RecordTable::addDemand(Demand * demand){
+RecordTable::~RecordTable()
+{
 
 }
 
-
-void RecordTable::addRecord(QVariant record){
+void RecordTable::addDemand(Demand * demand)
+{
 
 }
 
+void RecordTable::addRecord(QVariant record)
+{
 
-void RecordTable::removeDemand(Demand* demand){
+}
+
+void RecordTable::removeDemand(Demand* demand)
+{
 
 }

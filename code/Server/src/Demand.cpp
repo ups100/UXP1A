@@ -7,37 +7,33 @@
 
 #include "Demand.h"
 
-
-Demand::Demand(){
-
-}
-
-
-
-Demand::~Demand(){
+Demand::Demand()
+{
 
 }
 
-
-
-
-
-void Demand::checkRecord(QVariant record){
+Demand::~Demand()
+{
 
 }
 
-
-bool Demand::isPullDemand(){
-
-	return false;
-}
-
-
-void Demand::sendRecord(QVariant record){
+void Demand::checkRecord(QVariant record)
+{
 
 }
 
+bool Demand::isPullDemand()
+{
 
-void Demand::startTimer(){
+    return false;
+}
+
+void Demand::sendRecord(QVariant record)
+{
+
+}
+
+void Demand::startTimer()
+{
 
 }

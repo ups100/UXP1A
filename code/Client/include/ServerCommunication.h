@@ -15,14 +15,14 @@ class ServerCommunication
 {
 
 public:
-	ServerCommunication();
-	virtual ~ServerCommunication();
-	ToServerPipe *m_ToServerPipe;
-	FromServerPipe *m_FromServerPipe;
+    ServerCommunication();
+    virtual ~ServerCommunication();
+    ToServerPipe *m_ToServerPipe;
+    FromServerPipe *m_FromServerPipe;
 
-	QVariantList sendPreview(QString pattern, long timeout);
-	QVariantList sendPullData(QString pattern, long timeout);
-	void sendPushData(QString pattern, QVariantLis data);
+    QVariantList sendPreview(QString pattern, long timeout);
+    QVariantList sendPullData(QString pattern, long timeout);
+    void sendPushData(QString pattern, QVariantLis data);
 
 };
 #endif // !defined(EA_CB6AB119_B8C2_46c4_ABFA_E406179A4D60__INCLUDED_)

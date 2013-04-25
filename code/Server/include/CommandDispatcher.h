@@ -14,16 +14,16 @@ class CommandDispatcher
 {
 
 public:
-	CommandDispatcher();
-	virtual ~CommandDispatcher();
-	RecordTable *m_RecordTable;
+    CommandDispatcher();
+    virtual ~CommandDispatcher();
+    RecordTable *m_RecordTable;
 
-	void dispatchPreviewCommand(QString conditions, long timeout);
-	void dispatchPullCommand(QString condition, long timeout);
-	void dispatchPushCommand(QString pattern, QVariantList data);
+    void dispatchPreviewCommand(QString conditions, long timeout);
+    void dispatchPullCommand(QString condition, long timeout);
+    void dispatchPushCommand(QString pattern, QVariantList data);
 
 private:
-	QMap<QString, RecordTable> m_tables;
+    QMap<QString, RecordTable> m_tables;
 
 };
 #endif // !defined(EA_AAA1EB89_F26C_4e8e_80C9_ECB4A1B07793__INCLUDED_)
