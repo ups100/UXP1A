@@ -23,7 +23,6 @@ SearchPattern::~SearchPattern()
 
 bool SearchPattern::check(const QVariantList& other)
 {
-
     return false;
 }
 
