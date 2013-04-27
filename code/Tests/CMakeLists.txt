@@ -4,7 +4,8 @@ MESSAGE( "Building tests target." )
 INCLUDE_DIRECTORIES( 	${QT_INCLUDES}
 						${Boost_INCLUDE_DIRS}
 						${UXP1A_SOURCE_DIR}/Tests/include
-						${UXP1A_SOURCE_DIR}/Client/include 
+						${UXP1A_SOURCE_DIR}/Shared/include
+						${UXP1A_SOURCE_DIR}/Client/include
 )
 
 #if some class inherits QObject (has Q_OBJECT macro) add it's header file here
@@ -19,4 +20,5 @@ TARGET_LINK_LIBRARIES(	testProgram
 		${QT_LIBRARIES}
 		${Boost_LIBRARIES}
 		${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/liblindaCommunication.a
+		${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/liblindaShared.a
 )
