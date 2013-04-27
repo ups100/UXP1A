@@ -26,18 +26,23 @@ RecordTable::RecordTable()
 
 RecordTable::~RecordTable()
 {
+    foreach(QVariantList *record, m_records) {
+        delete record;
+    }
+    m_records.clear();
 
+    foreach(Demand *demand, m_demands) {
+        demand->deleteLater();
+    }
+    m_demands.clear();
 }
 
 void RecordTable::addDemand(Demand* demand)
 {
-    foreach(QVariantList *record, m_records)
-    {
-        if(demand->checkRecord(*record))
-        {
+    foreach(QVariantList *record, m_records) {
+        if (demand->checkRecord(*record)) {
             demand->sendRecord(*record);
-            if(demand->isPullDemand())
-            {
+            if (demand->isPullDemand()) {
                 m_records.removeOne(record);
                 delete record;
             }
@@ -49,34 +54,39 @@ void RecordTable::addDemand(Demand* demand)
     }
 
     //we was unable to satisfy the demand with any of current records, let's wait
-    if(demand != 0L)
-    {
-        m_demands.append(demand);
-        demand->setRecordTable(this);
+    if (demand != 0L) {
+        if(demand->getTimeout() == 0)
+        {
+            demand->sendTimedOut();
+            delete demand;
+        }
+        else
+        {
+            m_demands.append(demand);
+            demand->setRecordTable(this);
+        }
+
     }
 }
 
 void RecordTable::addRecord(const QVariantList& record)
 {
     bool addIt = true;
-    foreach(Demand *demand, m_demands)
-    {
-        if(demand->checkRecord(record))
-        {
+    foreach(Demand *demand, m_demands) {
+        if (demand->checkRecord(record)) {
             demand->sendRecord(record);
-            if(demand->isPullDemand())
-            {
+            if (demand->isPullDemand()) {
                 addIt = false;
             }
 
             m_demands.removeOne(demand);
             //schedule it for later deletion
-            QMetaObject::invokeMethod(demand, SLOT(deleteLater()), Qt::QueuedConnection);
+            QMetaObject::invokeMethod(demand, "deleteLater",
+                    Qt::QueuedConnection);
         }
     }
 
-    if(addIt)
-    {
+    if (addIt) {
         QVariantList *newRecord = new QVariantList(record);
         m_records.append(newRecord);
     }
@@ -84,10 +94,10 @@ void RecordTable::addRecord(const QVariantList& record)
 
 void RecordTable::removeDemand(Demand* demand)
 {
-    if(m_demands.contains(demand))
-    {
+    if (m_demands.contains(demand)) {
         m_demands.removeOne(demand);
-        QMetaObject::invokeMethod(demand, SLOT(deleteLater()), Qt::QueuedConnection);
+        QMetaObject::invokeMethod(demand, "deleteLater",
+                Qt::QueuedConnection);
     }
 }
 

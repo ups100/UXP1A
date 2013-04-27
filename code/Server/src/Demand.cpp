@@ -30,7 +30,11 @@ Demand::Demand(Shared::SearchPattern* pattern, const QString& client,
 
 Demand::~Demand()
 {
-    m_timer.stop();
+    if (m_timer.isActive()) {
+        m_timer.stop();
+        this->m_clientCommunication.sendTimeoutInfo();
+    }
+
     delete m_searchPattern;
 }
 
@@ -69,7 +73,16 @@ void Demand::sendRecord(const QVariantList& record)
     m_finalized = true;
     m_timer.stop();
 
-    m_clientCommunication.sendRecord(m_searchPattern->getTypesPattern(), record);
+    m_clientCommunication.sendRecord(m_searchPattern->getTypesPattern(),
+            record);
+}
+
+void Demand::sendTimedOut()
+{
+    m_finalized = true;
+    m_timer.stop();
+
+    m_clientCommunication.sendTimeoutInfo();
 }
 
 int Demand::getTimeout() const
@@ -79,11 +92,13 @@ int Demand::getTimeout() const
 
 void Demand::demandTimeout()
 {
-    if(m_finalized) return;
+    if (m_finalized)
+        return;
 
     m_clientCommunication.sendTimeoutInfo();
 
-    if(m_recordTable != 0L) m_recordTable->removeDemand(this);
+    if (m_recordTable != 0L)
+        m_recordTable->removeDemand(this);
 }
 
 } //namespace Server

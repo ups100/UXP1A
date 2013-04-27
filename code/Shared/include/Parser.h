@@ -21,7 +21,7 @@ public:
     virtual ~Parser();
 
     static bool checkCondition(const QString& conditions);
-    static SearchPattern parseConditions(const QString& conditions);
+    static SearchPattern* parseConditions(const QString& conditions);
     static QString parseStruct(const QString& pattern);
 
 };

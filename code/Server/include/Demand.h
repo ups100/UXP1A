@@ -87,6 +87,11 @@ public:
     void sendRecord(const QVariantList& record);
 
     /**
+     * @brief Sends information that demand has been timeout
+     */
+    void sendTimedOut();
+
+    /**
      * @brief Gets the timeout field.
      *
      * @return timeout

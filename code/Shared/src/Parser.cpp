@@ -26,10 +26,10 @@ bool Parser::checkCondition(const QString& conditions)
     return false;
 }
 
-SearchPattern Parser::parseConditions(const QString& conditions)
+SearchPattern* Parser::parseConditions(const QString& conditions)
 {
-
-    return SearchPattern();
+    SearchPattern pattern;
+    return &pattern;
 }
 
 /**
