@@ -15,6 +15,11 @@ Functor::Functor()
 
 }
 
+Functor::Functor(PF cmpFunction): m_cmpFunction(cmpFunction)
+{
+
+}
+
 Functor::~Functor()
 {
 
@@ -22,8 +27,7 @@ Functor::~Functor()
 
 bool Functor::operator()(const QVariant& left, const QVariant& right)
 {
-
-    return false;
+    return m_cmpFunction(left, right);
 }
 
 }//namespace Shared

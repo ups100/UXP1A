@@ -19,13 +19,16 @@ class Functor
 {
 
 public:
+
+    typedef boost::function<bool(const QVariant&, const QVariant&)> PF;
+
     Functor();
     virtual ~Functor();
-    Functor(boost::function<bool(const QVariant&, const QVariant&)> cmpFunction);
+    Functor(PF cmpFunction);
     bool operator()(const QVariant& left, const QVariant& right);
 
 private:
-    boost::function<bool(const QVariant&,const QVariant&)> m_cmpFunction;
+    PF m_cmpFunction;
 };
 
 }//namespace Shared

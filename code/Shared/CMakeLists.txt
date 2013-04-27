@@ -8,7 +8,7 @@ INCLUDE_DIRECTORIES( 	${QT_INCLUDES}
 
 #if some class inherits QObject (has Q_OBJECT macro) add it's header file here
 SET( SHARED_SRC
-		${UXP1A_SOURCE_DIR}/Shared/src/ComparsionFactory.cpp
+		${UXP1A_SOURCE_DIR}/Shared/src/ComparisonFactory.cpp
 		${UXP1A_SOURCE_DIR}/Shared/src/Condition.cpp
 		${UXP1A_SOURCE_DIR}/Shared/src/Configuration.cpp
 		${UXP1A_SOURCE_DIR}/Shared/src/Functor.cpp
