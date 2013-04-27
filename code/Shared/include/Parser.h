@@ -1,9 +1,16 @@
-///////////////////////////////////////////////////////////
-//  Parser.h
-//  Implementation of the Class Parser
-//  Created on:      24-kwi-2013 11:08:34
-//  Original author: kopasiak
-///////////////////////////////////////////////////////////
+/**
+ * @file Parser.h
+ *
+ * @date 27-04-2013
+ *
+ * @author Mikolaj Markiewicz <kajo100@gmail.com>
+ *
+ * @brief Implementation of the Class UXP1A_project::Shared::Configuration
+ *
+ * @par Project
+ * This is a part of project realized on Warsaw University of Technology
+ * on UXP1A lectures.
+ */
 
 #if !defined(EA_A4407334_679E_4e12_ACA8_9238EB2FF7E2__INCLUDED_)
 #define EA_A4407334_679E_4e12_ACA8_9238EB2FF7E2__INCLUDED_

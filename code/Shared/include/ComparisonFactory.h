@@ -16,6 +16,7 @@
 #define EA_51FBBCB3_DBC3_4122_A5C4_FE817CB86CAC__INCLUDED_
 
 #include "Functor.h"
+#include "CompareOperations.h"
 #include <QString>
 #include <QMap>
 
@@ -33,28 +34,6 @@ class ComparisonFactory
 public:
 
     /**
-     * @brief Identifiers of available Functors.
-     */
-    enum CmpSymbol
-    {
-        INT_EQUAL, /* == */
-        INT_LESS, /* < */
-        INT_LESS_EQUAL, /* <= */
-        INT_GREATER, /* > */
-        INT_GREATER_EQUAL, /* >= */
-        FLOAT_LESS, /* < */
-        FLOAT_LESS_EQUAL, /* <= */
-        FLOAT_GREATER, /* > */
-        FLOAT_GREATER_EQUAL, /* >= */
-        STRING_EQUAL, /* == */
-        STRING_LESS, /* < */
-        STRING_LESS_EQUAL, /* <= */
-        STRING_GREATER, /* > */
-        STRING_GREATER_EQUAL, /* >= */
-        ANYTHING /* * */
-    };
-
-    /**
      * @brief D-tor
      */
     virtual ~ComparisonFactory();
@@ -64,11 +43,11 @@ public:
      *
      * @note Throws const char* exception if not found given symbol in map
      *
-     * @param Symbol identifying wanted functor
+     * @param cmpSymbol Symbol identifying wanted functor
      *
      * @return Proper functor or throws const char* if not found
      */
-    static Functor getCmpFunctor(CmpSymbol cmpSymbol);
+    static Functor getCmpFunctor(CompareOperations cmpSymbol);
 
 private:
 
@@ -103,9 +82,9 @@ private:
     ComparisonFactory& operator=(const ComparisonFactory&);
 
     /**
-     * @brief Map of Functors set by CmpSymbol
+     * @brief Map of Functors set by CompareOperation enumeration
      */
-    QMap<CmpSymbol, Functor> m_functors;
+    QMap<CompareOperations, Functor> m_functors;
 
     /**
      * @brief Template for creating Functors by binding standard function as

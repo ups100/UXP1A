@@ -1,9 +1,16 @@
-///////////////////////////////////////////////////////////
-//  Condition.h
-//  Implementation of the Class Condition
-//  Created on:      24-kwi-2013 11:08:34
-//  Original author: kopasiak
-///////////////////////////////////////////////////////////
+/**
+ * @file Condition.h
+ *
+ * @date 27-04-2013
+ *
+ * @author Mikolaj Markiewicz <kajo100@gmail.com>
+ *
+ * @brief Implementation of the Class UXP1A_project::Shared::Configuration
+ *
+ * @par Project
+ * This is a part of project realized on Warsaw University of Technology
+ * on UXP1A lectures.
+ */
 
 #if !defined(EA_A18CDE82_D1C3_4028_91EE_C28369DCB05F__INCLUDED_)
 #define EA_A18CDE82_D1C3_4028_91EE_C28369DCB05F__INCLUDED_
@@ -17,14 +24,39 @@ class Condition
 {
 
 public:
-    Condition();
+
+    /**
+     * @brief D-tor
+     */
     virtual ~Condition();
 
-    Condition(Functor cmpFun, const QVariant& data);
+    /**
+     * @brief C-tor
+     *
+     * @param cmpFun Functor to check values by it
+     *
+     * @param data Value to compare other values to it
+     */
+    Condition(const Functor& cmpFun, const QVariant& data);
+
+    /**
+     * @brief Check whether given data match condition
+     *
+     * @param data Value to compare
+     *
+     * @return true if given value passes test, false otherwise
+     */
     bool check(const QVariant& data);
 
 private:
+    /**
+     * @brief Value of condition
+     */
     QVariant m_value;
+
+    /**
+     * @brief Functor to compare values by it
+     */
     Functor m_Functor;
 };
 

@@ -70,7 +70,7 @@ ComparisonFactory::~ComparisonFactory()
 
 }
 
-Functor ComparisonFactory::getCmpFunctor(CmpSymbol cmpSymbol)
+Functor ComparisonFactory::getCmpFunctor(CompareOperations cmpSymbol)
 {
     static ComparisonFactory instance;
 

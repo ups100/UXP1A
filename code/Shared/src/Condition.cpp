@@ -1,35 +1,36 @@
-///////////////////////////////////////////////////////////
-//  Condition.cpp
-//  Implementation of the Class Condition
-//  Created on:      24-kwi-2013 11:08:34
-//  Original author: kopasiak
-///////////////////////////////////////////////////////////
-
+/**
+ * @file Condition.cpp
+ *
+ * @date 27-04-2013
+ *
+ * @author Mikolaj Markiewicz <kajo100@gmail.com>
+ *
+ * @brief Implementation of the Class UXP1A_project::Shared::Configuration
+ *
+ * @par Project
+ * This is a part of project realized on Warsaw University of Technology
+ * on UXP1A lectures.
+ */
 #include "Condition.h"
 
 namespace UXP1A_project {
 namespace Shared {
-
-Condition::Condition()
-{
-
-}
 
 Condition::~Condition()
 {
 
 }
 
-Condition::Condition(Functor cmpFun, const QVariant& data)
+Condition::Condition(const Functor& cmpFun, const QVariant& data)
+        : m_Functor(cmpFun), m_value(data)
 {
 
 }
 
 bool Condition::check(const QVariant& data)
 {
-
-    return false;
+    return m_Functor(data, m_value);
 }
 
-}//namespace Shared
-}//namesoace UXP1A_project
+} //namespace Shared
+} //namesoace UXP1A_project

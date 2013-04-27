@@ -1,10 +1,16 @@
-///////////////////////////////////////////////////////////
-//  Parser.cpp
-//  Implementation of the Class Parser
-//  Created on:      24-kwi-2013 11:08:34
-//  Original author: kopasiak
-///////////////////////////////////////////////////////////
-
+/**
+ * @file Parser.cpp
+ *
+ * @date 27-04-2013
+ *
+ * @author Mikolaj Markiewicz <kajo100@gmail.com>
+ *
+ * @brief Implementation of the Class UXP1A_project::Shared::Configuration
+ *
+ * @par Project
+ * This is a part of project realized on Warsaw University of Technology
+ * on UXP1A lectures.
+ */
 #include "Parser.h"
 
 namespace UXP1A_project {
