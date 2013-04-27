@@ -12,6 +12,7 @@ SET( SERVER_SRC
 		${UXP1A_SOURCE_DIR}/Server/src/ClientCommunication.cpp
 		${UXP1A_SOURCE_DIR}/Server/include/CommandDispatcher.h
 		${UXP1A_SOURCE_DIR}/Server/src/CommandDispatcher.cpp
+		${UXP1A_SOURCE_DIR}/Server/include/CommandQueue.h
 		${UXP1A_SOURCE_DIR}/Server/src/CommandQueue.cpp
 		${UXP1A_SOURCE_DIR}/Server/include/Demand.h
 		${UXP1A_SOURCE_DIR}/Server/src/Demand.cpp
