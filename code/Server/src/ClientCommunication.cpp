@@ -10,7 +10,7 @@
 namespace UXP1A_project {
 namespace Server {
 
-ClientCommunication::ClientCommunication()
+ClientCommunication::ClientCommunication(const QString& clientFifoPath)
 {
 
 }

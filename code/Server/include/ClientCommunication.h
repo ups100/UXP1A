@@ -18,7 +18,7 @@ class ClientCommunication
 {
 
 public:
-    ClientCommunication();
+    ClientCommunication(const QString& clientFifoPath);
     virtual ~ClientCommunication();
 
     void sendRecord(const QString& pattern, const QVariantList& data);
