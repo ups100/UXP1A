@@ -1,9 +1,16 @@
-///////////////////////////////////////////////////////////
-//  ComparisonFactory.cpp
-//  Implementation of the Class ComparisonFactory
-//  Created on:      24-kwi-2013 11:08:34
-//  Original author: kopasiak
-///////////////////////////////////////////////////////////
+/**
+ * @file ComparisonFactory.cpp
+ *
+ * @date 27-04-2013
+ *
+ * @author Mikolaj Markiewicz <kajo100@gmail.com>
+ *
+ * @brief Implementation of the Class UXP1A_project::Shared::ComparisonFactory
+ *
+ * @par Project
+ * This is a part of project realized on Warsaw University of Technology
+ * on UXP1A lectures.
+ */
 
 #include "ComparisonFactory.h"
 #include <functional>
@@ -12,11 +19,6 @@
 
 namespace UXP1A_project {
 namespace Shared {
-
-int f(int x)
-{
-    return x * 2;
-}
 
 template<class Type, typename Func>
 Functor::PF ComparisonFactory::stdFunction()
