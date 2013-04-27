@@ -12,6 +12,7 @@
  * on UXP1A lectures. Project was created to ensure interprocess communication
  * with Linda communication language.
  */
+
 #include "Demand.h"
 #include "RecordTable.h"
 
@@ -49,7 +50,7 @@ void Demand::setRecordTable(RecordTable *recordTable)
     }
 }
 
-bool Demand::checkRecord(const QVariantList& record)
+bool Demand::checkRecord(const QVariantList& record) const
 {
     if (m_searchPattern != 0L) {
         return m_searchPattern->check(record);
@@ -57,7 +58,7 @@ bool Demand::checkRecord(const QVariantList& record)
     return false;
 }
 
-bool Demand::isPullDemand()
+bool Demand::isPullDemand() const
 {
 
     return m_isPullDemand;
@@ -69,6 +70,11 @@ void Demand::sendRecord(const QVariantList& record)
     m_timer.stop();
 
     m_clientCommunication.sendRecord(m_searchPattern->getTypesPattern(), record);
+}
+
+int Demand::getTimeout() const
+{
+    return m_timeout;
 }
 
 void Demand::demandTimeout()

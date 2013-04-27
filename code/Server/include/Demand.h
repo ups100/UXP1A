@@ -70,14 +70,14 @@ public:
      *
      * @return true if @arg{record} is suitable, false otherwise
      */
-    bool checkRecord(const QVariantList& record);
+    bool checkRecord(const QVariantList& record) const;
 
     /**
      * @brief Checks if this is pull demand.
      *
      * @return true if this is pull demand, false otherwise
      */
-    bool isPullDemand();
+    bool isPullDemand() const ;
 
     /**
      * @brief Sends passed record to the client
@@ -85,6 +85,13 @@ public:
      * @param[in] record to be sent
      */
     void sendRecord(const QVariantList& record);
+
+    /**
+     * @brief Gets the timeout field.
+     *
+     * @return timeout
+     */
+    int getTimeout() const;
 
 private slots:
 
