@@ -35,27 +35,45 @@ public:
      * @brief int typename
      */
     static const char *INT;
-    static const char *INT_LESS, *INT_LESS_EQUAL, *INT_GREATER, *INT_GREATER_EQUAL;
+    /**
+     * @brief int operators
+     */
+    static const char *INT_EQUAL, *INT_LESS, *INT_LESS_EQUAL, *INT_GREATER,
+            *INT_GREATER_EQUAL;
 
     /**
      * @brief float typename
      */
     static const char *FLOAT;
-    static const char *FLOAT_LESS, *FLOAT_LESS_EQUAL, *FLOAT_GREATER, *FLOAT_GREATER_EQUAL;
+    /**
+     * @brief float operators
+     */
+    static const char *FLOAT_LESS, *FLOAT_LESS_EQUAL, *FLOAT_GREATER,
+            *FLOAT_GREATER_EQUAL;
 
     /**
      * @brief string typename
      */
     static const char *STRING;
-    static const char *STRING_LESS, *STRING_LESS_EQUAL, *STRING_GREATER, *STRING_GREATER_EQUAL;
+    /**
+     * @brief string operators
+     */
+    static const char *STRING_EQUAL, *STRING_LESS, *STRING_LESS_EQUAL,
+            *STRING_GREATER, *STRING_GREATER_EQUAL;
 
     /**
-     * @brief list of possible typenames in pattern
+     * @brief Anything character sequence => default '*'
+     */
+    static const char *ANYTHING;
+
+    /**
+     * @brief List of possible typenames in pattern
      */
     static const QStringList TYPES;
-    static const QStringList INT_OPERATORS;
-    static const QStringList FLOAT_OPERATORS;
-    static const QStringList STRING_OPERATORS;
+    /**
+     * @brief List of available operators for each type
+     */
+    static const QStringList INT_OPERATORS, FLOAT_OPERATORS, STRING_OPERATORS;
 
     /**
      * @breif C-tor
@@ -72,6 +90,10 @@ public:
      *
      * @param conditions Stringified conditions to check
      *
+     * @example string:*, int:>2, float:<=5.2, string:"ex", float:<4
+     *
+     * @note There are available characters in string: in ASCII from ! to ~ without "
+     *
      * @return true if proper pattern, false otherwise
      */
     static bool checkCondition(const QString& conditions);
@@ -82,6 +104,8 @@ public:
      * @param conditions Stringified conditions
      *
      * @example string:*, int:>2, float:<=5.2, string:"ex", float:<4
+     *
+     * @note There are available characters in string: in ASCII from ! to ~ without "
      *
      * @return Created SearchPattern object
      */
@@ -96,7 +120,7 @@ public:
 
 };
 
-}//namespace Shared
-}//namesoace UXP1A_project
+} //namespace Shared
+} //namesoace UXP1A_project
 
 #endif // !defined(EA_A4407334_679E_4e12_ACA8_9238EB2FF7E2__INCLUDED_)

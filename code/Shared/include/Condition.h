@@ -60,7 +60,7 @@ private:
     Functor m_Functor;
 };
 
-}//namespace Shared
-}//namesoace UXP1A_project
+} //namespace Shared
+} //namesoace UXP1A_project
 
 #endif // !defined(EA_A18CDE82_D1C3_4028_91EE_C28369DCB05F__INCLUDED_)

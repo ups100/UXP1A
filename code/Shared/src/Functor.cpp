@@ -22,7 +22,8 @@ Functor::Functor()
 
 }
 
-Functor::Functor(PF cmpFunction): m_cmpFunction(cmpFunction)
+Functor::Functor(PF cmpFunction)
+        : m_cmpFunction(cmpFunction)
 {
 
 }
@@ -37,5 +38,5 @@ bool Functor::operator()(const QVariant& left, const QVariant& right)
     return m_cmpFunction(left, right);
 }
 
-}//namespace Shared
-}//namesoace UXP1A_project
+} //namespace Shared
+} //namesoace UXP1A_project
