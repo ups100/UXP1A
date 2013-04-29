@@ -1,9 +1,16 @@
-///////////////////////////////////////////////////////////
-//  Functor.cpp
-//  Implementation of the Class Functor
-//  Created on:      24-kwi-2013 11:08:34
-//  Original author: kopasiak
-///////////////////////////////////////////////////////////
+/**
+ * @file Functor.cpp
+ *
+ * @date 27-04-2013
+ *
+ * @author Mikolaj Markiewicz <kajo100@gmail.com>
+ *
+ * @brief Implementation of the Class UXP1A_project::Shared::Configuration
+ *
+ * @par Project
+ * This is a part of project realized on Warsaw University of Technology
+ * on UXP1A lectures.
+ */
 
 #include "Functor.h"
 
@@ -15,6 +22,12 @@ Functor::Functor()
 
 }
 
+Functor::Functor(PF cmpFunction)
+        : m_cmpFunction(cmpFunction)
+{
+
+}
+
 Functor::~Functor()
 {
 
@@ -22,9 +35,8 @@ Functor::~Functor()
 
 bool Functor::operator()(const QVariant& left, const QVariant& right)
 {
-
-    return false;
+    return m_cmpFunction(left, right);
 }
 
-}//namespace Shared
-}//namesoace UXP1A_project
+} //namespace Shared
+} //namesoace UXP1A_project
