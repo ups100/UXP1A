@@ -58,17 +58,17 @@ bool Parser::checkCondition(const QString& conditions)
 {
     /*
      * Regex pattern:
-     *      (((int:\s?(((<|<=|>|>=)?(\d+))|(\*)))|(float:\s?(((<|<=|>|>=){1}(\d+\.?\d*))|(\*)))|(string:\s?(((<|<=|>|>=)?"[\s!#-~]*")|(\*)))),?\s?)+
+     *      (((int:(((<|<=|>|>=)?(\d+))|(\*)))|(float:(((<|<=|>|>=){1}(\d+\.?\d*))|(\*)))|(string:(((<|<=|>|>=)?"[\s!#-~]*")|(\*)))),?\s?)+
      */
 
     QString pattern = "((";
-    pattern += QString("(") + INT + ":\\s?(((" + INT_OPERATORS.join("|")
+    pattern += QString("(") + INT + ":(((" + INT_OPERATORS.join("|")
             + ")?(\\d+))|(\\" + ANYTHING + ")))";
     pattern += "|";
-    pattern += QString("(") + FLOAT + ":\\s?(((" + FLOAT_OPERATORS.join("|")
+    pattern += QString("(") + FLOAT + ":(((" + FLOAT_OPERATORS.join("|")
             + "){1}(\\d+\\.?\\d*))|(\\" + ANYTHING + ")))";
     pattern += "|";
-    pattern += QString("(") + STRING + ":\\s?(((" + STRING_OPERATORS.join("|")
+    pattern += QString("(") + STRING + ":(((" + STRING_OPERATORS.join("|")
             + ")?\"[\\s!#-~]*\")|(\\" + ANYTHING + ")))";
     pattern += "),?\\s?)+";
 
@@ -84,13 +84,13 @@ SearchPattern* Parser::parseConditions(const QString& conditions)
 
     // Get separated conditions and gather them into list
     QString pattern = "(";
-    pattern += QString("(") + INT + ":\\s?(((" + INT_OPERATORS.join("|")
+    pattern += QString("(") + INT + ":(((" + INT_OPERATORS.join("|")
             + ")?(\\d+))|(\\" + ANYTHING + ")))";
     pattern += "|";
-    pattern += QString("(") + FLOAT + ":\\s?(((" + FLOAT_OPERATORS.join("|")
+    pattern += QString("(") + FLOAT + ":(((" + FLOAT_OPERATORS.join("|")
             + "){1}(\\d+\\.?\\d*))|(\\" + ANYTHING + ")))";
     pattern += "|";
-    pattern += QString("(") + STRING + ":\\s?(((" + STRING_OPERATORS.join("|")
+    pattern += QString("(") + STRING + ":(((" + STRING_OPERATORS.join("|")
             + ")?\"[\\s!#-~]*\")|(\\" + ANYTHING + ")))";
     pattern += ")";
 
@@ -106,7 +106,7 @@ SearchPattern* Parser::parseConditions(const QString& conditions)
     // Parse each condition
     pattern = "";
     pattern += QString("(") + INT + "|" + FLOAT + "|" + STRING + ")";
-    pattern += QString(":\\s?");
+    pattern += QString(":");
     pattern += QString("(") + INT_OPERATORS.join("|") + ")?";
     pattern += QString("(") + ".+" + ")";
 
@@ -125,6 +125,7 @@ SearchPattern* Parser::parseConditions(const QString& conditions)
     val = r.cap(3);
 
     if (val == ANYTHING) {
+        value.setValue(0L); // Unnecessary but better look and feel ;p in (q)debug
         sp->addCondition(type, UXP1A_project::Shared::ANYTHING, value);
     } else {
         if (type == INT) {
