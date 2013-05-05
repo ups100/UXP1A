@@ -17,6 +17,7 @@
 
 #include <QString>
 #include <string>
+#include <iostream>
 
 namespace UXP1A_project {
 namespace Shared {
@@ -59,6 +60,20 @@ public:
      */
     static const std::string getServerFifoName();
 
+    /**
+     * @brief Funkcja potrzebna tylko dla rozruchu i testow - pozniej zostanie usunieta
+     * Razem z nia nalezy usunac include iostream
+     * Jak to sie mowi - jest depreciated :D
+     * Wyswietla zawartosc bufora na ekranie.
+     */
+    static void displayBuffer(const char *buff, const int length);
+
+
+    enum Message {PUSH, PULL, PREV, FOUND, TIME};
+    /**
+     * @brief Returns code of chosen message mes.
+     */
+    static char getMesCode(Message mes);
 };
 
 } //namespace Shared

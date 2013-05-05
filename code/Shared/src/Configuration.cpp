@@ -37,5 +37,33 @@ const std::string Configuration::getServerFifoName()
     return std::string(CONFIG_FILE_NAME);
 }
 
+void Configuration::displayBuffer(const char *buff, const int length)
+{
+    for(int i=0; i<length; ++i) {
+        if(buff[i] == '\0')
+            std::cout.put('#');
+        std::cout.put(buff[i]);
+    }
+    std::cout << std::endl;
+}
+
+char Configuration::getMesCode(Message mes)
+{
+    switch (mes) {
+        case PUSH:
+            return 'a';
+        case PULL:
+            return 'b';
+        case PREV:
+            return 'c';
+        case FOUND:
+            return 'd';
+        case TIME:
+            return 'e';
+    }
+    // if a kind of error - return safe value '\0' - this is always ignore
+    return '\0';
+}
+
 } //namespace Shared
 } //namesoace UXP1A_project

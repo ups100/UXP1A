@@ -10,6 +10,13 @@
 
 #include <QString>
 #include <QVariant>
+#include <QDebug>
+
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <errno.h>
+#include <fcntl.h>
 
 namespace UXP1A_project {
 namespace Client {
@@ -25,6 +32,23 @@ public:
     void writePullDataMessage(const QString& condition, long timeout);
     void writePushDataMessage(const QString& pattern, const QVariantList& data);
 
+private:
+
+    /**
+     * @brief Write message to the FIFO. It could be Preview or Pull only.
+     * So it is code use be writePreviewMessage and writePullDataMessage only.
+     * char code should be prepared before message code - here it is not modify - just send
+     */
+    void writeToFifo(char code, const QString& pattern, const long timeout) const;
+
+    /**
+     * @brief Gets client process PID and prepare it into needed structure.
+     */
+    QByteArray getPid() const;
+    /**
+     * @brief Descriptor to the server fifo file.
+     */
+    int m_fifo;
 };
 
 }//namespace Client
