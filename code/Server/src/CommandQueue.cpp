@@ -24,16 +24,17 @@ CommandQueue::CommandQueue(CommandDispatcher *commandDispatcher)
         : m_commandDispatcher(commandDispatcher), m_fifo(0)
 {
     if (!isDirExists())
-        makeDir();      //TODO consider exception when this fail
+        makeDir();      //throw exception
 
     if (!isFifoExists())
         makeFifoFile();
-    else
-        qDebug() << "Katalog istnieje. Dziwne.";
-//    else
-//        throw ...     // TODO consider
-    for(int i=0; i<MAX_BUF; ++i)
-        m_buf[i] = 0;
+    else {
+        qDebug() << "There is another instance of server running.";
+        throw std::string("Stop: another instance of server is running.");
+    }
+
+//    for(int i=0; i<MAX_BUF; ++i)      // TODO del lines
+//        m_buf[i] = 0;
 }
 
 CommandQueue::~CommandQueue()
@@ -56,9 +57,8 @@ void CommandQueue::exec()
 
 void CommandQueue::waitForCommands()
 {
-    //qDebug() << "I'm waiting for commands. Please implement me";
-
-    openFifo(); // TODO also check return value
+    if ( !openFifo() )
+        return;
 
     qDebug() << "Ready...";
 
@@ -190,18 +190,17 @@ bool CommandQueue::makeDir() const
     if (status < 0 && errno == EACCES) {
         qDebug()
                 << "Server doesn't have privileges to make the FIFO directory.";
-        return false;
     }
     if (status < 0 && errno == EEXIST) {
         qDebug()
                 << "Server can't make directory - there is some file with the same name - name collision.";
-        return false;
     }
     if (status < 0 && errno == EROFS) {
         qDebug()
                 << "Server can't make directory. The parent directory resides on a read-only file system.";
-        return false;
     }
+    if (status < 0)
+        throw std::string("Error while creating server FIFO path. ");
 
     return true;
 }
@@ -237,6 +236,7 @@ bool CommandQueue::makeFifoFile() const
     if (mkfifo(path.c_str(), S_IFIFO | 0777) < 0) {
         checkFifoErrors();
         retVal = false;
+        throw std::string("Server error while creating server fifo file.");
     }
 
     umask(old_mask);
@@ -245,7 +245,7 @@ bool CommandQueue::makeFifoFile() const
 
 void CommandQueue::checkFifoErrors() const
 {
-    qDebug() << "!!! Create server FIFO error... ";
+    qDebug() << "!!! Create server FIFO file error... ";
 
     if (errno == EACCES)
         qDebug() << "Permission deny";

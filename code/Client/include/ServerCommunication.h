@@ -25,6 +25,12 @@ class ServerCommunication
 {
 
 public:
+    /**
+     * @brief With this object is create also ToServerPipe
+     * This opens server FIFO, so it could end with exception.
+     *
+     * @throw std::string from constructor of ToServerPipe when no server is running.
+     */
     ServerCommunication();
     virtual ~ServerCommunication();
 
@@ -45,7 +51,7 @@ private:
 
 };
 
-}//namespace Client
-}//namespace UXP1A_project
+} //namespace Client
+} //namespace UXP1A_project
 
 #endif // !defined(EA_CB6AB119_B8C2_46c4_ABFA_E406179A4D60__INCLUDED_)

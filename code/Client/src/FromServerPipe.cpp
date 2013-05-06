@@ -11,11 +11,12 @@
 namespace UXP1A_project {
 namespace Client {
 
-FromServerPipe::FromServerPipe(): m_fifo(0)
+FromServerPipe::FromServerPipe()
+        : m_fifo(0)
 {
-    if( !makeFifoFile() )
+    if (!makeFifoFile())
         throw std::string("Error (exception) while creating client FIFO. ");
-    if ( !openFifo() )
+    if (!openFifo())
         throw std::string("Error (exception) while opening client FIFO. ");
 }
 
@@ -50,16 +51,16 @@ QVariantList FromServerPipe::waitForMessage()
 
     // total - pointer to first sign no read yet in current message
     int total = 2;
-    QByteArray length_q(m_buf+total);
+    QByteArray length_q(m_buf + total);
     total += length_q.size() + 1; // +1 because of separator '\0' after length
     long length_l = length_q.toLong(); // the value - length the rest of message
 
     QVariantList data;
-    for (int i=0; i<length_l; ) {
-        QString qba(m_buf+total);
+    for (int i = 0; i < length_l;) {
+        QString qba(m_buf + total);
         QVariant qv(qba);
         // if qba reach end of buffer - it require another read operation
-        if (total+qba.size() >= MAX_BUF - 1) {
+        if (total + qba.size() >= MAX_BUF - 1) {
             anotherRead(&total);
             continue;
         }
@@ -71,8 +72,6 @@ QVariantList FromServerPipe::waitForMessage()
 
     return data;
 }
-
-
 
 bool FromServerPipe::makeFifoFile() const
 {
@@ -145,13 +144,14 @@ void FromServerPipe::anotherRead(int *total)
     int rest_length = MAX_BUF - *total - 1; // -1 because last sign is always '\0'
     memcpy(m_buf, m_buf + *total, rest_length);
 
-    int read_bytes = read(m_fifo, m_buf+rest_length, MAX_BUF - rest_length - 1);
+    int read_bytes = read(m_fifo, m_buf + rest_length,
+            MAX_BUF - rest_length - 1);
     // for secure the byte after last read byte is set to zero:
-    m_buf[rest_length+read_bytes] = '\0';
+    m_buf[rest_length + read_bytes] = '\0';
 
     // total points to first no read sign in the buffer so:
     *total = 0;
 }
 
-}//namespace Client
-}//namespace UXP1A_project
+} //namespace Client
+} //namespace UXP1A_project

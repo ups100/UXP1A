@@ -25,6 +25,9 @@ class ToServerPipe
 {
 
 public:
+    /**
+     * @throw std::string while couldn't open server FIFO file.
+     */
     ToServerPipe();
     virtual ~ToServerPipe();
 
@@ -35,14 +38,18 @@ public:
 private:
 
     /**
-     * @brief Write message to the FIFO. It could be Preview or Pull only.
-     * So it is code use be writePreviewMessage and writePullDataMessage only.
+     * @brief Write message to the FIFO. It is call by Preview or Pull only.
+     * So it is method use be writePreviewMessage and writePullDataMessage only.
      * char code should be prepared before message code - here it is not modify - just send
      */
-    void writeToFifo(char code, const QString& pattern,
-            const long timeout) ;//const;                   // TODO repair
+    void writeToFifo(char code, const QString& pattern, const long timeout); //const;                   // TODO repair
+
     /**
-     * @brief
+     * @brief It is first part of preparing buffer to send.
+     * It is common part of message for Preview and Pull also.
+     *
+     * @details It response for copy to the buffer first part of message:
+     * CODE # LENGTH # PID # PATTERN
      *
      * @returns Number of written bytes.
      * It is position of first free space in buffer. Counted from 0.
@@ -52,14 +59,17 @@ private:
 
     /**
      * @brief Gets client process PID and prepare it into needed structure.
+     *
+     * @returns QByteArray which contain client PID number.
      */
     QByteArray getPid() const;
+
     /**
      * @brief Descriptor to the server fifo file.
      */
     int m_fifo;
 
-    int m_GID;
+    int m_GID;          // TODO del this
 };
 
 } //namespace Client

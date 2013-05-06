@@ -13,20 +13,26 @@ namespace Server {
 ClientCommunication::ClientCommunication(const QString& clientFifoPath)
         : m_clientPath(clientFifoPath), m_fifo(0)
 {
-    openFifo();     // TODO consider return value
+    // store state of open operation
+    m_fifoState = openFifo();
 }
 
 ClientCommunication::~ClientCommunication()
 {
-    close(m_fifo);
+    if (m_fifoState)
+        close(m_fifo);
 }
 
 void ClientCommunication::sendRecord(const QString& pattern,
         const QVariantList& data)
 {
-    qDebug() << "To "<< m_clientPath << " sending record " << data; qDebug(); // TOD del
-
     using Shared::Configuration;
+
+    if (!m_fifoState) // if server can't open client FIFO
+        return;
+    qDebug() << "To " << m_clientPath << " sending record " << data;
+    qDebug(); // TOD del
+
     // PREPARING DATA
     QByteArray data_array;
     for (int i = 0; i < data.size(); ++i) {
@@ -39,9 +45,10 @@ void ClientCommunication::sendRecord(const QString& pattern,
 
     // PREPARING BUFFER
     // create sending buffer
-    const int MAX_BUF = 7 + length + len.size();   // +7 because of separators number
+    const int MAX_BUF = 7 + length + len.size(); // +7 because of separators number
     char buf[MAX_BUF];
-    for(int i=0;i<MAX_BUF;++i) buf[i]=0;        // TODO del this
+    for (int i = 0; i < MAX_BUF; ++i)
+        buf[i] = 0;        // TODO del this
 
     // Operation preview CODE
     buf[0] = Configuration::getMesCode(Configuration::FOUND);
@@ -69,12 +76,17 @@ void ClientCommunication::sendRecord(const QString& pattern,
 void ClientCommunication::sendTimeoutInfo()
 {
     using Shared::Configuration;
-    qDebug() << "To "<< m_clientPath << " sending Timeout"; qDebug();   // TODO del
+
+    if (!m_fifoState) // if server can't open client FIFO
+        return;
+
+    qDebug() << "To " << m_clientPath << " sending Timeout";
+    qDebug();   // TODO del
 
     char timeoutCode[2];
     timeoutCode[0] = Configuration::getMesCode(Configuration::TIME);
     timeoutCode[1] = '\0';
-    write(m_fifo, timeoutCode , 2);
+    write(m_fifo, timeoutCode, 2);
 }
 
 bool ClientCommunication::openFifo()

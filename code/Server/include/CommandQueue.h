@@ -41,6 +41,10 @@ public:
     /**
      * @brief Constructor
      *
+     * @throw Exception std::string when can't create path for fifo or FIFO file
+     * @throw Exception std::string when FIFO file exist
+     * - it means that one server is running.
+     *
      * @param[in,out] commandDispatcher which will serve the commands.
      */
     CommandQueue(CommandDispatcher *commandDispatcher);
@@ -68,6 +72,8 @@ private:
      * @brief This method is use by constructor when
      * it notice that server directory for FIFO file is not create
      *
+     * @throw Exception std::string when server can't create or open directory for his FIFO
+     *
      * @return true if success; false otherwise
      */
     bool makeDir() const;
@@ -84,6 +90,8 @@ private:
 
     /**
      * @brief Create FIFO file in localization specify by Configuration class
+     *
+     * @throw Exception std::string When server can't create FIFO file.
      */
     bool makeFifoFile() const;
 
@@ -104,7 +112,10 @@ private:
     /*
      * @brief Used by readTuple()
      */
-    enum Action {DEL, NON_DEL};
+    enum Action
+    {
+        DEL, NON_DEL
+    };
 
     /**
      * @brief Reading and parsing function group
@@ -138,7 +149,7 @@ private:
      */
     std::string m_fifoPath;
 
-    static const int MAX_BUF = 73;
+    static const int MAX_BUF = 100;
     char m_buf[MAX_BUF];
 };
 

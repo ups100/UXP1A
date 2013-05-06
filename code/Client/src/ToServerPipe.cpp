@@ -13,7 +13,8 @@
 namespace UXP1A_project {
 namespace Client {
 
-ToServerPipe::ToServerPipe(): m_GID(0)
+ToServerPipe::ToServerPipe()
+        : m_GID(0)
 {
     using Shared::Configuration;
     // find server fifo file
@@ -23,8 +24,10 @@ ToServerPipe::ToServerPipe(): m_GID(0)
 
     m_fifo = open(fifo.c_str(), O_WRONLY);
 
-    if (m_fifo <= 0)
-        qDebug() << "No server found!!! ps Error in opening FIFO";
+    if (m_fifo <= 0) {
+        qDebug() << "No server found!!!";
+        throw std::string("Error while opening server FIFO.");
+    }
 
 }
 
@@ -37,14 +40,16 @@ void ToServerPipe::writePreviewMessage(const QString& pattern, long timeout)
 {
     using Shared::Configuration;
 
-    writeToFifo(Configuration::getMesCode(Configuration::PREV), pattern, timeout);
+    writeToFifo(Configuration::getMesCode(Configuration::PREV), pattern,
+            timeout);
 }
 
 void ToServerPipe::writePullDataMessage(const QString& condition, long timeout)
 {
     using Shared::Configuration;
 
-    writeToFifo(Configuration::getMesCode(Configuration::PULL), condition, timeout);
+    writeToFifo(Configuration::getMesCode(Configuration::PULL), condition,
+            timeout);
 }
 
 void ToServerPipe::writePushDataMessage(const QString& pattern,
@@ -71,9 +76,9 @@ void ToServerPipe::writePushDataMessage(const QString& pattern,
 
     // PREPARING BUFFER
     // create sending buffer
-    const int MAX_BUF = 7 + length + len.size();   // +7 because of separators number
+    const int MAX_BUF = 7 + length + len.size(); // +7 because of separators number
     char buf[MAX_BUF];
-    for(int i=0;i<MAX_BUF;++i) buf[i]=0;            // TODO delete this
+    //for(int i=0;i<MAX_BUF;++i) buf[i]=0;            // TODO delete this
 
     char mesCode = Configuration::getMesCode(Configuration::PUSH);
     int writtenBytes = initialWriteToFifo(mesCode, len, pid, patt, buf);
@@ -81,14 +86,14 @@ void ToServerPipe::writePushDataMessage(const QString& pattern,
     memcpy(buf + writtenBytes, data_array.constData(), data_array_length);
     // no require to end with '\0' - because data_array include this sign
 
-    write(m_fifo, buf, writtenBytes+data_array_length);
+    write(m_fifo, buf, writtenBytes + data_array_length);
 
-    qDebug() << m_GID++ <<  " Wyslano zadanie PUSH";
-    qDebug() << "code # length(fromfirst PID sign) # PID # ParsedPattern # Data# ";  // TODO delete line
-    Configuration::displayBuffer(buf, writtenBytes + data_array_length); qDebug();
+    qDebug() << m_GID++ << " Wyslano zadanie PUSH";
+    qDebug()
+            << "code # length(fromfirst PID sign) # PID # ParsedPattern # Data# "; // TODO delete line
+    Configuration::displayBuffer(buf, writtenBytes + data_array_length);
+    qDebug();
 }
-
-
 
 QByteArray ToServerPipe::getPid() const
 {
@@ -134,13 +139,17 @@ void ToServerPipe::writeToFifo(char code, const QString& pattern,
 
     write(m_fifo, buf, writtenBytes);
 
-    qDebug() <<m_GID++ <<  " Wyslano zadanie " << ((Configuration::getMes(code)==Configuration::PREV)?"PREVIEW":"PULL");
-    qDebug() << "code # length(from first PID sign) # PID # NOTParsedPattern # Timeout# ";   // TODO del
-    Shared::Configuration::displayBuffer(buf, writtenBytes); qDebug();
+    qDebug() << m_GID++ << " Wyslano zadanie "
+            << ((Configuration::getMes(code) == Configuration::PREV) ?
+                    "PREVIEW" : "PULL");
+    qDebug()
+            << "code # length(from first PID sign) # PID # NOTParsedPattern # Timeout# "; // TODO del
+    Shared::Configuration::displayBuffer(buf, writtenBytes);
+    qDebug();
 }
 
-int ToServerPipe::initialWriteToFifo(char code, const QByteArray& len, const QByteArray& pid,
-        const QByteArray& patt, char *buf) const
+int ToServerPipe::initialWriteToFifo(char code, const QByteArray& len,
+        const QByteArray& pid, const QByteArray& patt, char *buf) const
 {
     // Operation preview CODE
     buf[0] = code;
@@ -148,7 +157,7 @@ int ToServerPipe::initialWriteToFifo(char code, const QByteArray& len, const QBy
     int ptr = 2;        // pointer to free space in buffer buf
     int currLen = 0;  // auxiliary variable - current data length (while memcpy)
 
-    //^^^^^^^^^^^^^^^^^^^^  Copy data to the buffer
+    // Copy data to the buffer
     // copy all message LENGTH
     currLen = len.size();
     memcpy(buf + ptr, len.constData(), currLen);

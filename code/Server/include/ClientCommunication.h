@@ -19,7 +19,6 @@
 #include <errno.h>
 #include <fcntl.h>
 
-
 namespace UXP1A_project {
 namespace Server {
 
@@ -30,7 +29,21 @@ public:
     ClientCommunication(const QString& clientFifoPath);
     virtual ~ClientCommunication();
 
+    /**
+     * @brief Sending response for client request to client FIFO.
+     * Response contains message code, length of data
+     * and of course all data which client want.
+     * Client doesn't obtain pattern of request and response.
+     *
+     * @details Client FIFO is recognized by Client PID number - obtain in constructor
+     */
     void sendRecord(const QString& pattern, const QVariantList& data);
+
+    /**
+     * @brief Sending response to client with Timeout message only.
+     *
+     * @details It is only short 2 characters message: Code'\0'
+     */
     void sendTimeoutInfo();
 
 private:
@@ -44,6 +57,13 @@ private:
      */
     int m_fifo;
 
+    /**
+     * @brief Store FIFO state after opening.
+     *
+     * @details If open client FIFO fail this is false
+     * and all operation: sendRecord and sendTimeoutInfo are empty.
+     */
+    bool m_fifoState;
 };
 
 } //namespace Server
