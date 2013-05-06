@@ -74,6 +74,7 @@ public:
      * @brief Returns code of chosen message mes.
      */
     static char getMesCode(Message mes);
+    static Message getMes(const char code);
 };
 
 } //namespace Shared

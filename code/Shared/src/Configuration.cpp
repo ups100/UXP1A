@@ -60,9 +60,26 @@ char Configuration::getMesCode(Message mes)
             return 'd';
         case TIME:
             return 'e';
-    }
+    };
     // if a kind of error - return safe value '\0' - this is always ignore
     return '\0';
+}
+
+Configuration::Message Configuration::getMes(const char code)
+{
+    switch (code) {
+        case 'a':
+            return PUSH;
+        case 'b':
+            return PULL;
+        case 'c':
+            return PREV;
+        case 'd':
+            return FOUND;
+        case 'e':
+            return TIME;
+    }
+
 }
 
 } //namespace Shared

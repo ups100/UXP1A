@@ -10,6 +10,8 @@
 
 #include "ToServerPipe.h"
 #include "FromServerPipe.h"
+#include "SearchPattern.h"
+#include "Parser.h"
 
 #include <QString>
 #include <QVariantList>

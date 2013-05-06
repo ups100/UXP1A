@@ -10,6 +10,15 @@
 
 #include <QString>
 #include <QVariant>
+#include <QDebug>
+#include "Configuration.h"
+
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <errno.h>
+#include <fcntl.h>
+
 
 namespace UXP1A_project {
 namespace Server {
@@ -25,7 +34,15 @@ public:
     void sendTimeoutInfo();
 
 private:
+    bool openFifo();
+
+private:
     QString m_clientPath;
+
+    /**
+     * @brief FIFO file descriptor
+     */
+    int m_fifo;
 
 };
 

@@ -10,6 +10,14 @@
 
 #include <QString>
 #include <QVariant>
+#include <QDebug>
+#include "Configuration.h"
+
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <errno.h>
+#include <fcntl.h>
 
 namespace UXP1A_project {
 namespace Client {
@@ -24,8 +32,28 @@ public:
     FromServerPipe();
     virtual ~FromServerPipe();
 
-    const QString& getPipeName();
+    const QString getPipeName() const;
     QVariantList waitForMessage();
+
+private:
+    bool makeFifoFile() const;
+    void checkFifoErrors() const;
+    bool openFifo();
+    QString getPid() const;
+    void anotherRead(int *total);
+
+    /**
+     * @brief FIFO file descriptor
+     */
+    int m_fifo;
+
+    static const int MAX_BUF = 200;
+    char m_buf[MAX_BUF];
+
+    /**
+     * @brief Contains full path for FIFO file.
+     */
+    std::string m_fifoPath;
 
 };
 

@@ -13,7 +13,7 @@
 namespace UXP1A_project {
 namespace Client {
 
-ToServerPipe::ToServerPipe()
+ToServerPipe::ToServerPipe(): m_GID(0)
 {
     using Shared::Configuration;
     // find server fifo file
@@ -53,8 +53,42 @@ void ToServerPipe::writePushDataMessage(const QString& pattern,
  * KOD \0 LENGTH \0 PID \0 PATTERN \0 data[0] \0 data[1] \0 ... data[n] \0
  */
 {
+    using Shared::Configuration;
+    // PREPARING DATA
+    QByteArray pid = getPid();
+    QByteArray patt = pattern.toAscii();
 
+    QByteArray data_array;
+    for (int i = 0; i < data.size(); ++i) {
+        data_array.append(data[i].toByteArray());
+        data_array.append('\0');
+    }
+    int data_array_length = data_array.size();
+
+    int length = pid.size() + patt.size() + data_array_length;
+    length += 2; // add number of separation sign '\0'
+    QByteArray len = QVariant(length).toByteArray();
+
+    // PREPARING BUFFER
+    // create sending buffer
+    const int MAX_BUF = 7 + length + len.size();   // +7 because of separators number
+    char buf[MAX_BUF];
+    for(int i=0;i<MAX_BUF;++i) buf[i]=0;            // TODO delete this
+
+    char mesCode = Configuration::getMesCode(Configuration::PUSH);
+    int writtenBytes = initialWriteToFifo(mesCode, len, pid, patt, buf);
+
+    memcpy(buf + writtenBytes, data_array.constData(), data_array_length);
+    // no require to end with '\0' - because data_array include this sign
+
+    write(m_fifo, buf, writtenBytes+data_array_length);
+
+    qDebug() << m_GID++ <<  " Wyslano zadanie PUSH";
+    qDebug() << "code # length(fromfirst PID sign) # PID # ParsedPattern # Data# ";  // TODO delete line
+    Configuration::displayBuffer(buf, writtenBytes + data_array_length); qDebug();
 }
+
+
 
 QByteArray ToServerPipe::getPid() const
 {
@@ -64,11 +98,12 @@ QByteArray ToServerPipe::getPid() const
 }
 
 void ToServerPipe::writeToFifo(char code, const QString& pattern,
-        const long timeout) const
+        const long timeout) //const
 /**
  * KOD \0 LENGTH \0 PID \0 PATTERN \0 TIME \0
  */
 {
+    using Shared::Configuration;
     //^^^^^^^^^^^^^^^^^^^^  Preparing data
     QByteArray pid = getPid();
     QByteArray patt = pattern.toAscii();
@@ -78,14 +113,35 @@ void ToServerPipe::writeToFifo(char code, const QString& pattern,
 
     int length = pid.size() + patt.size() + tim.size();
     length += 3; // add number of separation sign '\0'
-    QVariant l(length);
-    QByteArray len = l.toByteArray();
+    QByteArray len = QVariant(length).toByteArray();
 
     //^^^^^^^^^^^^^^^^^^^^ Preparing buffer
     // create sending buffer
-    const int MAX_BUF = 7 + len.size() + pid.size() + tim.size()
-            + pattern.size();   // +7 because of separators number
-    char buf[MAX_BUF];   // = { 0 };
+    const int MAX_BUF = 7 + length + len.size(); // +7 because of separators number
+    char buf[MAX_BUF];
+
+    // writes first part of message: KOD \0 LENGTH \0 PID \0 PATTERN
+    int writtenBytes = initialWriteToFifo(code, len, pid, patt, buf);
+
+    // copy TIMER value
+    int currLen = tim.size();
+    memcpy(buf + writtenBytes, tim.constData(), currLen);
+    writtenBytes += currLen;
+    buf[writtenBytes++] = 0;
+
+    if (writtenBytes != length + len.size() + 3)
+        qDebug() << "    Cos NIE tak z dlugosciami w writePreview"; // TODO delete this line
+
+    write(m_fifo, buf, writtenBytes);
+
+    qDebug() <<m_GID++ <<  " Wyslano zadanie " << ((Configuration::getMes(code)==Configuration::PREV)?"PREVIEW":"PULL");
+    qDebug() << "code # length(from first PID sign) # PID # NOTParsedPattern # Timeout# ";   // TODO del
+    Shared::Configuration::displayBuffer(buf, writtenBytes); qDebug();
+}
+
+int ToServerPipe::initialWriteToFifo(char code, const QByteArray& len, const QByteArray& pid,
+        const QByteArray& patt, char *buf) const
+{
     // Operation preview CODE
     buf[0] = code;
     buf[1] = 0;
@@ -111,19 +167,7 @@ void ToServerPipe::writeToFifo(char code, const QString& pattern,
     ptr += currLen;
     buf[ptr++] = 0;
 
-    // copy TIMER value
-    currLen = tim.size();
-    memcpy(buf + ptr, tim.constData(), currLen);
-    ptr += currLen;
-    buf[ptr++] = 0;
-
-    if (ptr != length + len.size() + 3)
-        qDebug() << "    Cos NIE tak z dlugosciami w writePreview"; // TODO delete this line
-
-    write(m_fifo, buf, ptr);
-
-    qDebug() << "Wyslano: " << length;
-    Shared::Configuration::displayBuffer(buf, ptr);
+    return ptr;
 }
 
 }     //namespace Client
