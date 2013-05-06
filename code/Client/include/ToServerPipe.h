@@ -40,7 +40,7 @@ private:
      * char code should be prepared before message code - here it is not modify - just send
      */
     void writeToFifo(char code, const QString& pattern,
-            const long timeout) ;//const;
+            const long timeout) ;//const;                   // TODO repair
     /**
      * @brief
      *

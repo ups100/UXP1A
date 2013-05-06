@@ -245,7 +245,7 @@ bool CommandQueue::makeFifoFile() const
 
 void CommandQueue::checkFifoErrors() const
 {
-    qDebug() << "!!! ";
+    qDebug() << "!!! Create server FIFO error... ";
 
     if (errno == EACCES)
         qDebug() << "Permission deny";

@@ -13,6 +13,8 @@
 #include "SearchPattern.h"
 #include "Parser.h"
 
+#include <memory>
+#include <boost/shared_ptr.hpp>
 #include <QString>
 #include <QVariantList>
 
@@ -26,13 +28,20 @@ public:
     ServerCommunication();
     virtual ~ServerCommunication();
 
+    /**
+     * @brief Manage sending Preview request to server.
+     * @details After send request this wait for reply.
+     * If it is first use of sending request there is creating a client FIFO
+     * file to receive answer from server
+     * @throws std::exception when can not creating FIFO file.
+     */
     QVariantList sendPreview(const QString& pattern, long timeout);
     QVariantList sendPullData(const QString& pattern, long timeout);
     void sendPushData(const QString& pattern, const QVariantList& data);
 
 private:
     ToServerPipe m_ToServerPipe;
-    FromServerPipe m_FromServerPipe;
+    boost::shared_ptr<FromServerPipe> m_FromServerPipe;
 
 };
 

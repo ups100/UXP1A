@@ -6,14 +6,17 @@
 ///////////////////////////////////////////////////////////
 
 #include "FromServerPipe.h"
+#include <exception>
 
 namespace UXP1A_project {
 namespace Client {
 
 FromServerPipe::FromServerPipe(): m_fifo(0)
 {
-    makeFifoFile();
-    openFifo();
+    if( !makeFifoFile() )
+        throw std::string("Error (exception) while creating client FIFO. ");
+    if ( !openFifo() )
+        throw std::string("Error (exception) while opening client FIFO. ");
 }
 
 FromServerPipe::~FromServerPipe()
@@ -55,8 +58,11 @@ QVariantList FromServerPipe::waitForMessage()
     for (int i=0; i<length_l; ) {
         QString qba(m_buf+total);
         QVariant qv(qba);
-        if (i+qba.size() >= MAX_BUF - 1)
+        // if qba reach end of buffer - it require another read operation
+        if (total+qba.size() >= MAX_BUF - 1) {
             anotherRead(&total);
+            continue;
+        }
         // move pointers of first no read yet sign
         i += qba.size() + 1;    // pointer in the all message
         total += qba.size() + 1; // pointer in the current buffer
@@ -100,7 +106,7 @@ bool FromServerPipe::openFifo()
         qDebug() << "A signal was caught during open() client FIFO";
 
     if (m_fifo <= 0) {
-        qDebug() << "Client open FIFO error.";
+        qDebug() << "Opening client FIFO error.";
         return false;
     }
     return true;
@@ -108,7 +114,22 @@ bool FromServerPipe::openFifo()
 
 void FromServerPipe::checkFifoErrors() const
 {
-    qDebug() << "FIFO error... //uzupelnic!!!";         //TODO uzupelnic
+    qDebug() << "!!! Create client FIFO error... ";
+
+    if (errno == EACCES)
+        qDebug() << "Permission deny";
+
+    if (errno == EEXIST)
+        qDebug() << "File already exist";
+
+    if (errno == ENOENT)
+        qDebug() << "File on path does not exist or dangling symbolic link";
+
+    if (errno == ENOTDIR)
+        qDebug() << "Using not directory in pathname.";
+
+    if (errno == EROFS)
+        qDebug() << "Pathname refers to a read-only file system";
 }
 
 QString FromServerPipe::getPid() const
@@ -119,7 +140,17 @@ QString FromServerPipe::getPid() const
 
 void FromServerPipe::anotherRead(int *total)
 {
+    // we have some data in the end of buffer but we don't know if it full part of data
+    // so we move that rest to the begin of buffer and read more data
+    int rest_length = MAX_BUF - *total - 1; // -1 because last sign is always '\0'
+    memcpy(m_buf, m_buf + *total, rest_length);
 
+    int read_bytes = read(m_fifo, m_buf+rest_length, MAX_BUF - rest_length - 1);
+    // for secure the byte after last read byte is set to zero:
+    m_buf[rest_length+read_bytes] = '\0';
+
+    // total points to first no read sign in the buffer so:
+    *total = 0;
 }
 
 }//namespace Client

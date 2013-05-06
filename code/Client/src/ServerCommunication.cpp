@@ -24,8 +24,10 @@ QVariantList ServerCommunication::sendPreview(const QString& pattern,
         long timeout)
 {
     m_ToServerPipe.writePreviewMessage(pattern, timeout);
-    return m_FromServerPipe.waitForMessage();
-    //return QVariantList();
+    if (!m_FromServerPipe)
+        m_FromServerPipe = boost::shared_ptr<FromServerPipe>(new FromServerPipe());
+
+    return m_FromServerPipe->waitForMessage();
 }
 
 /**
@@ -35,8 +37,10 @@ QVariantList ServerCommunication::sendPullData(const QString& pattern,
         long timeout)
 {
     m_ToServerPipe.writePullDataMessage(pattern, timeout);
-    return m_FromServerPipe.waitForMessage();
-    //return QVariantList();
+    if (!m_FromServerPipe)
+        m_FromServerPipe = boost::shared_ptr<FromServerPipe>(new FromServerPipe());
+
+    return m_FromServerPipe->waitForMessage();
 }
 
 void ServerCommunication::sendPushData(const QString& pattern,
