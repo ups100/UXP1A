@@ -1,5 +1,5 @@
 /**
- * @file RecordTable.h
+ * @file RecordTable.cpp
  *
  * @date 27-04-2013
  *

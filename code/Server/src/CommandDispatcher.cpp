@@ -1,5 +1,5 @@
 /**
- * @file CommandDispatcher.h
+ * @file CommandDispatcher.cpp
  *
  * @date 27-04-2013
  *
@@ -16,11 +16,32 @@
 #include "CommandDispatcher.h"
 #include "Parser.h"
 #include "Demand.h"
+#include <QDebug>
 
 namespace UXP1A_project {
 namespace Server {
 
-CommandDispatcher::CommandDispatcher()
+CommandDispatcher* CommandDispatcher::getInstance(int argc, char **argv)
+{
+    static CommandDispatcher instance(argc, argv);
+    return &instance;
+}
+
+void CommandDispatcher::terminate()
+{
+    CommandDispatcher *disp = getInstance(0, 0L);
+
+    if (QThread::currentThread() == disp->m_mainThread) {
+        disp->m_commandQueue.terminate();
+    } else {
+        disp->m_commandQueue.closePipe();
+        QThread::currentThread()->quit();
+    }
+}
+
+CommandDispatcher::CommandDispatcher(int argc, char **argv)
+        : m_commandQueue(this), m_eventLoop(argc, argv),
+                m_mainThread(QThread::currentThread())
 {
 
 }
@@ -46,8 +67,8 @@ void CommandDispatcher::dispatchPullCommand(const QString& conditions,
         const QString& client, int timeout)
 {
     QMetaObject::invokeMethod(this, "dispatchPullCommandSlot",
-            Q_ARG(const QString &, conditions), Q_ARG(const QString &, client),
-            Q_ARG(int, timeout));
+            Q_ARG(const QString &, conditions),
+            Q_ARG(const QString &, client), Q_ARG(int, timeout));
 }
 
 void CommandDispatcher::dispatchPushCommand(const QString& pattern,
@@ -102,6 +123,12 @@ void CommandDispatcher::dispatchPushCommandSlot(const QString& pattern,
         m_tables.insert(pattern, newRecordTable);
         newRecordTable->addRecord(data);
     }
+}
+
+int CommandDispatcher::exec()
+{
+    m_commandQueue.exec();
+    return m_eventLoop.exec();
 }
 
 } //namespace Server

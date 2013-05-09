@@ -1,5 +1,5 @@
 /**
- * @file CommandQueue.h
+ * @file CommandQueue.cpp
  *
  * @date 27-04-2013
  *
@@ -15,34 +15,58 @@
 
 #include "CommandQueue.h"
 #include <QDebug>
+#include "CommandDispatcher.h"
 
 namespace UXP1A_project {
 namespace Server {
 
 CommandQueue::CommandQueue(CommandDispatcher *commandDispatcher)
-:m_commandDispatcher(commandDispatcher)
+        : m_commandDispatcher(commandDispatcher)
 {
 
 }
 
 CommandQueue::~CommandQueue()
 {
-
+    if (m_additionalThread.isRunning()) {
+        m_additionalThread.wait();
+    }
 }
 
 void CommandQueue::exec()
 {
-    if(m_additionalThread.isRunning() ) return;
+    if (m_additionalThread.isRunning())
+        return;
 
     this->moveToThread(&m_additionalThread);
 
-    connect(&m_additionalThread, SIGNAL(started()), this, SLOT(waitForCommands()));
+    connect(&m_additionalThread, SIGNAL(started()), this,
+            SLOT(waitForCommands()));
+    connect(&m_additionalThread, SIGNAL(finished()),
+            QCoreApplication::instance(), SLOT(quit()));
     m_additionalThread.start();
+}
+
+void CommandQueue::terminate()
+{
+    //write exit message to fifo but now only
+    m_mutex.unlock();
+    closePipe();
+}
+
+void CommandQueue::closePipe()
+{
+    qDebug() << "Jacek please implement me";
 }
 
 void CommandQueue::waitForCommands()
 {
-    qDebug()<<"I'm waiting for commands. Please implement me";
+    qDebug() << "I'm waiting for commands. Please implement me";
+    m_mutex.lock();
+    m_mutex.lock();
+    m_mutex.unlock();
+    qDebug()<<"papa";
+    QThread::currentThread()->quit();
 }
 
 } //namespace Server
