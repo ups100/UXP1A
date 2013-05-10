@@ -64,15 +64,15 @@ bool Parser::checkCondition(const QString& conditions)
 {
     /*
      * Regex pattern:
-     *      (((int:(((<|<=|>|>=)?(\d+))|(\*)))|(float:(((<|<=|>|>=){1}(\d+\.?\d*))|(\*)))|(string:(((<|<=|>|>=)?"[\s!#-~]*")|(\*)))),?\s?)+
+     *      (((int:(((<|<=|>|>=)?(-?\d+))|(\*)))|(float:(((<|<=|>|>=){1}(-?\d+\.?\d*))|(\*)))|(string:(((<|<=|>|>=)?"[\s!#-~]*")|(\*)))),?\s?)+
      */
 
     QString pattern = "((";
     pattern += QString("(") + INT + ":(((" + INT_OPERATORS.join("|")
-            + ")?(\\d+))|(\\" + ANYTHING + ")))";
+            + ")?(-?\\d+))|(\\" + ANYTHING + ")))";
     pattern += "|";
     pattern += QString("(") + FLOAT + ":(((" + FLOAT_OPERATORS.join("|")
-            + "){1}(\\d+\\.?\\d*))|(\\" + ANYTHING + ")))";
+            + "){1}(-?\\d+\\.?\\d*))|(\\" + ANYTHING + ")))";
     pattern += "|";
     pattern += QString("(") + STRING + ":(((" + STRING_OPERATORS.join("|")
             + ")?\"[\\s!#-~]*\")|(\\" + ANYTHING + ")))";
