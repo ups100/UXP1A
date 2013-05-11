@@ -17,9 +17,12 @@
 #define EA_AAA1EB89_F26C_4e8e_80C9_ECB4A1B07793__INCLUDED_
 
 #include "RecordTable.h"
+#include "CommandQueue.h"
+#include <QCoreApplication>
 #include <QString>
 #include <QVariant>
 #include <QMap>
+
 
 namespace UXP1A_project {
 namespace Server {
@@ -34,10 +37,26 @@ class CommandDispatcher : public QObject
 Q_OBJECT
     ;
 public:
+
     /**
-     * @brief Constructor
+     * @brief Gets the instance of this class.
+     *
+     * @details This is singleton class so this function is the only way to get the instance of it.
+     *
+     * @param[in] argc to be passed to QCoreApplication
+     *
+     * @param[in] argv to be passed to QCoreApplication
+     *
+     * @return Instance of this class
+     *
+     * @warning This function is not thread safe.
      */
-    CommandDispatcher();
+    static CommandDispatcher *getInstance(int argc, char **argv);
+
+    /**
+     * @brief Ends the execution of main and additional event loop.
+     */
+    static void terminate();
 
     /**
      * @brief Destructor
@@ -58,7 +77,7 @@ public:
 
     /**
      * @brief Wraper function for Pull Command to change thread affinity
-*
+     *
      * @param[in] conditions of needed record
      *
      * @param[in] client FIFO path
@@ -76,6 +95,13 @@ public:
      * @param[in] data of record
      */
     void dispatchPushCommand(const QString& pattern, const QVariantList& data);
+
+    /**
+     * @brief Starts the main and the helper event loop.
+     *
+     * @return The exit code from main event loop
+     */
+    int exec();
 
 private slots:
 
@@ -114,11 +140,35 @@ private slots:
             const QVariantList& data);
 
 private:
+
+    /**
+     * @brief Constructor
+     *
+     * @param[in] argc to be passed to QCoreApplication
+     *
+     * @param[in] argv to be passed to QCoreApplication
+     */
+    CommandDispatcher(int argc, char **argv);
+
     /**
      * @brief Tables created on server
      */
     QMap<QString, RecordTable*> m_tables;
 
+    /**
+     * @brief Command queue for receiving commands from clients.
+     */
+    CommandQueue m_commandQueue;
+
+    /**
+     * @brief Main event loop.
+     */
+    QCoreApplication m_eventLoop;
+
+    /**
+     * @brief Main thread of application
+     */
+    QThread *m_mainThread;
 };
 
 } //namespace Server

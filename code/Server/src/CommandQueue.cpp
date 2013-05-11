@@ -1,5 +1,5 @@
 /**
- * @file CommandQueue.h
+ * @file CommandQueue.cpp
  *
  * @date 27-04-2013
  *
@@ -39,8 +39,13 @@ CommandQueue::CommandQueue(CommandDispatcher *commandDispatcher)
 
 CommandQueue::~CommandQueue()
 {
+// Przenies te dwie linijki gdzies dalej za terminate
     close(m_fifo);              // close descriptor
     unlink(m_fifoPath.c_str()); // delete fifo file
+    // **********************
+    if (m_additionalThread.isRunning()) {
+        m_additionalThread.wait();
+    }
 }
 
 void CommandQueue::exec()
@@ -52,11 +57,31 @@ void CommandQueue::exec()
 
     connect(&m_additionalThread, SIGNAL(started()), this,
             SLOT(waitForCommands()));
+    connect(&m_additionalThread, SIGNAL(finished()),
+            QCoreApplication::instance(), SLOT(quit()));
     m_additionalThread.start();
+}
+
+void CommandQueue::terminate()
+{
+    //write exit message to fifo but now only
+    m_mutex.unlock();
+    closePipe();
+}
+
+void CommandQueue::closePipe()
+{
+    qDebug() << "Jacek please implement me";
 }
 
 void CommandQueue::waitForCommands()
 {
+//   m_mutex.lock();
+//    m_mutex.lock();
+//    m_mutex.unlock();
+//    qDebug()<<"papa";
+//    QThread::currentThread()->quit();
+
     if ( !openFifo() )
         return;
 

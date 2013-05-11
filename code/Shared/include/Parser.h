@@ -76,6 +76,15 @@ public:
     static const QStringList INT_OPERATORS, FLOAT_OPERATORS, STRING_OPERATORS;
 
     /**
+     * @brief Available short format of types
+     */
+    static const char *SHORT_TYPE_INT, *SHORT_TYPE_FLOAT, *SHORT_TYPE_STRING;
+    /**
+     * @brief List of available short format of types
+     */
+    static const QStringList SHORT_TYPES;
+
+    /**
      * @brief C-tor
      */
     Parser();
@@ -96,6 +105,8 @@ public:
      *
      * @note There are available characters in string: in ASCII from ! to ~ without "
      *
+     * @throws const char* if bad conditions
+     *
      * @return true if proper pattern, false otherwise
      */
     static bool checkCondition(const QString& conditions);
@@ -112,16 +123,31 @@ public:
      *
      * @note There are available characters in string: in ASCII from ! to ~ without "
      *
+     * @throws const char* if bad conditions
+     *
      * @return Created SearchPattern object pointer
      */
     static SearchPattern* parseConditions(const QString& conditions);
 
     /**
-     * @brief Makes a shorter pattern (first letters of types)
+     * @brief Makes a shorter pattern (mostly first letters of types)
+     *
+     * @throws const char* if bad pattern
      *
      * @return Shorter pattern
      */
     static QString parseStruct(const QString& pattern);
+
+    /**
+     * @brief Makes a short pattern of types of list values (mostly first letters of each type)
+     *
+     * @throws const char* if not available values
+     *
+     * @note Available values are: int, float, string
+     *
+     * @return Short pattern
+     */
+    static QString parseStruct(const QVariantList& list);
 
 };
 

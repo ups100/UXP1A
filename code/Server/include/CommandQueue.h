@@ -18,7 +18,7 @@
 
 #include "CommandDispatcher.h"
 #include <QThread>
-#include <QTimer>
+#include <QMutex>
 #include <QDebug>
 
 #include <unistd.h>
@@ -30,6 +30,8 @@
 namespace UXP1A_project {
 namespace Server {
 
+class CommandDispatcher;
+
 /**
  * @brief This class is responsible for receiving commands from clients.
  */
@@ -38,6 +40,10 @@ class CommandQueue : public QObject
 Q_OBJECT
     ;
 public:
+    /**
+     * @brief This is friend class to execute some private cleaning up methods.
+     */
+    friend class CommandDispatcher;
     /**
      * @brief Constructor
      *
@@ -125,9 +131,29 @@ private:
 
 private slots:
 
+    /**
+     * @brief Waits for commands from client.
+     *
+     * @details Reads commands from named pipe.
+     */
     void waitForCommands();
 
 private:
+
+    /**
+     * @brief Terminates the additional thread and closes the pipe.
+     *
+     * @details Puts exit message to server's queue
+     *
+     * @note This function will be executed always in context of main thread.
+     */
+    void terminate();
+
+    /**
+     * @brief Closes the opened pipe.
+     */
+    void closePipe();
+
     /**
      * @brief Class which executes commands
      */
@@ -138,6 +164,8 @@ private:
      */
     QThread m_additionalThread;
 
+    /*************FOR TEST ONLY< REMOVE THIS JACEK*/
+    QMutex m_mutex;
     /**
      * @brief FIFO file descriptor
      */

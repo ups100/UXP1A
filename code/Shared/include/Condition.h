@@ -20,6 +20,9 @@
 namespace UXP1A_project {
 namespace Shared {
 
+/**
+ * @brief Represents comparison condition.
+ */
 class Condition
 {
 

@@ -16,6 +16,7 @@
 #include "CompareOperations.h"
 #include <QRegExp>
 #include <boost/lexical_cast.hpp>
+#include <QMetaType>
 
 namespace UXP1A_project {
 namespace Shared {
@@ -44,6 +45,11 @@ const QStringList Parser::STRING_OPERATORS = QStringList()
         << Parser::STRING_LESS_EQUAL << Parser::STRING_GREATER
         << Parser::STRING_GREATER_EQUAL;
 
+const char *Parser::SHORT_TYPE_INT = "i", *Parser::SHORT_TYPE_FLOAT = "f",
+        *Parser::SHORT_TYPE_STRING = "s";
+const QStringList Parser::SHORT_TYPES = QStringList() << Parser::SHORT_TYPE_INT
+        << Parser::SHORT_TYPE_FLOAT << Parser::SHORT_TYPE_STRING;
+
 Parser::Parser()
 {
 
@@ -58,15 +64,15 @@ bool Parser::checkCondition(const QString& conditions)
 {
     /*
      * Regex pattern:
-     *      (((int:(((<|<=|>|>=)?(\d+))|(\*)))|(float:(((<|<=|>|>=){1}(\d+\.?\d*))|(\*)))|(string:(((<|<=|>|>=)?"[\s!#-~]*")|(\*)))),?\s?)+
+     *      (((int:(((<|<=|>|>=)?(-?\d+))|(\*)))|(float:(((<|<=|>|>=){1}(-?\d+\.?\d*))|(\*)))|(string:(((<|<=|>|>=)?"[\s!#-~]*")|(\*)))),?\s?)+
      */
 
     QString pattern = "((";
     pattern += QString("(") + INT + ":(((" + INT_OPERATORS.join("|")
-            + ")?(\\d+))|(\\" + ANYTHING + ")))";
+            + ")?(-?\\d+))|(\\" + ANYTHING + ")))";
     pattern += "|";
     pattern += QString("(") + FLOAT + ":(((" + FLOAT_OPERATORS.join("|")
-            + "){1}(\\d+\\.?\\d*))|(\\" + ANYTHING + ")))";
+            + "){1}(-?\\d+\\.?\\d*))|(\\" + ANYTHING + ")))";
     pattern += "|";
     pattern += QString("(") + STRING + ":(((" + STRING_OPERATORS.join("|")
             + ")?\"[\\s!#-~]*\")|(\\" + ANYTHING + ")))";
@@ -180,16 +186,44 @@ SearchPattern* Parser::parseConditions(const QString& conditions)
 
 QString Parser::parseStruct(const QString& pattern)
 {
+    if (!checkCondition(pattern))
+        throw "Check conditions first man..";
+
     QString shorter;
     int pos = 0;
 
-    QRegExp r(TYPES.join("|"));
+    const QRegExp r(TYPES.join("|"));
 
     while ((pos = r.indexIn(pattern, pos)) != -1) {
+        if (!SHORT_TYPES.contains(QString(r.cap()[0])))
+            throw "How it happens, never should be there.";
+
         shorter.append(r.cap()[0]);
         pos += r.matchedLength();
     }
 
+    return shorter;
+}
+
+QString Parser::parseStruct(const QVariantList& list)
+{
+    QString shorter;
+
+    foreach (QVariant v, list){
+    switch (v.type()) {
+        case QVariant::Int:
+        shorter.append(SHORT_TYPE_INT);
+        break;
+        case QMetaType::Float:
+        shorter.append(SHORT_TYPE_FLOAT);
+        break;
+        case QVariant::String:
+        shorter.append(SHORT_TYPE_STRING);
+        break;
+        default:
+        throw "Only int, float, string available.";
+    }
+}
     return shorter;
 }
 

@@ -69,6 +69,11 @@ public:
 private:
 
     /**
+     * @brief Disable copy constructor
+     */
+    RecordTable(const RecordTable& other);
+
+    /**
      * @brief Demand is a friend class to execute removeDemand method.
      */
     friend class Demand;
