@@ -33,7 +33,7 @@ public:
     /**
      * @brief C-tor, calls runtime_error c-tor with proper param
      *
-     * @param[in] Exception message
+     * @param[in] message Exception message
      */
     ParserException(const char* message)
             : runtime_error(std::string(message))
