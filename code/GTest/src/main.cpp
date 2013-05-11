@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 #include "Parser.h"
 #include "Configuration.h"
+#include "ParserException.h"
+#include "ComparisonFactory.h"
 using namespace UXP1A_project::Shared;
 
 TEST(CheckConditionsTest, PositiveNos)
@@ -8,303 +10,293 @@ TEST(CheckConditionsTest, PositiveNos)
     /*
      * Int
      */
-    ASSERT_EQ(true, Parser::checkCondition("int:0"));
-    ASSERT_EQ(true, Parser::checkCondition("int:66"));
-    ASSERT_EQ(true, Parser::checkCondition("int:264"));
-    ASSERT_EQ(true, Parser::checkCondition("int:407"));
-    ASSERT_EQ(true, Parser::checkCondition("int:388"));
-    ASSERT_EQ(true, Parser::checkCondition("int:507"));
-    ASSERT_EQ(true, Parser::checkCondition("int:-898"));
-    ASSERT_EQ(true, Parser::checkCondition("int:-496"));
-    ASSERT_EQ(true, Parser::checkCondition("int:-178"));
-    ASSERT_EQ(true, Parser::checkCondition("int:-106"));
-    ASSERT_EQ(true, Parser::checkCondition("int:<0"));
-    ASSERT_EQ(true, Parser::checkCondition("int:<854"));
-    ASSERT_EQ(true, Parser::checkCondition("int:<176"));
-    ASSERT_EQ(true, Parser::checkCondition("int:<905"));
-    ASSERT_EQ(true, Parser::checkCondition("int:<677"));
-    ASSERT_EQ(true, Parser::checkCondition("int:<233"));
-    ASSERT_EQ(true, Parser::checkCondition("int:<-325"));
-    ASSERT_EQ(true, Parser::checkCondition("int:<-15"));
-    ASSERT_EQ(true, Parser::checkCondition("int:<-657"));
-    ASSERT_EQ(true, Parser::checkCondition("int:<-308"));
-    ASSERT_EQ(true, Parser::checkCondition("int:>0"));
-    ASSERT_EQ(true, Parser::checkCondition("int:>271"));
-    ASSERT_EQ(true, Parser::checkCondition("int:>872"));
-    ASSERT_EQ(true, Parser::checkCondition("int:>26"));
-    ASSERT_EQ(true, Parser::checkCondition("int:>404"));
-    ASSERT_EQ(true, Parser::checkCondition("int:>814"));
-    ASSERT_EQ(true, Parser::checkCondition("int:>-628"));
-    ASSERT_EQ(true, Parser::checkCondition("int:>-218"));
-    ASSERT_EQ(true, Parser::checkCondition("int:>-715"));
-    ASSERT_EQ(true, Parser::checkCondition("int:>-860"));
-    ASSERT_EQ(true, Parser::checkCondition("int:<=0"));
-    ASSERT_EQ(true, Parser::checkCondition("int:<=528"));
-    ASSERT_EQ(true, Parser::checkCondition("int:<=759"));
-    ASSERT_EQ(true, Parser::checkCondition("int:<=364"));
-    ASSERT_EQ(true, Parser::checkCondition("int:<=396"));
-    ASSERT_EQ(true, Parser::checkCondition("int:<=679"));
-    ASSERT_EQ(true, Parser::checkCondition("int:<=-411"));
-    ASSERT_EQ(true, Parser::checkCondition("int:<=-730"));
-    ASSERT_EQ(true, Parser::checkCondition("int:<=-569"));
-    ASSERT_EQ(true, Parser::checkCondition("int:<=-366"));
-    ASSERT_EQ(true, Parser::checkCondition("int:>=0"));
-    ASSERT_EQ(true, Parser::checkCondition("int:>=1"));
-    ASSERT_EQ(true, Parser::checkCondition("int:>=525"));
-    ASSERT_EQ(true, Parser::checkCondition("int:>=829"));
-    ASSERT_EQ(true, Parser::checkCondition("int:>=732"));
-    ASSERT_EQ(true, Parser::checkCondition("int:>=549"));
-    ASSERT_EQ(true, Parser::checkCondition("int:>=-730"));
-    ASSERT_EQ(true, Parser::checkCondition("int:>=-487"));
-    ASSERT_EQ(true, Parser::checkCondition("int:>=-147"));
-    ASSERT_EQ(true, Parser::checkCondition("int:>=-475"));
+    ASSERT_TRUE(Parser::checkCondition("int:0"));
+    ASSERT_TRUE(Parser::checkCondition("int:66"));
+    ASSERT_TRUE(Parser::checkCondition("int:264"));
+    ASSERT_TRUE(Parser::checkCondition("int:407"));
+    ASSERT_TRUE(Parser::checkCondition("int:388"));
+    ASSERT_TRUE(Parser::checkCondition("int:507"));
+    ASSERT_TRUE(Parser::checkCondition("int:-898"));
+    ASSERT_TRUE(Parser::checkCondition("int:-496"));
+    ASSERT_TRUE(Parser::checkCondition("int:-178"));
+    ASSERT_TRUE(Parser::checkCondition("int:-106"));
+    ASSERT_TRUE(Parser::checkCondition("int:<0"));
+    ASSERT_TRUE(Parser::checkCondition("int:<854"));
+    ASSERT_TRUE(Parser::checkCondition("int:<176"));
+    ASSERT_TRUE(Parser::checkCondition("int:<905"));
+    ASSERT_TRUE(Parser::checkCondition("int:<677"));
+    ASSERT_TRUE(Parser::checkCondition("int:<233"));
+    ASSERT_TRUE(Parser::checkCondition("int:<-325"));
+    ASSERT_TRUE(Parser::checkCondition("int:<-15"));
+    ASSERT_TRUE(Parser::checkCondition("int:<-657"));
+    ASSERT_TRUE(Parser::checkCondition("int:<-308"));
+    ASSERT_TRUE(Parser::checkCondition("int:>0"));
+    ASSERT_TRUE(Parser::checkCondition("int:>271"));
+    ASSERT_TRUE(Parser::checkCondition("int:>872"));
+    ASSERT_TRUE(Parser::checkCondition("int:>26"));
+    ASSERT_TRUE(Parser::checkCondition("int:>404"));
+    ASSERT_TRUE(Parser::checkCondition("int:>814"));
+    ASSERT_TRUE(Parser::checkCondition("int:>-628"));
+    ASSERT_TRUE(Parser::checkCondition("int:>-218"));
+    ASSERT_TRUE(Parser::checkCondition("int:>-715"));
+    ASSERT_TRUE(Parser::checkCondition("int:>-860"));
+    ASSERT_TRUE(Parser::checkCondition("int:<=0"));
+    ASSERT_TRUE(Parser::checkCondition("int:<=528"));
+    ASSERT_TRUE(Parser::checkCondition("int:<=759"));
+    ASSERT_TRUE(Parser::checkCondition("int:<=364"));
+    ASSERT_TRUE(Parser::checkCondition("int:<=396"));
+    ASSERT_TRUE(Parser::checkCondition("int:<=679"));
+    ASSERT_TRUE(Parser::checkCondition("int:<=-411"));
+    ASSERT_TRUE(Parser::checkCondition("int:<=-730"));
+    ASSERT_TRUE(Parser::checkCondition("int:<=-569"));
+    ASSERT_TRUE(Parser::checkCondition("int:<=-366"));
+    ASSERT_TRUE(Parser::checkCondition("int:>=0"));
+    ASSERT_TRUE(Parser::checkCondition("int:>=1"));
+    ASSERT_TRUE(Parser::checkCondition("int:>=525"));
+    ASSERT_TRUE(Parser::checkCondition("int:>=829"));
+    ASSERT_TRUE(Parser::checkCondition("int:>=732"));
+    ASSERT_TRUE(Parser::checkCondition("int:>=549"));
+    ASSERT_TRUE(Parser::checkCondition("int:>=-730"));
+    ASSERT_TRUE(Parser::checkCondition("int:>=-487"));
+    ASSERT_TRUE(Parser::checkCondition("int:>=-147"));
+    ASSERT_TRUE(Parser::checkCondition("int:>=-475"));
 
     /*
      * Float
      */
-    ASSERT_EQ(true, Parser::checkCondition("float:<0"));
-    ASSERT_EQ(true, Parser::checkCondition("float:<73.9"));
-    ASSERT_EQ(true, Parser::checkCondition("float:<502.177"));
-    ASSERT_EQ(true, Parser::checkCondition("float:<618.0148"));
-    ASSERT_EQ(true, Parser::checkCondition("float:<75.217"));
-    ASSERT_EQ(true, Parser::checkCondition("float:<112.7"));
-    ASSERT_EQ(true, Parser::checkCondition("float:<-682.6"));
-    ASSERT_EQ(true, Parser::checkCondition("float:<-276.97"));
-    ASSERT_EQ(true, Parser::checkCondition("float:<-828.3141"));
-    ASSERT_EQ(true, Parser::checkCondition("float:<-540"));
-    ASSERT_EQ(true, Parser::checkCondition("float:>0"));
-    ASSERT_EQ(true, Parser::checkCondition("float:>360.7"));
-    ASSERT_EQ(true, Parser::checkCondition("float:>165.282"));
-    ASSERT_EQ(true, Parser::checkCondition("float:>665.5035"));
-    ASSERT_EQ(true, Parser::checkCondition("float:>445"));
-    ASSERT_EQ(true, Parser::checkCondition("float:>486.27"));
-    ASSERT_EQ(true, Parser::checkCondition("float:>-990"));
-    ASSERT_EQ(true, Parser::checkCondition("float:>-575.36"));
-    ASSERT_EQ(true, Parser::checkCondition("float:>-352.0072"));
-    ASSERT_EQ(true, Parser::checkCondition("float:>-316"));
-    ASSERT_EQ(true, Parser::checkCondition("float:<=0"));
-    ASSERT_EQ(true, Parser::checkCondition("float:<=404.6"));
-    ASSERT_EQ(true, Parser::checkCondition("float:<=732.7346"));
-    ASSERT_EQ(true, Parser::checkCondition("float:<=745.170"));
-    ASSERT_EQ(true, Parser::checkCondition("float:<=387.5"));
-    ASSERT_EQ(true, Parser::checkCondition("float:<=859.412"));
-    ASSERT_EQ(true, Parser::checkCondition("float:<=-431.06"));
-    ASSERT_EQ(true, Parser::checkCondition("float:<=-830.701"));
-    ASSERT_EQ(true, Parser::checkCondition("float:<=-147"));
-    ASSERT_EQ(true, Parser::checkCondition("float:<=-507.2"));
-    ASSERT_EQ(true, Parser::checkCondition("float:>=0"));
-    ASSERT_EQ(true, Parser::checkCondition("float:>=141.4562"));
-    ASSERT_EQ(true, Parser::checkCondition("float:>=898.0704"));
-    ASSERT_EQ(true, Parser::checkCondition("float:>=178"));
-    ASSERT_EQ(true, Parser::checkCondition("float:>=53.898"));
-    ASSERT_EQ(true, Parser::checkCondition("float:>=696.8"));
-    ASSERT_EQ(true, Parser::checkCondition("float:>=-918.3645"));
-    ASSERT_EQ(true, Parser::checkCondition("float:>=-742.9752"));
-    ASSERT_EQ(true, Parser::checkCondition("float:>=-680.8"));
-    ASSERT_EQ(true, Parser::checkCondition("float:>=-916"));
+    ASSERT_TRUE(Parser::checkCondition("float:<0"));
+    ASSERT_TRUE(Parser::checkCondition("float:<73.9"));
+    ASSERT_TRUE(Parser::checkCondition("float:<502.177"));
+    ASSERT_TRUE(Parser::checkCondition("float:<618.0148"));
+    ASSERT_TRUE(Parser::checkCondition("float:<75.217"));
+    ASSERT_TRUE(Parser::checkCondition("float:<112.7"));
+    ASSERT_TRUE(Parser::checkCondition("float:<-682.6"));
+    ASSERT_TRUE(Parser::checkCondition("float:<-276.97"));
+    ASSERT_TRUE(Parser::checkCondition("float:<-828.3141"));
+    ASSERT_TRUE(Parser::checkCondition("float:<-540"));
+    ASSERT_TRUE(Parser::checkCondition("float:>0"));
+    ASSERT_TRUE(Parser::checkCondition("float:>360.7"));
+    ASSERT_TRUE(Parser::checkCondition("float:>165.282"));
+    ASSERT_TRUE(Parser::checkCondition("float:>665.5035"));
+    ASSERT_TRUE(Parser::checkCondition("float:>445"));
+    ASSERT_TRUE(Parser::checkCondition("float:>486.27"));
+    ASSERT_TRUE(Parser::checkCondition("float:>-990"));
+    ASSERT_TRUE(Parser::checkCondition("float:>-575.36"));
+    ASSERT_TRUE(Parser::checkCondition("float:>-352.0072"));
+    ASSERT_TRUE(Parser::checkCondition("float:>-316"));
+    ASSERT_TRUE(Parser::checkCondition("float:<=0"));
+    ASSERT_TRUE(Parser::checkCondition("float:<=404.6"));
+    ASSERT_TRUE(Parser::checkCondition("float:<=732.7346"));
+    ASSERT_TRUE(Parser::checkCondition("float:<=745.170"));
+    ASSERT_TRUE(Parser::checkCondition("float:<=387.5"));
+    ASSERT_TRUE(Parser::checkCondition("float:<=859.412"));
+    ASSERT_TRUE(Parser::checkCondition("float:<=-431.06"));
+    ASSERT_TRUE(Parser::checkCondition("float:<=-830.701"));
+    ASSERT_TRUE(Parser::checkCondition("float:<=-147"));
+    ASSERT_TRUE(Parser::checkCondition("float:<=-507.2"));
+    ASSERT_TRUE(Parser::checkCondition("float:>=0"));
+    ASSERT_TRUE(Parser::checkCondition("float:>=141.4562"));
+    ASSERT_TRUE(Parser::checkCondition("float:>=898.0704"));
+    ASSERT_TRUE(Parser::checkCondition("float:>=178"));
+    ASSERT_TRUE(Parser::checkCondition("float:>=53.898"));
+    ASSERT_TRUE(Parser::checkCondition("float:>=696.8"));
+    ASSERT_TRUE(Parser::checkCondition("float:>=-918.3645"));
+    ASSERT_TRUE(Parser::checkCondition("float:>=-742.9752"));
+    ASSERT_TRUE(Parser::checkCondition("float:>=-680.8"));
+    ASSERT_TRUE(Parser::checkCondition("float:>=-916"));
 
     /*
      * String
      */
-    ASSERT_EQ(true, Parser::checkCondition("string:*"));
-    ASSERT_EQ(true, Parser::checkCondition("string:\"*\""));
-    ASSERT_EQ(true, Parser::checkCondition("string:\"-Yn\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(Parser::checkCondition("string:*"));
+    ASSERT_TRUE(Parser::checkCondition("string:\"*\""));
+    ASSERT_TRUE(Parser::checkCondition("string:\"-Yn\""));
+    ASSERT_TRUE(
             Parser::checkCondition("string:\"M=|GFWCBqBtz,y6BjT ~^Q|M{$a c0A%}08%bGjV`n8\""));
-    ASSERT_EQ(true,
-            Parser::checkCondition("string:\"=]Zra=q$db!&!zjQ0}^8(v\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE( Parser::checkCondition("string:\"=]Zra=q$db!&!zjQ0}^8(v\""));
+    ASSERT_TRUE(
             Parser::checkCondition("string:\"hHU-PR 1U-04bCT`i58Ua)qge8Knww$jydORs#F\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:\"wfPxzNt@rsz93267#X^CSE;-OEkqG5K,o06Bp\""));
-    ASSERT_EQ(true,
-            Parser::checkCondition("string:\"hxCqdxDdsdTAlld{evNO$,cK\""));
-    ASSERT_EQ(true, Parser::checkCondition("string:\"Y%~0c*Pai\""));
-    ASSERT_EQ(true, Parser::checkCondition("string:\"IO^ ?XB,}Rg\""));
-    ASSERT_EQ(true, Parser::checkCondition("string:\"5#7fylUA_8_4X:=\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE( Parser::checkCondition("string:\"hxCqdxDdsdTAlld{evNO$,cK\""));
+    ASSERT_TRUE(Parser::checkCondition("string:\"Y%~0c*Pai\""));
+    ASSERT_TRUE(Parser::checkCondition("string:\"IO^ ?XB,}Rg\""));
+    ASSERT_TRUE(Parser::checkCondition("string:\"5#7fylUA_8_4X:=\""));
+    ASSERT_TRUE(
             Parser::checkCondition("string:\"m=W~FwaE|tx.HH{+*d0:;iKA%prN1\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:<\"Z-WQVusxi*Qr'X*mk:4_;SGOs.g_n RI84*X2(\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:<\"VW`'HeU9VjI369#MeYdl,zKOCfhg7OqE!vw.rI'.9#(&\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:<\"NXNmlotab=AtcNSq+qd?`~:]uA$VjQ94Nfo_G?;\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:<\"c3e?H1,6Q}N-nA5RHjb_f(j&_{Xbwi[c@QfR6O\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:<\"(Qgc{Y^n7jC|^Ahfpgw*n&O;{],m$8VU_Zp3?uj^1kpQcRG$y\""));
-    ASSERT_EQ(true, Parser::checkCondition("string:<\"3I8R'+\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(Parser::checkCondition("string:<\"3I8R'+\""));
+    ASSERT_TRUE(
             Parser::checkCondition("string:<\" 1EGR=smE97`VV)P}i5g(e,ekrpSsB@~gw\""));
-    ASSERT_EQ(true, Parser::checkCondition("string:<\"IY0\""));
-    ASSERT_EQ(true, Parser::checkCondition("string:<\"%Nu6,OHKaR \""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(Parser::checkCondition("string:<\"IY0\""));
+    ASSERT_TRUE(Parser::checkCondition("string:<\"%Nu6,OHKaR \""));
+    ASSERT_TRUE(
             Parser::checkCondition("string:<\"nTuwhEvByZ]C)r`Mxtro9)Ky1NbSHRl,!h?)y'\""));
-    ASSERT_EQ(true,
-            Parser::checkCondition("string:>\"=fiVTrirWLn!QDZgp#Efl\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE( Parser::checkCondition("string:>\"=fiVTrirWLn!QDZgp#Efl\""));
+    ASSERT_TRUE(
             Parser::checkCondition("string:>\"K8g8LDha+N9VPp7@PzNQ%rs3T#3V6MT'~sjaj2mz+FO5k\""));
-    ASSERT_EQ(true, Parser::checkCondition("string:>\"\""));
-    ASSERT_EQ(true, Parser::checkCondition("string:>\"z32 memRTv6SmQ*V\""));
-    ASSERT_EQ(true, Parser::checkCondition("string:>\"U}[5SR*o;@9Ftjvlga^=\""));
-    ASSERT_EQ(true, Parser::checkCondition("string:>\"K_=TxiSv!*{gR%5tz\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(Parser::checkCondition("string:>\"\""));
+    ASSERT_TRUE(Parser::checkCondition("string:>\"z32 memRTv6SmQ*V\""));
+    ASSERT_TRUE(Parser::checkCondition("string:>\"U}[5SR*o;@9Ftjvlga^=\""));
+    ASSERT_TRUE(Parser::checkCondition("string:>\"K_=TxiSv!*{gR%5tz\""));
+    ASSERT_TRUE(
             Parser::checkCondition("string:>\"(;=!67D=s*pk)TEGq=?o_x+*,tn:H^.&x0qr3m?tgAbu~6\""));
-    ASSERT_EQ(true, Parser::checkCondition("string:>\"]6~I\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(Parser::checkCondition("string:>\"]6~I\""));
+    ASSERT_TRUE(
             Parser::checkCondition("string:>\" z)Pcdz?NFKk0I@3gP`k:rv6'WkZK]7$?,\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:>\"gC&]}]h}S'7CvWzJ9$}duwyC)J=\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:<=\" wC-?|otVIE:C^N4@:wHq=1~Q](Pt_[nk1cHs`*mcH\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:<=\"~D ^N$_.Z`g *bQKYT).;d**wEQ[x$Ts(*:Yf@'jmzrh\""));
-    ASSERT_EQ(true, Parser::checkCondition("string:<=\",rY0m\""));
-    ASSERT_EQ(true, Parser::checkCondition("string:<=\".,3pa~HH\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(Parser::checkCondition("string:<=\",rY0m\""));
+    ASSERT_TRUE(Parser::checkCondition("string:<=\".,3pa~HH\""));
+    ASSERT_TRUE(
             Parser::checkCondition("string:<=\"4Cv~D=Py9CZvBIAKKb&t0A]c'Tq|vL~ND8'3'fp#NgAFNacx\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:<=\"Y,oYzUc.r;UFESk,EOiiT^Z;2l$shNQcIAN9}{\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:<=\"C{QuxHF|#s}6(CB4kcPHDnuHB9)6RaDh\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:<=\"CN`K)i$[oSV:af]_`zO+*pq914+_ei8-eYh^=&1p**0\""));
-    ASSERT_EQ(true, Parser::checkCondition("string:<=\"RW$8Y2t|e\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(Parser::checkCondition("string:<=\"RW$8Y2t|e\""));
+    ASSERT_TRUE(
             Parser::checkCondition("string:<=\"3c2-2-q5aEd1qK#VvIc.GNcpoYXK&RSjZZM$!}?{9[ZY}1\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:>=\" M-y)kMl*.M7lBPzr$Yh,cM\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:>=\"5DH~w2nQHpoj?B5_,|]Xt*qo`F\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:>=\"8E*BtSC_xSjg*jGp-^IlH':b\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:>=\"I0g=obi#b(e_N&YiED GS,]^M@-a]|f*93\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:>=\"-3MxmDZf0I@}J:Z~kedA}~;,-Miw1\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:>=\"5VKqMm-yuBS 3x^XR4Qt=RuCKsWO#T,mgA:Irc iIaF^2z\""));
-    ASSERT_EQ(true, Parser::checkCondition("string:>=\",H(PK\""));
-    ASSERT_EQ(true, Parser::checkCondition("string:>=\"Zo#xlm&t7XGT_`Ox@BY\""));
-    ASSERT_EQ(true, Parser::checkCondition("string:>=\")f`;j3)PK38s5&ka!o[\""));
-    ASSERT_EQ(true, Parser::checkCondition("string:>=\"gq(0g1oDtc|gj@#\""));
+    ASSERT_TRUE(Parser::checkCondition("string:>=\",H(PK\""));
+    ASSERT_TRUE(Parser::checkCondition("string:>=\"Zo#xlm&t7XGT_`Ox@BY\""));
+    ASSERT_TRUE(Parser::checkCondition("string:>=\")f`;j3)PK38s5&ka!o[\""));
+    ASSERT_TRUE(Parser::checkCondition("string:>=\"gq(0g1oDtc|gj@#\""));
 
     /*
      * Combinations
      */
-    ASSERT_EQ(true,
-            Parser::checkCondition("int:>=-73, float:<=243.74, int:573"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE( Parser::checkCondition("int:>=-73, float:<=243.74, int:573"));
+    ASSERT_TRUE(
             Parser::checkCondition("string:>\"= Dq^Oh)&Z*D`*mANxpbYzh6~g|bK(?_\", string:<=\"9@y1I(,^VJtGD2Ku|\", int:<-118"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("float:<888.2259, int:>163, string:\"T&nwGK,-|w?7.qfv=DZjL21m'ydT[dO^p'4}\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:<=\"##fjI&L(Im =\", int:<=-359, int:-625"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("int:>488, string:>\"K}QYb&l4c^(GIU7TOGjgx$6rmLG,{B;G]\", string:>=\".PXt[mK+o;sQO\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("float:>=826.9, float:<-960, string:<=\"ZVy~.Oiq1Oh!99FVj p'7tn*l~D\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("float:>-212.621, float:<-959, int:>611"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("float:>397, string:\"3ty\", float:<501.0834"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("float:>=-566, string:<\"W^(dq]}\", string:>\"mFLUWFlz965htso(5lT&{6'.S}]fMd}S~g#z=8J=1\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:>=\"0QqS^khmrIel\", string:<=\"vM3T0=TpS'i;*v9pM+.\", int:636"));
-    ASSERT_EQ(true, Parser::checkCondition("int:<=-272, int:<-660, int:>932"));
-    ASSERT_EQ(true, Parser::checkCondition("int:>=236, float:>-60, int:<-591"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(Parser::checkCondition("int:<=-272, int:<-660, int:>932"));
+    ASSERT_TRUE(Parser::checkCondition("int:>=236, float:>-60, int:<-591"));
+    ASSERT_TRUE(
             Parser::checkCondition("string:\"KF)GM4wH|w}dY~P?o]'@J[NHZ}T{#.(8Sl;P__,I3ylVWk\", float:*, float:>-707"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("int:-234, string:>\"ta9^lF.UT+ck-jxVe(meI9VB$p1.-VWq]\", string:*"));
-    ASSERT_EQ(true,
-            Parser::checkCondition("int:<=-601, float:<=974.2, int:491"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE( Parser::checkCondition("int:<=-601, float:<=974.2, int:491"));
+    ASSERT_TRUE(
             Parser::checkCondition("string:<\"_gN?SI%) \", float:<225.67, string:>\"T(ZP;lS\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("float:<-203.02, string:\"-Nl-v~+.V3)!mLe9'HWq\", string:<=\"QH.)hIsMJTf4B9O1ko)36 U1~*oy\""));
-    ASSERT_EQ(true,
-            Parser::checkCondition("int:>659, float:<=392.383, int:-539"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE( Parser::checkCondition("int:>659, float:<=392.383, int:-539"));
+    ASSERT_TRUE(
             Parser::checkCondition("string:\"WG+e1L jj#&j~X1:#zBJjZe^\", string:>\"}#.gG@&Vb.e$94:{Qb).4TRm.u W2;lc$z9H{^(gpHX\", int:<-39"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("int:-572, string:<=\"\", float:>=289.35"));
-    ASSERT_EQ(true, Parser::checkCondition("float:>=359, int:>276, int:<-910"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(Parser::checkCondition("float:>=359, int:>276, int:<-910"));
+    ASSERT_TRUE(
             Parser::checkCondition("string:<\"{+QxJ`WCYt|?(lK7qb?_]~b,kO&K{)e7Kb$_xc\", string:<\":{aY#V|PB^p\", float:<111.26"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("float:<-444.6683, float:<-981.9292, string:\"B:H@NX}*wYd6(V`0LmLq5*R%U_xcX+u)j#Pb\""));
-    ASSERT_EQ(true,
-            Parser::checkCondition("int:<-613, int:535, string:<=\"\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE( Parser::checkCondition("int:<-613, int:535, string:<=\"\""));
+    ASSERT_TRUE(
             Parser::checkCondition("float:>=0, string:<\"rD(fOZ!M+SWp@#s]#RPzz]yzCXI?e\", string:>=\"+i&` c\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("int:<=343, int:>=895, string:>\"M_=\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("int:<28, string:>\"*G59)i8YJ|0\", string:*"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("float:>=-346, float:<906.92, string:<\" HyF#YT?M@\""));
-    ASSERT_EQ(true,
-            Parser::checkCondition("string:*, int:>-391, float:<-620.87"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE( Parser::checkCondition("string:*, int:>-391, float:<-620.87"));
+    ASSERT_TRUE(
             Parser::checkCondition("float:<136, int:-266, float:<-108.112"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("int:827, string:>\"uce'R)|(*H08Y~LM\", string:>\"SYrRe$_=6]kJQux84C:h~,v5\""));
-    ASSERT_EQ(true,
-            Parser::checkCondition("int:<=510, int:-65, float:>=545.8"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE( Parser::checkCondition("int:<=510, int:-65, float:>=545.8"));
+    ASSERT_TRUE(
             Parser::checkCondition("int:>338, int:<-796, float:<300.8384"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:>=\":FzH:5)5\", string:>=\"RF|f8Sc=ovvmXj\", float:<-79.5"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("int:>-208, int:763, string:>=\"wjpZjDmCn+^2\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:>=\"ls3['@YrXSY*MB~VG Wc:o7cL~excN[egXsB'$ _]+c+b[\", int:-929, float:<=32.30"));
-    ASSERT_EQ(true, Parser::checkCondition("int:>=804, int:>=498, int:<=-685"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(Parser::checkCondition("int:>=804, int:>=498, int:<=-685"));
+    ASSERT_TRUE(
             Parser::checkCondition("string:<\"[Zq%(DHhqDnBZ\", float:>-356, float:<201.7"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:<\"IA_DtAl\", int:>-799, int:>133"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("int:<472, float:<=-159.547, int:>=-248"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("int:167, string:>=\"@PPE6)H0vTRy,mlHNl7eI?0a+TljMWU\", float:>477.35"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:\"i==U.|XTiM.#dhvZE@L%g&OgAHp#z2wQ%=Tk|q\", float:>=-584.78, int:<-216"));
-    ASSERT_EQ(true, Parser::checkCondition("float:*, int:>337, float:*"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(Parser::checkCondition("float:*, int:>337, float:*"));
+    ASSERT_TRUE(
             Parser::checkCondition("int:>894, string:<=\"EebrtxpdBu{8AjYuP3hE64g\", string:>=\"%2~xyvXQfF'TQvP7{YxL*h$}JHn@;~i6 $kMIWP';B[?(v6\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("float:<879.1, float:<-600.01, float:<425.92"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("float:<-372.8299, float:<-203.4, float:>=614.128"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("int:>=317, string:<\"tDmkNRLvTebbd~Gncd#0mhExfL\", string:<\"YcH\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("float:<-429.801, float:<754.3, int:>=595"));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("float:<=69.964, int:>=-560, string:<\"`u}h%0h~tyg+kEAp6kos%iHly:BWkORK3@&?g\""));
-    ASSERT_EQ(true,
+    ASSERT_TRUE(
             Parser::checkCondition("string:<=\"cqiIrt],`QI)8:\", string:<\"T,\", float:<=-747.11"));
 }
 
 /*
  * NE true instead of EQ false due to warnings
- */
-TEST(CheckConditionsTest, NegativeNos)
+ */TEST(CheckConditionsTest, NegativeNos)
 {
-    ASSERT_NE(true, Parser::checkCondition("float:2"));
-    ASSERT_NE(true, Parser::checkCondition("float:-4"));
-    ASSERT_NE(true, Parser::checkCondition("float:0"));
-    ASSERT_NE(true, Parser::checkCondition("string:\"\"\""));
-    ASSERT_NE(true, Parser::checkCondition("ints:*"));
-    ASSERT_NE(true, Parser::checkCondition("Int:*"));
-    ASSERT_NE(true, Parser::checkCondition("flaot:*"));
-    ASSERT_NE(true, Parser::checkCondition("floaT:*"));
-    ASSERT_NE(true, Parser::checkCondition("strong:*"));
-    ASSERT_NE(true, Parser::checkCondition("String:*"));
+    ASSERT_FALSE(Parser::checkCondition("float:2"));
+    ASSERT_FALSE(Parser::checkCondition("float:-4"));
+    ASSERT_FALSE(Parser::checkCondition("float:0"));
+    ASSERT_FALSE(Parser::checkCondition("string:\"\"\""));
+    ASSERT_FALSE(Parser::checkCondition("ints:*"));
+    ASSERT_FALSE(Parser::checkCondition("Int:*"));
+    ASSERT_FALSE(Parser::checkCondition("flaot:*"));
+    ASSERT_FALSE(Parser::checkCondition("floaT:*"));
+    ASSERT_FALSE(Parser::checkCondition("strong:*"));
+    ASSERT_FALSE(Parser::checkCondition("String:*"));
 }
 
 TEST(ConfigurationTest, PosNeg)
@@ -316,8 +308,7 @@ TEST(ConfigurationTest, PosNeg)
 
 /*
  * QString comparison, not const char* due to that -> EQ not STREQ
- */
-TEST(ParseStructTest, PositiveString)
+ */TEST(ParseStructTest, PositiveString)
 {
     ASSERT_EQ("siisisif",
             Parser::parseStruct("string:<\"u5V*9$\", int:<204, int:<-732, string:>\"uq-Ep4 -?B*oT'SMGY!y,,l?\", int:<-178, string:<\"jYu o*Ia|3n{|co2i54uC]YB\", int:>-732, float:<14.7711"));
@@ -420,31 +411,93 @@ TEST(ParseStructTest, PositiveString)
 TEST(ParseStructTest, PositiveVariant)
 {
     QVariantList list;
-    list << QVariant(1) << QVariant(-1) << QVariant(23.0f) << QVariant(-0.4f)
-            << QVariant("Str") << QVariant("!@$ GDSFsa sd");
+    list << 1 << -1 << 23.0f << -0.4f << "Str" << "!@$ GDSFsa sd";
     ASSERT_EQ("iiffss", Parser::parseStruct(list));
 
     list.clear();
-    list << QVariant(21.f) << QVariant("strin ") << QVariant(32);
+    list << 21.f << "strin " << 32;
     ASSERT_EQ("fsi", Parser::parseStruct(list));
 }
 
-TEST(ParseStructTest, NegativeThrow) {
-    ASSERT_THROW(Parser::parseStruct("string:sdfs"), const char*);
-    ASSERT_THROW(Parser::parseStruct("fgsdio"), const char*);
-    ASSERT_THROW(Parser::parseStruct("string:*, float:43"), const char*);
-    ASSERT_THROW(Parser::parseStruct("ints: sdada"), const char*);
-    ASSERT_THROW(Parser::parseStruct("n sdfio nds"), const char*);
-    ASSERT_THROW(Parser::parseStruct("double:>2, int:5"), const char*);
+TEST(ParseStructTest, NegativeThrow)
+{
+    ASSERT_THROW(Parser::parseStruct("string:sdfs"), ParserException);
+    ASSERT_THROW(Parser::parseStruct("fgsdio"), ParserException);
+    ASSERT_THROW(Parser::parseStruct("string:*, float:43"), ParserException);
+    ASSERT_THROW(Parser::parseStruct("ints: sdada"), ParserException);
+    ASSERT_THROW(Parser::parseStruct("n sdfio nds"), ParserException);
+    ASSERT_THROW(Parser::parseStruct("double:>2, int:5"), ParserException);
 
     QVariantList list;
-    list << QVariant(1) << QVariant(-1) << QVariant(23.0) << QVariant(-0.4f)
-            << QVariant("Str") << QVariant("!@$ GDSFsa sd");
-    ASSERT_THROW(Parser::parseStruct(list), const char*);
+    list << 1 << -1 << 23.0 << -0.4f << "Str" << "!@$ GDSFsa sd";
+    ASSERT_THROW(Parser::parseStruct(list), ParserException);
 
     list.clear();
-    list << QVariant(21.f) << QVariant("strin ") << QVariant(32) <<QVariant(0.0);
-    ASSERT_THROW(Parser::parseStruct(list), const char*);
+    list << 21.f << "strin " << 32 << 0.0;
+    ASSERT_THROW(Parser::parseStruct(list), ParserException);
+}
+
+TEST(SearchPatternTest, Positive)
+{
+    SearchPattern sp;
+    QVariantList list;
+
+    ASSERT_TRUE(sp.check(list));
+
+    sp.addCondition(Parser::STRING, ANYTHING, QVariant());
+
+    ASSERT_FALSE(sp.check(list));
+    ASSERT_EQ(Parser::SHORT_TYPE_STRING, sp.getTypesPattern());
+
+    list << "any";
+
+    ASSERT_TRUE(sp.check(list));
+
+    sp.addCondition(Parser::INT, INT_GREATER_EQUAL, 3);
+
+    ASSERT_FALSE(sp.check(list));
+
+    list << 2;
+
+    ASSERT_FALSE(sp.check(list));
+
+    list.pop_front();
+    list << 4;
+
+    ASSERT_TRUE(sp.check(list));
+
+    list << -24.f;
+
+    ASSERT_FALSE(sp.check(list));
+
+    sp.addCondition(Parser::FLOAT, FLOAT_LESS, -20);
+
+    ASSERT_TRUE(sp.check(list));
+}
+
+TEST(ComparisonFactoryTest, Factories)
+{
+    ASSERT_NO_THROW(ComparisonFactory::getCmpFunctor(INT_EQUAL));
+    ASSERT_NO_THROW(ComparisonFactory::getCmpFunctor(INT_LESS));
+    ASSERT_NO_THROW(ComparisonFactory::getCmpFunctor(INT_LESS_EQUAL));
+    ASSERT_NO_THROW(ComparisonFactory::getCmpFunctor(INT_GREATER));
+    ASSERT_NO_THROW(ComparisonFactory::getCmpFunctor(INT_GREATER_EQUAL));
+    ASSERT_NO_THROW(ComparisonFactory::getCmpFunctor(FLOAT_LESS));
+    ASSERT_NO_THROW(ComparisonFactory::getCmpFunctor(FLOAT_LESS_EQUAL));
+    ASSERT_NO_THROW(ComparisonFactory::getCmpFunctor(FLOAT_GREATER));
+    ASSERT_NO_THROW(ComparisonFactory::getCmpFunctor(FLOAT_GREATER_EQUAL));
+    ASSERT_NO_THROW(ComparisonFactory::getCmpFunctor(STRING_EQUAL));
+    ASSERT_NO_THROW(ComparisonFactory::getCmpFunctor(STRING_LESS));
+    ASSERT_NO_THROW(ComparisonFactory::getCmpFunctor(STRING_LESS_EQUAL));
+    ASSERT_NO_THROW(ComparisonFactory::getCmpFunctor(STRING_GREATER));
+    ASSERT_NO_THROW(ComparisonFactory::getCmpFunctor(STRING_GREATER_EQUAL));
+    ASSERT_NO_THROW(ComparisonFactory::getCmpFunctor(ANYTHING));
+
+    ASSERT_THROW(
+            ComparisonFactory::getCmpFunctor(CompareOperations(ANYTHING + 1)),
+            const char*);
+    ASSERT_THROW( ComparisonFactory::getCmpFunctor(CompareOperations(15)),
+            const char*);
 }
 
 int main(int argc, char **argv)

@@ -17,6 +17,7 @@
 #include <QRegExp>
 #include <boost/lexical_cast.hpp>
 #include <QMetaType>
+#include "ParserException.h"
 
 namespace UXP1A_project {
 namespace Shared {
@@ -86,7 +87,7 @@ bool Parser::checkCondition(const QString& conditions)
 SearchPattern* Parser::parseConditions(const QString& conditions)
 {
     if (!checkCondition(conditions))
-        throw "Check conditions first man..";
+        throw ParserException("Check conditions first man..");
 
     // Get separated conditions and gather them into list
     QString pattern = "(";
@@ -187,7 +188,7 @@ SearchPattern* Parser::parseConditions(const QString& conditions)
 QString Parser::parseStruct(const QString& pattern)
 {
     if (!checkCondition(pattern))
-        throw "Check conditions first man..";
+        throw ParserException("Check conditions first man..");
 
     QString shorter;
     int pos = 0;
@@ -196,7 +197,7 @@ QString Parser::parseStruct(const QString& pattern)
 
     while ((pos = r.indexIn(pattern, pos)) != -1) {
         if (!SHORT_TYPES.contains(QString(r.cap()[0])))
-            throw "How it happens, never should be there.";
+            throw ParserException("How it happens, never should be there.");
 
         shorter.append(r.cap()[0]);
         pos += r.matchedLength();
@@ -221,7 +222,7 @@ QString Parser::parseStruct(const QVariantList& list)
         shorter.append(SHORT_TYPE_STRING);
         break;
         default:
-        throw "Only int, float, string available.";
+        throw ParserException("Only int, float, string available.");
     }
 }
     return shorter;
