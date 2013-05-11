@@ -69,7 +69,7 @@ public:
     static void displayBuffer(const char *buff, const int length);
 
 
-    enum Message {PUSH, PULL, PREV, FOUND, TIME};
+    enum Message {PUSH, PULL, PREV, FOUND, TIME, EXIT};
     /**
      * @brief Returns code of chosen message mes.
      */

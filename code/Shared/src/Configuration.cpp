@@ -60,6 +60,8 @@ char Configuration::getMesCode(Message mes)
             return 'd';
         case TIME:
             return 'e';
+        case EXIT:
+            return 'f';
     };
     // if a kind of error - return safe value '\0' - this is always ignore
     return '\0';
@@ -78,6 +80,8 @@ Configuration::Message Configuration::getMes(const char code)
             return FOUND;
         case 'e':
             return TIME;
+        case 'f':
+            return EXIT;
     }
 
 }

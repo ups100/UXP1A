@@ -16,6 +16,7 @@
 #include "CommandQueue.h"
 #include "Configuration.h"
 #include <QDebug>
+#include "CommandDispatcher.h"
 
 namespace UXP1A_project {
 namespace Server {
@@ -39,10 +40,6 @@ CommandQueue::CommandQueue(CommandDispatcher *commandDispatcher)
 
 CommandQueue::~CommandQueue()
 {
-// Przenies te dwie linijki gdzies dalej za terminate
-    close(m_fifo);              // close descriptor
-    unlink(m_fifoPath.c_str()); // delete fifo file
-    // **********************
     if (m_additionalThread.isRunning()) {
         m_additionalThread.wait();
     }
@@ -64,30 +61,33 @@ void CommandQueue::exec()
 
 void CommandQueue::terminate()
 {
+    using Shared::Configuration;
     //write exit message to fifo but now only
-    m_mutex.unlock();
+    char mesCode[2] = {0};
+    mesCode[0] = Configuration::getMesCode(Configuration::EXIT);
+    write(m_fifo, mesCode, 2);
+    // Czy moge jeszcze tutaj ustawiac jakas statyczna zmienna boolowska
+    // mowiaca o tym ze zaczyna sie procedura wylaczania serwera?
+    //m_mutex.unlock();
     closePipe();
 }
 
 void CommandQueue::closePipe()
 {
-    qDebug() << "Jacek please implement me";
+    close(m_fifo);              // close descriptor
+    unlink(m_fifoPath.c_str()); // delete fifo file
+
 }
 
 void CommandQueue::waitForCommands()
 {
-//   m_mutex.lock();
-//    m_mutex.lock();
-//    m_mutex.unlock();
-//    qDebug()<<"papa";
-//    QThread::currentThread()->quit();
-
     if ( !openFifo() )
         return;
 
     qDebug() << "Ready...";
 
-    while (true) {
+    bool readRunning = true;
+    while (readRunning) {
         int read_bytes = read(m_fifo, m_buf, MAX_BUF - 1);
         // for secure the byte after last read byte is set to zero:
         m_buf[read_bytes] = '\0';
@@ -97,6 +97,10 @@ void CommandQueue::waitForCommands()
         char *in = m_buf;
         while (in[0] != '\0') {
             char code = in[0]; //in[1] == '\0'
+            if (code == Shared::Configuration::getMesCode(Shared::Configuration::EXIT)) {
+                readRunning = false; //stop external while loop also
+                break;
+            }
             // ptr - pointer to first sign no read yet in current message
             int ptr = 2;
             QByteArray length_q(in + ptr);
@@ -123,6 +127,7 @@ void CommandQueue::waitForCommands()
             in = in + ptr; // points to next message
         }
     }
+    QThread::currentThread()->quit();
 }
 
 void dispDebug(QString pid, QString patt, QString tim) {

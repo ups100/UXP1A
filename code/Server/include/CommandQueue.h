@@ -16,7 +16,6 @@
 #if !defined(EA_6F70F9D8_1D5A_4ea2_9FC3_CF3EB2298A5C__INCLUDED_)
 #define EA_6F70F9D8_1D5A_4ea2_9FC3_CF3EB2298A5C__INCLUDED_
 
-#include "CommandDispatcher.h"
 #include <QThread>
 #include <QMutex>
 #include <QDebug>
@@ -165,7 +164,7 @@ private:
     QThread m_additionalThread;
 
     /*************FOR TEST ONLY< REMOVE THIS JACEK*/
-    QMutex m_mutex;
+    //QMutex m_mutex;
     /**
      * @brief FIFO file descriptor
      */
