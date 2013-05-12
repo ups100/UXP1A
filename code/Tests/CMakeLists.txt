@@ -6,11 +6,13 @@ INCLUDE_DIRECTORIES( 	${QT_INCLUDES}
 						${UXP1A_SOURCE_DIR}/Tests/include
 						${UXP1A_SOURCE_DIR}/Shared/include
 						${UXP1A_SOURCE_DIR}/Client/include
+						${UXP1A_SOURCE_DIR}/Server/include
 )
 
 #if some class inherits QObject (has Q_OBJECT macro) add it's header file here
 SET( TESTS_SRC
 		${UXP1A_SOURCE_DIR}/Tests/src/main.cpp
+		${UXP1A_SOURCE_DIR}/Tests/src/fifoTest.cpp
 )
 
 add_executable( testProgram ${TESTS_SRC} )
