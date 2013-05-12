@@ -33,9 +33,6 @@ CommandQueue::CommandQueue(CommandDispatcher *commandDispatcher)
         qDebug() << "There is another instance of server running.";
         throw std::string("Stop: another instance of server is running.");
     }
-
-//    for(int i=0; i<MAX_BUF; ++i)      // TODO del lines
-//        m_buf[i] = 0;
 }
 
 CommandQueue::~CommandQueue()
@@ -81,20 +78,20 @@ void CommandQueue::closePipe()
 
 void CommandQueue::waitForCommands()
 {
+    bool readRunning = true;
+
     if ( !openFifo() )
-        return;
+        readRunning = false;
 
     qDebug() << "Ready...";
 
-    bool readRunning = true;
     while (readRunning) {
         int read_bytes = read(m_fifo, m_buf, MAX_BUF - 1);
         // for secure the byte after last read byte is set to zero:
         m_buf[read_bytes] = '\0';
         int rest_bytes = MAX_BUF; //number of sign to read
-        //Shared::Configuration::displayBuffer(m_buf, MAX_BUF); //TODO del
 
-        char *in = m_buf;
+        char *in = m_buf; //input pointer
         while (in[0] != '\0') {
             char code = in[0]; //in[1] == '\0'
             if (code == Shared::Configuration::getMesCode(Shared::Configuration::EXIT)) {
@@ -103,9 +100,12 @@ void CommandQueue::waitForCommands()
             }
             // ptr - pointer to first sign no read yet in current message
             int ptr = 2;
-            QByteArray length_q(in + ptr);
-            ptr += length_q.size() + 1; // +1 because of separator '\0' after length
-            long length_l = length_q.toLong(); // the value - length the rest of message
+            //QByteArray length_q(in + ptr);
+            //ptr += length_q.size() + 1; // +1 because of separator '\0' after length
+            long length_l=0; // length the rest of message
+            memcpy(&length_l, in + ptr, sizeof(long));
+            ptr += sizeof(long);
+            qDebug() << "Dlugosc: " << length_l;
 
             rest_bytes -= ptr; // number of ptr signs already read
             if (rest_bytes <= 1 || rest_bytes < length_l) {
@@ -113,11 +113,9 @@ void CommandQueue::waitForCommands()
                 // so we move rest data and fill buffer with next data from FIFO
                 anotherRead(rest_bytes+ptr, &in);
                 rest_bytes = MAX_BUF;           // buffer is full again
-                //Shared::Configuration::displayBuffer(m_buf, MAX_BUF);     // TODO del
                 continue;
             }
 
-            // qDebug() << "Kod: " << code; qDebug() << "Len: " << length_l;    // TODO del
             // continue reading the rest of message - using specific method
             readTuple(in + ptr, length_l, code);
 
@@ -128,12 +126,6 @@ void CommandQueue::waitForCommands()
         }
     }
     QThread::currentThread()->quit();
-}
-
-void dispDebug(QString pid, QString patt, QString tim) {
-    qDebug() << "PID: " << pid;
-    qDebug() << "Pat: " << patt;
-    qDebug() << "Tim: " << tim;
 }
 
 void CommandQueue::readTuple(const char *buf, const int length, const char code) const
@@ -151,29 +143,41 @@ void CommandQueue::readTuple(const char *buf, const int length, const char code)
         QString tim_s = QString::fromAscii(buf + ptr);
         long timeout = tim_s.toLong();
         m_commandDispatcher->dispatchPullCommand(pattern, pid_s, timeout);
-//        dispDebug(pid_s, pattern, tim_s); qDebug() << "TIM(int): " << timeout ;     // TODO del
     }
 
     if (Configuration::getMes(code) == Configuration::PREV) {
         QString tim_s = QString::fromAscii(buf + ptr);
         long timeout = tim_s.toLong();
         m_commandDispatcher->dispatchPreviewCommand(pattern, pid_s, timeout);
-//        dispDebug(pid_s, pattern, tim_s); qDebug() << "TIM(int): " << timeout ;     // TODO del
     }
 
     // message PUSH ends with QVariantList data
     if (Configuration::getMes(code) == Configuration::PUSH) {
         QVariantList data;
+        int pIter = 0; //Pattern Iterator
         for (int i=ptr; i<length; ) {
-            QString qba(buf+i);
-            QVariant qv(qba);
-            i += qba.size() + 1;
+            char dataType = pattern[pIter++].toAscii();
+            QVariant qv;
+            if (dataType == 's') {
+                QString qba(buf+i);
+                qv = QVariant(qba);
+                i += qba.size() + 1;
+            }
+            else if (dataType == 'i') {
+                int d;
+                memcpy(&d, buf+i, sizeof(int));
+                qv = QVariant(d);
+                i += sizeof(int);
+            }
+            else if (dataType == 'f') {
+                float f;
+                memcpy(&f, buf+i, sizeof(float));
+                qv = QVariant(f);
+                i += sizeof(float);
+            }
             data.append(qv);
         }
         m_commandDispatcher->dispatchPushCommand(pattern, data);
-//        qDebug() << "Pushuje taki pattern: " << pattern << "   i takie dane: " << data; // TODO del
-//        qDebug();
-//        dispDebug(pid_s, pattern, QString(""));  qDebug() << data;
     }
 
 }

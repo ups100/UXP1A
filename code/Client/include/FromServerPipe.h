@@ -37,7 +37,7 @@ public:
     virtual ~FromServerPipe();
 
     const QString getPipeName() const;
-    QVariantList waitForMessage();
+    QVariantList waitForMessage(const QString& pattern);
 
 private:
     /**

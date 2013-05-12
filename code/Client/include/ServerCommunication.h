@@ -43,6 +43,7 @@ public:
      */
     QVariantList sendPreview(const QString& pattern, long timeout);
     QVariantList sendPullData(const QString& pattern, long timeout);
+    //QVariantList processData(const QString& pattern, const QVariantList& qvl) const;
     void sendPushData(const QString& pattern, const QVariantList& data);
 
 private:

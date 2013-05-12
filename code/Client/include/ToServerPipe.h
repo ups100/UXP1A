@@ -54,7 +54,7 @@ private:
      * @returns Number of written bytes.
      * It is position of first free space in buffer. Counted from 0.
      */
-    int initialWriteToFifo(char code, const QByteArray& len,
+    int initialWriteToFifo(char code, const long len,
             const QByteArray& pid, const QByteArray& patt, char *buf) const;
 
     /**

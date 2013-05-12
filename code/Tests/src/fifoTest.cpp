@@ -15,7 +15,7 @@ void testServerFifo()
     QVariantList qvl;
     qvl.append(QVariant("Tekst1"));
     qvl.append(QVariant("Tekst2"));
-    qvl.append(QVariant(3));
+    qvl.append(QVariant(-34912));
 
     Client::ServerCommunication sc;
 
@@ -52,12 +52,13 @@ void testServerFifo()
         qDebug() << "Receive correct.\n";
 
 
+//return;
 
     QVariantList test2;
-    test2.append(QVariant(4.567));
+    test2.append(QVariant(4.567f));
     test2.append(QVariant("Drugi test."));
     test2.append(QVariant(8));
-    test2.append(QVariant(98.765));
+    test2.append(QVariant(98.765f));
 
     sc.sendPushData(QString("float:*, string:*, int:*, float:*"), test2);
     sc.sendPushData(QString("string:*, string:*, int:*"), qvl);
@@ -79,10 +80,11 @@ void testServerFifo()
         qDebug() << "Error 21 in Preview with data: " << reciv << "\n";
     }
     if (reciv != test2)
-        qDebug() << "Error 21.5 \n";
+        qDebug() << "Error 21.5 \n" << reciv;
     else
         qDebug() << "Receive correct. \n";
 
+return;
     reciv = sc.sendPreview(QString("string:*, string:* int:<=4"), 1000);
     if (!reciv.isEmpty())
         qDebug() << "Error 21.99 \n";

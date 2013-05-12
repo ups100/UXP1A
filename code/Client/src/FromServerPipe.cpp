@@ -38,7 +38,7 @@ const QString FromServerPipe::getPipeName() const
 /**
  * Pusta lista albo wyjatekjak po timeoucie
  */
-QVariantList FromServerPipe::waitForMessage()
+QVariantList FromServerPipe::waitForMessage(const QString& pattern)
 {
     using Shared::Configuration;
     int read_bytes = read(m_fifo, m_buf, MAX_BUF - 1);
@@ -55,20 +55,41 @@ QVariantList FromServerPipe::waitForMessage()
     total += length_q.size() + 1; // +1 because of separator '\0' after length
     long length_l = length_q.toLong(); // the value - length the rest of message
 
-    QVariantList data;
-    for (int i = 0; i < length_l;) {
-        QString qba(m_buf + total);
-        QVariant qv(qba);
-        // if qba reach end of buffer - it require another read operation
-        if (total + qba.size() >= MAX_BUF - 1) {
-            anotherRead(&total);
-            continue;
-        }
-        // move pointers of first no read yet sign
-        i += qba.size() + 1;    // pointer in the all message
-        total += qba.size() + 1; // pointer in the current buffer
-        data.append(qv);
-    }
+     QVariantList data;
+     int pIter = 0; //Pattern Iterator
+     for (int i = 0; i < length_l;) {
+         char mesType = pattern[pIter++].toAscii();
+         int recivLength = 0;   //below we set the receive data length
+         QVariant qv;
+         if (mesType == 's') {
+             QString qstr(m_buf + total);
+             recivLength = qstr.size() + 1; // +1 because \0 termination
+             qv = QVariant(qstr);
+         }
+         else if (mesType == 'i') {
+             int dInt;
+             memcpy(&dInt, m_buf + total, sizeof(int));
+             recivLength = sizeof(int);
+             qv = QVariant(dInt);
+         }
+         else if (mesType == 'f') {
+             float dFloat;
+             memcpy(&dFloat, m_buf + total, sizeof(float));
+             recivLength = sizeof(float);
+             qv = QVariant(dFloat);
+         }
+
+         // if qba reach end of buffer - it require another read operation
+         if (total + recivLength >= MAX_BUF - 1) {
+             anotherRead(&total);
+             pIter--; // we will read this part of data second time
+             continue;
+         }
+         // move pointers of first no read yet sign
+         i += recivLength;    // pointer in the all message
+         total += recivLength; // pointer in the current buffer
+         data.append(qv);
+     }
 
     return data;
 }

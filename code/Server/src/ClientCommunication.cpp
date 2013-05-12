@@ -36,8 +36,24 @@ void ClientCommunication::sendRecord(const QString& pattern,
     // PREPARING DATA
     QByteArray data_array;
     for (int i = 0; i < data.size(); ++i) {
-        data_array.append(data[i].toByteArray());
-        data_array.append('\0');
+        qDebug() << "In CC sending data...";        // TODO
+        char dataType = pattern[i].toAscii();
+        if (dataType == 's') {
+            data_array.append(data[i].toByteArray());
+            data_array.append('\0');
+        }
+        else if (dataType == 'i') {
+            int dInt = data[i].toInt();
+            char dBuf[sizeof(int)] = {0};
+            memcpy(dBuf, &dInt, sizeof(int));
+            data_array.append(dBuf, sizeof(int));
+        }
+        else if (dataType == 'f') {
+            float dFloat = data[i].toFloat();
+            char dBuf[sizeof(float)] = {0};
+            memcpy(dBuf, &dFloat, sizeof(float));
+            data_array.append(dBuf, sizeof(float));
+        }
     }
 
     int length = data_array.size();
@@ -67,6 +83,7 @@ void ClientCommunication::sendRecord(const QString& pattern,
     ptr += length;
     // no require to end with '\0' - because data_array include this sign
 
+    Shared::Configuration::displayBuffer(buf, MAX_BUF);
     write(m_fifo, buf, ptr);
 
 //    qDebug() << "Send structure: ";                                         // TODO delete line
