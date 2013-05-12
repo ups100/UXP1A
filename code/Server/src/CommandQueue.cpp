@@ -98,14 +98,16 @@ void CommandQueue::waitForCommands()
                 readRunning = false; //stop external while loop also
                 break;
             }
-            // ptr - pointer to first sign no read yet in current message
-            int ptr = 2;
-            //QByteArray length_q(in + ptr);
-            //ptr += length_q.size() + 1; // +1 because of separator '\0' after length
+            int ptr = 2; // ptr - pointer to first sign no read yet in current message
             long length_l=0; // length the rest of message
             memcpy(&length_l, in + ptr, sizeof(long));
             ptr += sizeof(long);
-            qDebug() << "Dlugosc: " << length_l;
+
+            if (length_l + sizeof(long) + 2 > MAX_BUF) {
+                qDebug() << "ERROR. Receiving buffer to small.";
+                readRunning = false;
+                break;
+            }
 
             rest_bytes -= ptr; // number of ptr signs already read
             if (rest_bytes <= 1 || rest_bytes < length_l) {

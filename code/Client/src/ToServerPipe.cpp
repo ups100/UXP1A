@@ -14,7 +14,6 @@ namespace UXP1A_project {
 namespace Client {
 
 ToServerPipe::ToServerPipe()
-        : m_GID(0)
 {
     using Shared::Configuration;
     // find server fifo file
@@ -52,11 +51,13 @@ void ToServerPipe::writePullDataMessage(const QString& condition, long timeout)
             timeout);
 }
 
-void ToServerPipe::writePushDataMessage(const QString& pattern,
-        const QVariantList& data)
 /**
  * KOD \0 LENGTH \0 PID \0 PATTERN \0 data[0] \0 data[1] \0 ... data[n] \0
+ * If data is Integer or Float there is no ending with \0. Just raw data!
+ * Only strings are ended with \0
  */
+void ToServerPipe::writePushDataMessage(const QString& pattern,
+        const QVariantList& data)
 {
     using Shared::Configuration;
     // PREPARING DATA
@@ -66,21 +67,18 @@ void ToServerPipe::writePushDataMessage(const QString& pattern,
     // PREPARING DATA
     QByteArray data_array;
     for (int i = 0; i < data.size(); ++i) {
-        qDebug() << "TSPipe sending...";
         char dataType = pattern[i].toAscii();
         if (dataType == 's') {
             data_array.append(data[i].toByteArray());
             data_array.append('\0');
-        }
-        else if (dataType == 'i') {
+        } else if (dataType == 'i') {
             int dInt = data[i].toInt();
-            char dBuf[sizeof(int)] = {0};
+            char dBuf[sizeof(int)] = { 0 };
             memcpy(dBuf, &dInt, sizeof(int));
             data_array.append(dBuf, sizeof(int));
-        }
-        else if (dataType == 'f') {
+        } else if (dataType == 'f') {
             float dFloat = data[i].toFloat();
-            char dBuf[sizeof(float)] = {0};
+            char dBuf[sizeof(float)] = { 0 };
             memcpy(dBuf, &dFloat, sizeof(float));
             data_array.append(dBuf, sizeof(float));
         }
@@ -90,7 +88,6 @@ void ToServerPipe::writePushDataMessage(const QString& pattern,
 
     long length = pid.size() + patt.size() + data_array_length;
     length += 2; // add number of separation sign '\0'
-    //QByteArray len = QVariant(length).toByteArray();
 
     // PREPARING BUFFER
     // create sending buffer
@@ -104,12 +101,6 @@ void ToServerPipe::writePushDataMessage(const QString& pattern,
     // no require to end with '\0' - because data_array include this sign
 
     write(m_fifo, buf, writtenBytes + data_array_length);
-
-    qDebug() << m_GID++ << " Wyslano zadanie PUSH";
-    qDebug()
-            << "code # length(fromfirst PID sign) # PID # ParsedPattern # Data# "; // TODO delete line
-    Configuration::displayBuffer(buf, writtenBytes + data_array_length);
-    qDebug();
 }
 
 QByteArray ToServerPipe::getPid() const
@@ -119,11 +110,12 @@ QByteArray ToServerPipe::getPid() const
     return pid.toAscii();
 }
 
-void ToServerPipe::writeToFifo(char code, const QString& pattern,
-        const long timeout) //const
 /**
  * KOD \0 LENGTH \0 PID \0 PATTERN \0 TIME \0
+ * Length is raw data in sizeof(long)
  */
+void ToServerPipe::writeToFifo(char code, const QString& pattern,
+        const long timeout) const
 {
     using Shared::Configuration;
     //^^^^^^^^^^^^^^^^^^^^  Preparing data
@@ -135,9 +127,8 @@ void ToServerPipe::writeToFifo(char code, const QString& pattern,
 
     long length = pid.size() + patt.size() + tim.size();
     length += 3; // add number of separation sign '\0'
-//    QByteArray len = QVariant(length).toByteArray();
 
-    //^^^^^^^^^^^^^^^^^^^^ Preparing buffer
+    // Preparing buffer
     // create sending buffer
     const int MAX_BUF = 7 + length + sizeof(long); // +7 because of separators number
     char buf[MAX_BUF];
@@ -151,18 +142,7 @@ void ToServerPipe::writeToFifo(char code, const QString& pattern,
     writtenBytes += currLen;
     buf[writtenBytes++] = 0;
 
-    if (writtenBytes != length + sizeof(long) + 2)
-        qDebug() << "    Cos NIE tak z dlugosciami w writePreview"; // TODO delete this line
-
     write(m_fifo, buf, writtenBytes);
-
-    qDebug() << m_GID++ << " Wyslano zadanie "
-            << ((Configuration::getMes(code) == Configuration::PREV) ?
-                    "PREVIEW" : "PULL");
-    qDebug()
-            << "code # length(from first PID sign) # PID # NOTParsedPattern # Timeout# "; // TODO del
-    Shared::Configuration::displayBuffer(buf, writtenBytes);
-    qDebug();
 }
 
 int ToServerPipe::initialWriteToFifo(char code, const long length,
@@ -176,11 +156,8 @@ int ToServerPipe::initialWriteToFifo(char code, const long length,
 
     // Copy data to the buffer
     // copy all message LENGTH
-    qDebug() << "Dlugosc: " << length;
     memcpy(buf + ptr, &length, sizeof(long));
-    int dl; memcpy(&dl, buf+ptr, sizeof(long)); qDebug() << "DlugoscTo: " << dl;
-    ptr += sizeof(long); // move pointer to first free space cell
-    //buf[ptr++] = 0; // separator
+    ptr += sizeof(long); // move pointer to next free space cell
 
     // copy client PID
     currLen = pid.size();

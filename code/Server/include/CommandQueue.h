@@ -176,7 +176,7 @@ private:
      */
     std::string m_fifoPath;
 
-    static const int MAX_BUF = 100;
+    static const int MAX_BUF = 200;
     char m_buf[MAX_BUF];
 };
 

@@ -24,13 +24,11 @@ LindaClient::~LindaClient()
 
 QVariantList LindaClient::preview(const QString& pattern, long timeout)
 {
-    // TODO Przerobic QVariant(QString...) na QVariant(OdpowiedniTyp)
     return m_ServerCommunication.sendPreview(pattern, timeout);
 }
 
 QVariantList LindaClient::pull(const QString& pattern, long timeout)
 {
-    // TODO Przerobic QVariant(QString...) na QVariant(OdpowiedniTyp)
     return m_ServerCommunication.sendPullData(pattern, timeout);
 }
 

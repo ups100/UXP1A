@@ -42,7 +42,8 @@ private:
      * So it is method use be writePreviewMessage and writePullDataMessage only.
      * char code should be prepared before message code - here it is not modify - just send
      */
-    void writeToFifo(char code, const QString& pattern, const long timeout); //const;                   // TODO repair
+    void writeToFifo(char code, const QString& pattern,
+            const long timeout) const;
 
     /**
      * @brief It is first part of preparing buffer to send.
@@ -54,8 +55,8 @@ private:
      * @returns Number of written bytes.
      * It is position of first free space in buffer. Counted from 0.
      */
-    int initialWriteToFifo(char code, const long len,
-            const QByteArray& pid, const QByteArray& patt, char *buf) const;
+    int initialWriteToFifo(char code, const long len, const QByteArray& pid,
+            const QByteArray& patt, char *buf) const;
 
     /**
      * @brief Gets client process PID and prepare it into needed structure.
@@ -68,8 +69,6 @@ private:
      * @brief Descriptor to the server fifo file.
      */
     int m_fifo;
-
-    int m_GID;          // TODO del this
 };
 
 } //namespace Client

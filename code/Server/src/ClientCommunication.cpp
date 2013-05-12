@@ -36,7 +36,6 @@ void ClientCommunication::sendRecord(const QString& pattern,
     // PREPARING DATA
     QByteArray data_array;
     for (int i = 0; i < data.size(); ++i) {
-        qDebug() << "In CC sending data...";        // TODO
         char dataType = pattern[i].toAscii();
         if (dataType == 's') {
             data_array.append(data[i].toByteArray());
@@ -63,8 +62,8 @@ void ClientCommunication::sendRecord(const QString& pattern,
     // create sending buffer
     const int MAX_BUF = 7 + length + len.size(); // +7 because of separators number
     char buf[MAX_BUF];
-    for (int i = 0; i < MAX_BUF; ++i)
-        buf[i] = 0;        // TODO del this
+//    for (int i = 0; i < MAX_BUF; ++i)
+//        buf[i] = 0;        // TODO del this
 
     // Operation preview CODE
     buf[0] = Configuration::getMesCode(Configuration::FOUND);
@@ -83,11 +82,7 @@ void ClientCommunication::sendRecord(const QString& pattern,
     ptr += length;
     // no require to end with '\0' - because data_array include this sign
 
-    Shared::Configuration::displayBuffer(buf, MAX_BUF);
     write(m_fifo, buf, ptr);
-
-//    qDebug() << "Send structure: ";                                         // TODO delete line
-//    Configuration::displayBuffer(buf, ptr);
 }
 
 void ClientCommunication::sendTimeoutInfo()
