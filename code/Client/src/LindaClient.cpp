@@ -6,6 +6,7 @@
 ///////////////////////////////////////////////////////////
 
 #include "LindaClient.h"
+#include "ParserException.h"
 
 namespace UXP1A_project {
 namespace Client {
@@ -25,7 +26,11 @@ LindaClient::~LindaClient()
 QVariantList LindaClient::preview(const QString& pattern, long timeout)
 {
     // check given pattern structure
-    Shared::Parser::parseStruct(pattern);
+    try {
+        Shared::Parser::checkCondition(pattern);
+    } catch (Shared::ParserException &e) {
+        throw e;
+    }
 
     return m_ServerCommunication.sendPreview(pattern, timeout);
 }
@@ -33,7 +38,11 @@ QVariantList LindaClient::preview(const QString& pattern, long timeout)
 QVariantList LindaClient::pull(const QString& pattern, long timeout)
 {
     // check given pattern structure
-    Shared::Parser::parseStruct(pattern);
+    try {
+        Shared::Parser::checkCondition(pattern);
+    } catch (Shared::ParserException &e) {
+        throw e;
+    }
 
     return m_ServerCommunication.sendPullData(pattern, timeout);
 }
@@ -42,7 +51,15 @@ void LindaClient::push(const QVariantList& record)
 {
     using Shared::Parser;
 
-    m_ServerCommunication.sendPushData(Parser::parseStruct(record), record);
+    QString shrt;
+
+    try {
+        shrt = Parser::parseStruct(record);
+    } catch (Shared::ParserException &e) {
+        throw e;
+    }
+
+    m_ServerCommunication.sendPushData(shrt, record);
 }
 
 } //namespace Client
