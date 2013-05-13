@@ -163,8 +163,6 @@ private:
      */
     QThread m_additionalThread;
 
-    /*************FOR TEST ONLY< REMOVE THIS JACEK*/
-    //QMutex m_mutex;
     /**
      * @brief FIFO file descriptor
      */
@@ -176,7 +174,7 @@ private:
      */
     std::string m_fifoPath;
 
-    static const int MAX_BUF = 200;
+    static const int MAX_BUF = 2000;
     char m_buf[MAX_BUF];
 };
 

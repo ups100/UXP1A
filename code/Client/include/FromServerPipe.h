@@ -89,7 +89,7 @@ private:
      * So for this class, tuple could have almost infinity number of parts but each part length
      * should be less than MAX_BUF.
      */
-    static const int MAX_BUF = 100;
+    static const int MAX_BUF = 1000;
     /**
      * @brief Receive buffer.
      */
