@@ -5,7 +5,7 @@
  *
  * @author Mikolaj Markiewicz <kajo100@gmail.com>
  *
- * @brief Implementation of the Class UXP1A_project::Shared::Configuration
+ * @brief Implementation of the Class UXP1A_project::Shared::Parser
  *
  * @par Project
  * This is a part of project realized on Warsaw University of Technology

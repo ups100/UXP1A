@@ -16,6 +16,7 @@
 #define PARSER_EXCEPTION__INCLUDED_
 
 #include <string>
+#include <exception>
 
 namespace UXP1A_project {
 namespace Shared {

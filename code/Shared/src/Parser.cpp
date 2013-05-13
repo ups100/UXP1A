@@ -5,7 +5,7 @@
  *
  * @author Mikolaj Markiewicz <kajo100@gmail.com>
  *
- * @brief Implementation of the Class UXP1A_project::Shared::Configuration
+ * @brief Implementation of the Class UXP1A_project::Shared::Parser
  *
  * @par Project
  * This is a part of project realized on Warsaw University of Technology
@@ -65,7 +65,7 @@ bool Parser::checkCondition(const QString& conditions)
 {
     /*
      * Regex pattern:
-     *      (((int:(((<|<=|>|>=)?(-?\d+))|(\*)))|(float:(((<|<=|>|>=){1}(-?\d+\.?\d*))|(\*)))|(string:(((<|<=|>|>=)?"[\s!#-~]*")|(\*)))),?\s?)+
+     *      (((int:(((<|<=|>|>=)?(-?\d+))|(\*)))|(float:(((<|<=|>|>=){1}((-?\d+\.\d+e\+\d+)|(-?\d+\.?\d*)))|(\*)))|(string:(((<|<=|>|>=)?"[\s!#-~]*")|(\*)))),?\s?)+
      */
 
     QString pattern = "((";
@@ -73,15 +73,17 @@ bool Parser::checkCondition(const QString& conditions)
             + ")?(-?\\d+))|(\\" + ANYTHING + ")))";
     pattern += "|";
     pattern += QString("(") + FLOAT + ":(((" + FLOAT_OPERATORS.join("|")
-            + "){1}(-?\\d+\\.?\\d*))|(\\" + ANYTHING + ")))";
+            + "){1}((-?\\d+\\.\\d+e\\+\\d+)|(-?\\d+\\.?\\d*)))|(\\" + ANYTHING + ")))";
     pattern += "|";
     pattern += QString("(") + STRING + ":(((" + STRING_OPERATORS.join("|")
             + ")?\"[\\s!#-~]*\")|(\\" + ANYTHING + ")))";
     pattern += "),?\\s?)+";
 
     QRegExp r(pattern);
+    // To prevent last ,?\s? part as accept eg.: "int:2, "
+    QRegExp re("(\\s|,|,\\s)$");
 
-    return r.exactMatch(conditions);
+    return r.exactMatch(conditions) && re.indexIn(conditions) == -1;
 }
 
 SearchPattern* Parser::parseConditions(const QString& conditions)
@@ -95,7 +97,7 @@ SearchPattern* Parser::parseConditions(const QString& conditions)
             + ")?(\\d+))|(\\" + ANYTHING + ")))";
     pattern += "|";
     pattern += QString("(") + FLOAT + ":(((" + FLOAT_OPERATORS.join("|")
-            + "){1}(\\d+\\.?\\d*))|(\\" + ANYTHING + ")))";
+            + "){1}((-?\\d+\\.\\d+e\\+\\d+)|(-?\\d+\\.?\\d*)))|(\\" + ANYTHING + ")))";
     pattern += "|";
     pattern += QString("(") + STRING + ":(((" + STRING_OPERATORS.join("|")
             + ")?\"[\\s!#-~]*\")|(\\" + ANYTHING + ")))";
