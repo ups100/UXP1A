@@ -21,6 +21,12 @@
 namespace UXP1A_project {
 namespace Shared {
 
+/**
+ * @author Mikolaj Markiewicz
+ *
+ * @brief Class used as functor() in charge of checking given parameters
+ *          with aggregate condition comparator
+ */
 class Functor
 {
 
