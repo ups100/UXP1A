@@ -54,20 +54,21 @@ const QStringList Parser::SHORT_TYPES = QStringList() << Parser::SHORT_TYPE_INT
 
 /*
  * Regex pattern:
- *      (((int:(((<|<=|>|>=)?(-?\d+))|(\*)))|(float:(((<|<=|>|>=){1}((-?\d\d*\.?\d*e[+-]\d+)|(-?\d+\.?\d*)))|(\*)))|(string:(((<|<=|>|>=)?"[\s!#-~]*")|(\*)))),?\s?)+
+ *      (\s*((int\s*:\s*(((<|<=|>|>=)?\s*(-?\d+))|(\*)))|(float\s*:\s*(((<|<=|>|>=){1}\s*((-?\d\d*\.?\d*e[+-]\d+)|(-?\d+\.?\d*)))|(\*)))|(string\s*:\s*(((<|<=|>|>=)?\s*"[\s!#-~]*")|(\*))))\s*,?\s*)+
  */
-const QString Parser::CONDITIONS_PATTERN = QString() + "(" + "(" + Parser::INT
-        + ":(((" + Parser::INT_OPERATORS.join("|") + ")?(-?\\d+))|(\\"
-        + ANYTHING + ")))" + "|" + "(" + Parser::FLOAT + ":((("
-        + Parser::FLOAT_OPERATORS.join("|")
-        + "){1}((-?\\d\\d*\\.?\\d*e[+-]\\d+)|(-?\\d+\\.?\\d*)))|(\\" + ANYTHING
-        + ")))" + "|" + "(" + Parser::STRING + ":((("
-        + Parser::STRING_OPERATORS.join("|") + ")?\"[\\s!#-~]*\")|(\\"
+const QString Parser::CONDITIONS_PATTERN = QString() + "(\\s*" + "("
+        + Parser::INT + "\\s*:\\s*(((" + Parser::INT_OPERATORS.join("|")
+        + ")?\\s*(-?\\d+))|(\\" + ANYTHING + ")))" + "|" + "(" + Parser::FLOAT
+        + "\\s*:\\s*(((" + Parser::FLOAT_OPERATORS.join("|")
+        + "){1}\\s*((-?\\d\\d*\\.?\\d*e[+-]\\d+)|(-?\\d+\\.?\\d*)))|(\\"
+        + ANYTHING + ")))" + "|" + "(" + Parser::STRING + "\\s*:\\s*((("
+        + Parser::STRING_OPERATORS.join("|") + ")?\\s*\"[\\s!#-~]*\")|(\\"
         + Parser::ANYTHING + ")))"
                 ")";
 
 const QString Parser::PARSE_CONDITIONS_PATTERN = QString() + "(" + INT + "|"
-        + FLOAT + "|" + STRING + "):(" + INT_OPERATORS.join("|") + ")?(.+)";
+        + FLOAT + "|" + STRING + ")\\s*:\\s*(" + INT_OPERATORS.join("|")
+        + ")?\\s*(.+)";
 
 Parser::Parser()
 {
@@ -83,11 +84,11 @@ bool Parser::checkCondition(const QString& conditions)
 {
     QString pattern = "(";
     pattern += CONDITIONS_PATTERN;
-    pattern += ",?\\s?)+";
+    pattern += "\\s*,?\\s*)+";
 
     QRegExp r(pattern);
-    // To prevent last ,?\s? part as accept eg.: "int:2, "
-    QRegExp re("(\\s|,|,\\s)$");
+    // To prevent last \\s*,?\\s* part as accept eg.: "int:2 , "
+    QRegExp re("(\\s*,\\s*)$");
 
     if (!(r.exactMatch(conditions) && re.indexIn(conditions) == -1))
         return false;
@@ -123,7 +124,7 @@ QVariantList Parser::parseValuesToList(const QString& pattern)
     r.indexIn(s);
 
     type = r.cap(1);
-    val = r.cap(3);
+    val = r.cap(3).trimmed();
 
     if (val == ANYTHING) {
         list << 0.;
@@ -177,7 +178,7 @@ SearchPattern* Parser::parseConditions(const QString& conditions)
 
     type = r.cap(1);
     op = r.cap(2);
-    val = r.cap(3);
+    val = r.cap(3).trimmed();
 
     if (val == ANYTHING) {
         value.setValue(0L); // Unnecessary but better look and feel ;p in (q)debug

@@ -28,27 +28,74 @@ namespace Tests {
  */
 class ManualLinda
 {
+    /**
+     * @brief Pushed tuples during test
+     */
     QList<QVariantList> m_pushed;
+
+    /**
+     * @brief Pulled tuples during test
+     */
     QList<QVariantList> m_pulled;
 
 public:
 
+    /**
+     * @brief Start manual Linda test
+     */
     void start();
 
 private:
 
+    /**
+     * @brief Main loop
+     */
     void loop();
 
+    /**
+     * @brief Print menu on stdout
+     */
     void showMenu();
 
+    /**
+     * @brief Push tuple to server
+     *
+     * @throws ParserException if bad pattern
+     */
     void pushTuple();
 
+    /**
+     * @brief Pull tuple from server
+     *
+     * @throws ParserException if bad pattern
+     *
+     * @return Pulled tuple or empty list if timeout
+     */
     QVariantList pullTuple();
 
+    /**
+     * @brief Preview tuple on server
+     *
+     * @throws ParserException if bad pattern
+     *
+     * @return Tuple preview or empty list if timeout
+     */
     QVariantList previewTuple();
 
+    /**
+     * @brief Prints available QVariant's without opaque
+     *
+     * @param[in] list List to print values from
+     */
     void printTupleList(const QVariantList &list);
 
+    /**
+     * @brief Get Timeout and tuple pattern from stdin
+     *
+     * @throws ParserException if bad pattern
+     *
+     * @return Pair with given pattern and timeout
+     */
     std::pair<QString, int> getRequest();
 
 };
