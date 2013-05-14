@@ -14,7 +14,6 @@
 
 #include "ParserTest.h"
 #include <QTime>
-#include <QDebug>
 
 namespace UXP1A_project {
 namespace Shared {
@@ -60,7 +59,7 @@ QString ParserTest::randString(int length)
         if (str.length() >= length)
             break;
 
-        while ((c = randInt(32, 126)) == 34) // ASCRII 34 = "
+        while ((c = randInt(32, 126)) == 34) // ASCII 34 = "
         {
         }
 
@@ -78,14 +77,22 @@ QString ParserTest::generateInt(const char* op)
     bool anything = randBool(80);
 
     QString str;
+    str.append(generateRandSpaces());
     str.append(Parser::INT);
+    str.append(generateRandSpaces());
     str.append(":");
+    str.append(generateRandSpaces());
 
     if (anything) {
+        str.append(generateRandSpaces());
         str.append(Parser::ANYTHING);
+        str.append(generateRandSpaces());
     } else {
+        str.append(generateRandSpaces());
         str.append(op);
+        str.append(generateRandSpaces());
         str.append(QString::number(randInt()));
+        str.append(generateRandSpaces());
     }
 
     return str;
@@ -99,14 +106,22 @@ QString ParserTest::generateFloat(const char* op)
     bool anything = randBool(80);
 
     QString str;
+    str.append(generateRandSpaces());
     str.append(Parser::FLOAT);
+    str.append(generateRandSpaces());
     str.append(":");
+    str.append(generateRandSpaces());
 
     if (anything) {
+        str.append(generateRandSpaces());
         str.append(Parser::ANYTHING);
+        str.append(generateRandSpaces());
     } else {
+        str.append(generateRandSpaces());
         str.append(op);
+        str.append(generateRandSpaces());
         str.append(QString::number(randFloat()));
+        str.append(generateRandSpaces());
     }
 
     return str;
@@ -120,17 +135,35 @@ QString ParserTest::generateString(const char* op)
     bool anything = randBool(80);
 
     QString str;
+    str.append(generateRandSpaces());
     str.append(Parser::STRING);
+    str.append(generateRandSpaces());
     str.append(":");
+    str.append(generateRandSpaces());
 
     if (anything) {
+        str.append(generateRandSpaces());
         str.append(Parser::ANYTHING);
+        str.append(generateRandSpaces());
     } else {
-        str.append("\"");
+        str.append(generateRandSpaces());
         str.append(op);
+        str.append(generateRandSpaces());
+        str.append("\"");
         str.append(randString(randInt(0, 50)));
         str.append("\"");
+        str.append(generateRandSpaces());
     }
+
+    return str;
+}
+
+QString ParserTest::generateRandSpaces()
+{
+    QString str;
+
+    for (int i = 0; i < randInt(0, 15); ++i)
+        str.append(" ");
 
     return str;
 }

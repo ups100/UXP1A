@@ -85,8 +85,10 @@ TEST_F(ParserTest, CheckConditionMultipleMixed)
                     break;
             }
 
+            str.append(generateRandSpaces());
             if (j > 1)
-                str.append(", ");
+                str.append(",");
+            str.append(generateRandSpaces());
         }
 
         EXPECT_TRUE(Parser::checkCondition(str)) << str.toStdString();
@@ -107,7 +109,7 @@ TEST_F(ParserTest, CheckConditionSampleBadInputs)
     EXPECT_FALSE(Parser::checkCondition("strong:*"));
     EXPECT_FALSE(Parser::checkCondition("String:*"));
     EXPECT_FALSE(Parser::checkCondition("int:*,"));
-    EXPECT_FALSE(Parser::checkCondition("int:* "));
+    EXPECT_FALSE(Parser::checkCondition("int:*      ,"));
     EXPECT_FALSE(Parser::checkCondition("int:*, "));
 
     for (int i = 0; i < 100; ++i) {
