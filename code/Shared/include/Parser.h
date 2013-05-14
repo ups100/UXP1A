@@ -17,6 +17,7 @@
 
 #include "SearchPattern.h"
 #include <QStringList>
+#include <QVariantList>
 
 namespace UXP1A_project {
 namespace Shared {
@@ -160,6 +161,25 @@ public:
      * @return Short pattern
      */
     static QString parseStruct(const QVariantList& list);
+
+    /**
+     * @brief Parse values from proper pattern string into list of variables.
+     *      Values with ANYTHING as value, treat as 0. -> double
+     *
+     * @param[in] pattern String with pattern
+     * <br /> Example:
+     * @code
+     *      string:*, int:>2, float:<=5.2, string:"ex", float:<4, int:*, float*
+     * @endcode
+     *  Will produce QVariantList: { 0., 2, 5.2, "ex", 4, 0., 0. }
+     *
+     * @note Pattern must be appropriate and checked!
+     *
+     * @throws NumericLimitException if out of bound int or float
+     *
+     * @return List of cut values
+     */
+    static QVariantList parseValuesToList(const QString& pattern);
 
 };
 

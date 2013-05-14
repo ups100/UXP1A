@@ -95,12 +95,21 @@ bool Parser::checkCondition(const QString& conditions)
     /*
      * Check numeric limits
      */
+    parseValuesToList(conditions);
+
+    return true;
+}
+
+QVariantList Parser::parseValuesToList(const QString& pattern)
+{
+    QVariantList list;
+
     // Get separated conditions and gather them into list
-    r.setPattern(CONDITIONS_PATTERN);
+    QRegExp r(CONDITIONS_PATTERN);
     QStringList conds;
 
     int pos = 0;
-    while ((pos = r.indexIn(conditions, pos)) != -1) {
+    while ((pos = r.indexIn(pattern, pos)) != -1) {
         pos += r.matchedLength();
         conds << r.cap();
     }
@@ -117,24 +126,23 @@ bool Parser::checkCondition(const QString& conditions)
     val = r.cap(3);
 
     if (val == ANYTHING) {
-        // OK
+        list << 0.;
     } else {
         try {
             if (type == INT) {
-                boost::lexical_cast<int>(val.toStdString());
+                list << boost::lexical_cast<int>(val.toStdString());
             } else if (type == FLOAT) {
-                boost::lexical_cast<float>(val.toStdString());
+                list << boost::lexical_cast<float>(val.toStdString());
             } else if (type == STRING) {
-                // Maybe length but for now it's not requested
+                list << val.remove(QRegExp("\"")); // Maybe length but for now it's not requested to check for limits
             }
         } catch (boost::bad_lexical_cast &e) {
             throw NumericLimitException((type + " number out of bound.").toStdString().c_str());
         }
-
     }
 }
 
-    return true;
+    return list;
 }
 
 SearchPattern* Parser::parseConditions(const QString& conditions)

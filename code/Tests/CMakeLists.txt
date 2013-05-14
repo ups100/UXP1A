@@ -13,6 +13,7 @@ INCLUDE_DIRECTORIES( 	${QT_INCLUDES}
 SET( TESTS_SRC
 		${UXP1A_SOURCE_DIR}/Tests/src/main.cpp
 		${UXP1A_SOURCE_DIR}/Tests/src/fifoTest.cpp
+		${UXP1A_SOURCE_DIR}/Tests/src/ManualLinda.cpp
 )
 
 add_executable( testProgram ${TESTS_SRC} )

@@ -1,9 +1,13 @@
-#include <QDebug>
+#include "ManualLinda.h"
 
-void testServerFifo();
+//void testServerFifo();
 
 int main(int argc, char **argv)
 {
-    testServerFifo();
+//    void testServerFifo();
+
+    UXP1A_project::Tests::ManualLinda m;
+    m.start();
+
     return 0;
 }
