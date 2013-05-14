@@ -118,7 +118,7 @@ void testServerFifo()
     } catch (char const* e) {
         QString error(e);
         qDebug() << "Zlapano wyjatek: " << error;
-    } catch (std::string s) {
+    } catch (std::string &s) {
         QString error(s.c_str());
         qDebug() << "Zlapano wyjatek: " << error;
     } catch (...) {

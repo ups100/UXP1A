@@ -54,10 +54,10 @@ const QStringList Parser::SHORT_TYPES = QStringList() << Parser::SHORT_TYPE_INT
 
 /*
  * Regex pattern:
- *      (\s*((int\s*:\s*(((<|<=|>|>=)?\s*(-?\d+))|(\*)))|(float\s*:\s*(((<|<=|>|>=){1}\s*((-?\d\d*\.?\d*e[+-]\d+)|(-?\d+\.?\d*)))|(\*)))|(string\s*:\s*(((<|<=|>|>=)?\s*"[\s!#-~]*")|(\*))))\s*,?\s*)+
+ *      (((int\s*:\s*(((<|<=|>|>=)?\s*(-?\d+))|(\*)))|(float\s*:\s*(((<|<=|>|>=){1}\s*((-?\d\d*\.?\d*e[+-]\d+)|(-?\d+\.?\d*)))|(\*)))|(string\s*:\s*(((<|<=|>|>=)?\s*"[\s!#-~]*")|(\*))))\s*,?\s*)+
  */
-const QString Parser::CONDITIONS_PATTERN = QString() + "(\\s*" + "("
-        + Parser::INT + "\\s*:\\s*(((" + Parser::INT_OPERATORS.join("|")
+const QString Parser::CONDITIONS_PATTERN = QString() + "(" + "(" + Parser::INT
+        + "\\s*:\\s*(((" + Parser::INT_OPERATORS.join("|")
         + ")?\\s*(-?\\d+))|(\\" + ANYTHING + ")))" + "|" + "(" + Parser::FLOAT
         + "\\s*:\\s*(((" + Parser::FLOAT_OPERATORS.join("|")
         + "){1}\\s*((-?\\d\\d*\\.?\\d*e[+-]\\d+)|(-?\\d+\\.?\\d*)))|(\\"
@@ -82,7 +82,7 @@ Parser::~Parser()
 
 bool Parser::checkCondition(const QString& conditions)
 {
-    QString pattern = "(";
+    QString pattern = "(\\s*";
     pattern += CONDITIONS_PATTERN;
     pattern += "\\s*,?\\s*)+";
 
