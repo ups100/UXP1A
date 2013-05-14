@@ -58,5 +58,11 @@ const QString& SearchPattern::getTypesPattern()
     return m_typePattern;
 }
 
+void SearchPattern::clearConditions()
+{
+    m_conditions.clear();
+    m_typePattern = "";
+}
+
 } //namespace Shared
 } //namesoace UXP1A_project

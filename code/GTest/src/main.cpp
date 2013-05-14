@@ -269,6 +269,269 @@ TEST_F(ComparisonFactoryTest, FunctorsFactory)
     }
 }
 
+/**
+ * Due to the fact that rand methods are implemented inside ParserTest class
+ * It's not SearchPattern test case
+ */
+TEST_F(ParserTest, SearchPatternCheckIntConditions)
+{
+    QVariantList list;
+    SearchPattern sp;
+    int ri;
+
+    for (int i = 0; i < 100; ++i) {
+        list.clear();
+        sp.clearConditions();
+
+        // ==
+        ri = randInt();
+        sp.addCondition(Parser::INT, INT_EQUAL, ri);
+        list << ri;
+        ASSERT_TRUE(sp.check(list));
+
+        list.clear();
+        list << (ri + 1);
+        ASSERT_FALSE(sp.check(list));
+        // ==
+
+        list.clear();
+        sp.clearConditions();
+
+        // >
+        ri = randInt();
+        sp.addCondition(Parser::INT, INT_GREATER, ri);
+        list << (ri + 1);
+        ASSERT_TRUE(sp.check(list));
+
+        list.clear();
+        list << ri;
+        ASSERT_FALSE(sp.check(list));
+        list.clear();
+        list << (ri - 1);
+        ASSERT_FALSE(sp.check(list));
+        // >
+
+        list.clear();
+        sp.clearConditions();
+
+        // >=
+        ri = randInt();
+        sp.addCondition(Parser::INT, INT_GREATER_EQUAL, ri);
+        list << (ri + 1);
+        ASSERT_TRUE(sp.check(list));
+
+        list.clear();
+        list << ri;
+        ASSERT_TRUE(sp.check(list));
+        list.clear();
+        list << (ri - 1);
+        ASSERT_FALSE(sp.check(list));
+        // >=
+
+        list.clear();
+        sp.clearConditions();
+
+        // <
+        ri = randInt();
+        sp.addCondition(Parser::INT, INT_LESS, ri);
+        list << (ri - 1);
+        ASSERT_TRUE(sp.check(list));
+
+        list.clear();
+        list << ri;
+        ASSERT_FALSE(sp.check(list));
+        list.clear();
+        list << (ri + 1);
+        ASSERT_FALSE(sp.check(list));
+        // <
+
+        list.clear();
+        sp.clearConditions();
+
+        // <=
+        ri = randInt();
+        sp.addCondition(Parser::INT, INT_LESS_EQUAL, ri);
+        list << (ri - 1);
+        ASSERT_TRUE(sp.check(list));
+
+        list.clear();
+        list << ri;
+        ASSERT_TRUE(sp.check(list));
+        list.clear();
+        list << (ri + 1);
+        ASSERT_FALSE(sp.check(list));
+        // <=
+    }
+}
+
+TEST_F(ParserTest, SearchPatternCheckFloatConditions)
+{
+    QVariantList list;
+    SearchPattern sp;
+    float rf;
+
+    for (int i = 0; i < 100; ++i) {
+        list.clear();
+        sp.clearConditions();
+
+        // >
+        rf = randFloat();
+        sp.addCondition(Parser::FLOAT, FLOAT_GREATER, rf);
+        list << (rf + rf);
+        ASSERT_TRUE(sp.check(list));
+
+        list.clear();
+        list << rf;
+        ASSERT_FALSE(sp.check(list));
+        list.clear();
+        list << (rf - fabsf(rf));
+        ASSERT_FALSE(sp.check(list));
+        // >
+
+        list.clear();
+        sp.clearConditions();
+
+        // >=
+        rf = randFloat();
+        sp.addCondition(Parser::FLOAT, FLOAT_GREATER_EQUAL, rf);
+        list << (rf + rf);
+        ASSERT_TRUE(sp.check(list));
+
+        list.clear();
+        list << rf;
+        ASSERT_TRUE(sp.check(list));
+        list.clear();
+        list << (rf - fabsf(rf));
+        ASSERT_FALSE(sp.check(list));
+        // >=
+
+        list.clear();
+        sp.clearConditions();
+
+        // <
+        rf = randFloat();
+        sp.addCondition(Parser::FLOAT, FLOAT_LESS, rf);
+        list << (rf - rf);
+        ASSERT_TRUE(sp.check(list));
+
+        list.clear();
+        list << rf;
+        ASSERT_FALSE(sp.check(list));
+        list.clear();
+        list << (rf + rf);
+        ASSERT_FALSE(sp.check(list));
+        // <
+
+        list.clear();
+        sp.clearConditions();
+
+        // <=
+        rf = randFloat();
+        sp.addCondition(Parser::FLOAT, FLOAT_LESS_EQUAL, rf);
+        list << (rf - fabsf(rf));
+        ASSERT_TRUE(sp.check(list));
+
+        list.clear();
+        list << rf;
+        ASSERT_TRUE(sp.check(list));
+        list.clear();
+        list << (rf + rf);
+        ASSERT_FALSE(sp.check(list));
+        // <=
+    }
+}
+
+TEST_F(ParserTest, SearchPatternCheckStringConditions)
+{
+    QVariantList list;
+    SearchPattern sp;
+    QString str;
+
+    for (int i = 0; i < 100; ++i) {
+        list.clear();
+        sp.clearConditions();
+
+        // ==
+        str = randString(50);
+        sp.addCondition(Parser::STRING, STRING_EQUAL, str);
+        list << str;
+        ASSERT_TRUE(sp.check(list));
+
+        list.clear();
+        list << (str + "a");
+        ASSERT_FALSE(sp.check(list));
+        // ==
+
+        list.clear();
+        sp.clearConditions();
+
+        // >
+        str = randString(50);
+        sp.addCondition(Parser::STRING, STRING_GREATER, str);
+        list << (str + "a");
+        ASSERT_TRUE(sp.check(list));
+
+        list.clear();
+        list << str;
+        ASSERT_FALSE(sp.check(list));
+        list.clear();
+        list << (QString(" ") + str);
+        ASSERT_FALSE(sp.check(list));
+        // >
+
+        list.clear();
+        sp.clearConditions();
+
+        // >=
+        str = randString(50);
+        sp.addCondition(Parser::STRING, STRING_GREATER_EQUAL, str);
+        list << (str + "a");
+        ASSERT_TRUE(sp.check(list));
+
+        list.clear();
+        list << str;
+        ASSERT_TRUE(sp.check(list));
+        list.clear();
+        list << (QString(" ") + str);
+        ASSERT_FALSE(sp.check(list));
+        // >=
+
+        list.clear();
+        sp.clearConditions();
+
+        // <
+        str = randString(50);
+        sp.addCondition(Parser::STRING, STRING_LESS, str);
+        list << (QString(" ") + str);
+        ASSERT_TRUE(sp.check(list));
+
+        list.clear();
+        list << str;
+        ASSERT_FALSE(sp.check(list));
+        list.clear();
+        list << (str + "a");
+        ASSERT_FALSE(sp.check(list));
+        // <
+
+        list.clear();
+        sp.clearConditions();
+
+        // <=
+        str = randString(50);
+        sp.addCondition(Parser::STRING, STRING_LESS_EQUAL, str);
+        list << (QString(" ") + str);
+        ASSERT_TRUE(sp.check(list));
+
+        list.clear();
+        list << str;
+        ASSERT_TRUE(sp.check(list));
+        list.clear();
+        list << (str + "a");
+        ASSERT_FALSE(sp.check(list));
+        // <=
+    }
+}
+
 TEST_F(SearchPatternTest, ExampleConstruction)
 {
     ASSERT_TRUE(m_sp.check(m_list));

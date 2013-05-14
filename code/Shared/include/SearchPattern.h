@@ -73,6 +73,11 @@ public:
      */
     const QString& getTypesPattern();
 
+    /**
+     * @brief Clear conditions from search pattern
+     */
+    void clearConditions();
+
 private:
 
     /**
