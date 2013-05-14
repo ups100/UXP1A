@@ -18,6 +18,7 @@
 #include <boost/lexical_cast.hpp>
 #include <QMetaType>
 #include "ParserException.h"
+#include "NumericLimitException.h"
 
 namespace UXP1A_project {
 namespace Shared {
@@ -51,6 +52,23 @@ const char *Parser::SHORT_TYPE_INT = "i", *Parser::SHORT_TYPE_FLOAT = "f",
 const QStringList Parser::SHORT_TYPES = QStringList() << Parser::SHORT_TYPE_INT
         << Parser::SHORT_TYPE_FLOAT << Parser::SHORT_TYPE_STRING;
 
+/*
+ * Regex pattern:
+ *      (((int:(((<|<=|>|>=)?(-?\d+))|(\*)))|(float:(((<|<=|>|>=){1}((-?\d\d*\.?\d*e[+-]\d+)|(-?\d+\.?\d*)))|(\*)))|(string:(((<|<=|>|>=)?"[\s!#-~]*")|(\*)))),?\s?)+
+ */
+const QString Parser::CONDITIONS_PATTERN = QString() + "(" + "(" + Parser::INT
+        + ":(((" + Parser::INT_OPERATORS.join("|") + ")?(-?\\d+))|(\\"
+        + ANYTHING + ")))" + "|" + "(" + Parser::FLOAT + ":((("
+        + Parser::FLOAT_OPERATORS.join("|")
+        + "){1}((-?\\d\\d*\\.?\\d*e[+-]\\d+)|(-?\\d+\\.?\\d*)))|(\\" + ANYTHING
+        + ")))" + "|" + "(" + Parser::STRING + ":((("
+        + Parser::STRING_OPERATORS.join("|") + ")?\"[\\s!#-~]*\")|(\\"
+        + Parser::ANYTHING + ")))"
+                ")";
+
+const QString Parser::PARSE_CONDITIONS_PATTERN = QString() + "(" + INT + "|"
+        + FLOAT + "|" + STRING + "):(" + INT_OPERATORS.join("|") + ")?(.+)";
+
 Parser::Parser()
 {
 
@@ -63,47 +81,22 @@ Parser::~Parser()
 
 bool Parser::checkCondition(const QString& conditions)
 {
-    /*
-     * Regex pattern:
-     *      (((int:(((<|<=|>|>=)?(-?\d+))|(\*)))|(float:(((<|<=|>|>=){1}((-?\d+\.\d+e\+\d+)|(-?\d+\.?\d*)))|(\*)))|(string:(((<|<=|>|>=)?"[\s!#-~]*")|(\*)))),?\s?)+
-     */
-
-    QString pattern = "((";
-    pattern += QString("(") + INT + ":(((" + INT_OPERATORS.join("|")
-            + ")?(-?\\d+))|(\\" + ANYTHING + ")))";
-    pattern += "|";
-    pattern += QString("(") + FLOAT + ":(((" + FLOAT_OPERATORS.join("|")
-            + "){1}((-?\\d+\\.\\d+e\\+\\d+)|(-?\\d+\\.?\\d*)))|(\\" + ANYTHING + ")))";
-    pattern += "|";
-    pattern += QString("(") + STRING + ":(((" + STRING_OPERATORS.join("|")
-            + ")?\"[\\s!#-~]*\")|(\\" + ANYTHING + ")))";
-    pattern += "),?\\s?)+";
+    QString pattern = "(";
+    pattern += CONDITIONS_PATTERN;
+    pattern += ",?\\s?)+";
 
     QRegExp r(pattern);
     // To prevent last ,?\s? part as accept eg.: "int:2, "
     QRegExp re("(\\s|,|,\\s)$");
 
-    return r.exactMatch(conditions) && re.indexIn(conditions) == -1;
-}
+    if (!(r.exactMatch(conditions) && re.indexIn(conditions) == -1))
+        return false;
 
-SearchPattern* Parser::parseConditions(const QString& conditions)
-{
-    if (!checkCondition(conditions))
-        throw ParserException("Check conditions first man..");
-
+    /*
+     * Check numeric limits
+     */
     // Get separated conditions and gather them into list
-    QString pattern = "(";
-    pattern += QString("(") + INT + ":(((" + INT_OPERATORS.join("|")
-            + ")?(\\d+))|(\\" + ANYTHING + ")))";
-    pattern += "|";
-    pattern += QString("(") + FLOAT + ":(((" + FLOAT_OPERATORS.join("|")
-            + "){1}((-?\\d+\\.\\d+e\\+\\d+)|(-?\\d+\\.?\\d*)))|(\\" + ANYTHING + ")))";
-    pattern += "|";
-    pattern += QString("(") + STRING + ":(((" + STRING_OPERATORS.join("|")
-            + ")?\"[\\s!#-~]*\")|(\\" + ANYTHING + ")))";
-    pattern += ")";
-
-    QRegExp r(pattern);
+    r.setPattern(CONDITIONS_PATTERN);
     QStringList conds;
 
     int pos = 0;
@@ -113,13 +106,58 @@ SearchPattern* Parser::parseConditions(const QString& conditions)
     }
 
     // Parse each condition
-    pattern = "";
-    pattern += QString("(") + INT + "|" + FLOAT + "|" + STRING + ")";
-    pattern += QString(":");
-    pattern += QString("(") + INT_OPERATORS.join("|") + ")?";
-    pattern += QString("(") + ".+" + ")";
+    r.setPattern(PARSE_CONDITIONS_PATTERN);
 
-    r.setPattern(pattern);
+    QString type, val;
+
+    foreach (QString s, conds){
+    r.indexIn(s);
+
+    type = r.cap(1);
+    val = r.cap(3);
+
+    if (val == ANYTHING) {
+        // OK
+    } else {
+        try {
+            if (type == INT) {
+                boost::lexical_cast<int>(val.toStdString());
+            } else if (type == FLOAT) {
+                boost::lexical_cast<float>(val.toStdString());
+            } else if (type == STRING) {
+                // Maybe length but for now it's not requested
+            }
+        } catch (boost::bad_lexical_cast &e) {
+            throw NumericLimitException((type + " number out of bound.").toStdString().c_str());
+        }
+
+    }
+}
+
+    return true;
+}
+
+SearchPattern* Parser::parseConditions(const QString& conditions)
+{
+    try {
+        if (!checkCondition(conditions))
+            throw ParserException("Check conditions first man..");
+    } catch (NumericLimitException &e) {
+        throw e;
+    }
+
+    // Get separated conditions and gather them into list
+    QRegExp r(CONDITIONS_PATTERN);
+    QStringList conds;
+
+    int pos = 0;
+    while ((pos = r.indexIn(conditions, pos)) != -1) {
+        pos += r.matchedLength();
+        conds << r.cap();
+    }
+
+    // Parse each condition
+    r.setPattern(PARSE_CONDITIONS_PATTERN);
 
     SearchPattern *sp = new SearchPattern();
     QString type, op, val;
@@ -189,8 +227,12 @@ SearchPattern* Parser::parseConditions(const QString& conditions)
 
 QString Parser::parseStruct(const QString& pattern)
 {
-    if (!checkCondition(pattern))
-        throw ParserException("Check conditions first man..");
+    try {
+        if (!checkCondition(pattern))
+            throw ParserException("Check conditions first man..");
+    } catch (NumericLimitException &e) {
+        throw e;
+    }
 
     QString shorter;
     int pos = 0;

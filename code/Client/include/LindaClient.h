@@ -41,7 +41,7 @@ public:
      * @throws Exceptions are throws when pattern has incorrect syntax
      * or when some errors occurred while opening any FIFO object (for example: server doesn't response).
      */
-    static QVariantList preview(const QString& pattern, long timeout);
+    static QVariantList preview(const QString& pattern, long timeout = -1);
 
     /**
      * @brief Execute pull command in Linda Client application.
@@ -63,7 +63,7 @@ public:
      * @throws Exceptions are throws when pattern has incorrect syntax
      * or when some errors occurred while opening any FIFO object (for example: server doesn't response).
      */
-    static QVariantList pull(const QString& pattern, long timeout);
+    static QVariantList pull(const QString& pattern, long timeout = -1);
 
     /**
      * @brief Execute push command in Linda Client application.

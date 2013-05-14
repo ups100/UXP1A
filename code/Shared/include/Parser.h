@@ -29,6 +29,16 @@ namespace Shared {
 class Parser
 {
 
+    /**
+     * @brief RegExp pattern to get parts of tuples
+     */
+    static const QString CONDITIONS_PATTERN;
+
+    /**
+     * @brief RegExp pattern to parse single tuple part
+     */
+    static const QString PARSE_CONDITIONS_PATTERN;
+
 public:
 
     /**
@@ -105,7 +115,7 @@ public:
      *
      * @note There are available characters in string: in ASCII from ! to ~ without "
      *
-     * @throws const char* if bad conditions
+     * @throws NumericLimitException if limit of int or float exceeded
      *
      * @return true if proper pattern, false otherwise
      */
@@ -123,7 +133,8 @@ public:
      *
      * @note There are available characters in string: in ASCII from ! to ~ without "
      *
-     * @throws const char* if bad conditions
+     * @throws ParserException if bad conditions
+     * @throws NumericLimitException if limit of int or float exceeded
      *
      * @return Created SearchPattern object pointer
      */
@@ -132,7 +143,8 @@ public:
     /**
      * @brief Makes a shorter pattern (mostly first letters of types)
      *
-     * @throws const char* if bad pattern
+     * @throws ParserException if bad pattern
+     * @throws NumericLimitException if limit of int or float exceeded
      *
      * @return Shorter pattern
      */
@@ -141,7 +153,7 @@ public:
     /**
      * @brief Makes a short pattern of types of list values (mostly first letters of each type)
      *
-     * @throws const char* if not available values
+     * @throws ParserException if not available values
      *
      * @note Available values are: int, float, string
      *

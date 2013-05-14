@@ -7,6 +7,7 @@
 
 #include "LindaClient.h"
 #include "ParserException.h"
+#include "NumericLimitException.h"
 
 namespace UXP1A_project {
 namespace Client {
@@ -30,6 +31,8 @@ QVariantList LindaClient::preview(const QString& pattern, long timeout)
         Shared::Parser::checkCondition(pattern);
     } catch (Shared::ParserException &e) {
         throw e;
+    } catch (Shared::NumericLimitException &e) {
+        throw e;
     }
 
     return m_ServerCommunication.sendPreview(pattern, timeout);
@@ -41,6 +44,8 @@ QVariantList LindaClient::pull(const QString& pattern, long timeout)
     try {
         Shared::Parser::checkCondition(pattern);
     } catch (Shared::ParserException &e) {
+        throw e;
+    } catch (Shared::NumericLimitException &e) {
         throw e;
     }
 
@@ -56,6 +61,8 @@ void LindaClient::push(const QVariantList& record)
     try {
         shrt = Parser::parseStruct(record);
     } catch (Shared::ParserException &e) {
+        throw e;
+    } catch (Shared::NumericLimitException &e) {
         throw e;
     }
 

@@ -1,6 +1,9 @@
 #include <gtest/gtest.h>
+#include <limits>
+#include <QString>
 #include "ParserTest.h"
 #include "ParserException.h"
+#include "NumericLimitException.h"
 #include "Configuration.h"
 #include "ConfigurationTest.h"
 #include "ComparisonFactory.h"
@@ -11,7 +14,7 @@
 using namespace UXP1A_project::Shared;
 using namespace UXP1A_project::Shared::GTest;
 
-TEST_F(ParserTest, SingleInt)
+TEST_F(ParserTest, CheckConditionSingleInt)
 {
     for (int i = 0; i < 100; ++i) {
         QString str;
@@ -24,7 +27,7 @@ TEST_F(ParserTest, SingleInt)
 }
 }
 
-TEST_F(ParserTest, SingleFloat)
+TEST_F(ParserTest, CheckConditionSingleFloat)
 {
     for (int i = 0; i < 100; ++i) {
         QString str;
@@ -37,7 +40,7 @@ TEST_F(ParserTest, SingleFloat)
 }
 }
 
-TEST_F(ParserTest, SingleString)
+TEST_F(ParserTest, CheckConditionSingleString)
 {
     for (int i = 0; i < 100; ++i) {
         QString str;
@@ -50,7 +53,7 @@ TEST_F(ParserTest, SingleString)
 }
 }
 
-TEST_F(ParserTest, MultipleMixed)
+TEST_F(ParserTest, CheckConditionMultipleMixed)
 {
     int op;
 
@@ -91,7 +94,7 @@ TEST_F(ParserTest, MultipleMixed)
 
 }
 
-TEST_F(ParserTest, SampleBadInputs)
+TEST_F(ParserTest, CheckConditionSampleBadInputs)
 {
     EXPECT_FALSE(Parser::checkCondition("float:2"));
     EXPECT_FALSE(Parser::checkCondition("float:-4"));
@@ -112,7 +115,39 @@ TEST_F(ParserTest, SampleBadInputs)
     }
 }
 
-TEST_F(ParserTest, ParseStringStructException)
+TEST_F(ParserTest, CheckConditionOutOfLimitExceptions)
+{
+    long l;
+    double d;
+
+    l = std::numeric_limits<int>::max();
+    ++l;
+
+    ASSERT_THROW(Parser::checkCondition(QString("int:>") + QString::number(l)),
+            NumericLimitException);
+
+    l = std::numeric_limits<int>::min();
+    --l;
+
+    ASSERT_THROW(Parser::checkCondition(QString("int:<") + QString::number(l)),
+            NumericLimitException);
+
+    d = std::numeric_limits<float>::max();
+    d *= 2;
+
+    ASSERT_THROW(
+            Parser::checkCondition(QString("float:>") + QString::number(d)),
+            NumericLimitException);
+
+    d = std::numeric_limits<float>::max();
+    d *= -2;
+
+    ASSERT_THROW(
+            Parser::checkCondition(QString("float:<") + QString::number(d)),
+            NumericLimitException);
+}
+
+TEST_F(ParserTest, ParseStringStructParserException)
 {
     ASSERT_THROW(Parser::parseStruct("string:sdfs"), ParserException);
     ASSERT_THROW(Parser::parseStruct("fgsdio"), ParserException);

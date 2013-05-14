@@ -13,7 +13,7 @@ SET( SHARED_SRC
 		${UXP1A_SOURCE_DIR}/Shared/src/Configuration.cpp
 		${UXP1A_SOURCE_DIR}/Shared/src/Functor.cpp
 		${UXP1A_SOURCE_DIR}/Shared/src/Parser.cpp
-		${UXP1A_SOURCE_DIR}/Shared/src/SearchPattern.cpp		
+		${UXP1A_SOURCE_DIR}/Shared/src/SearchPattern.cpp
 )
 
 add_library( lindaShared STATIC ${SHARED_SRC} )
