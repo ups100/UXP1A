@@ -30,6 +30,12 @@ On the end on test with those args, there is printed string with 0 and 1
 		each process get int:*
 		amount of pulled tuples == amount of pushed tuples =>
 		=> each tuple should be get once
+	5_test: do not push any tuple
+		one process try to pull some data
+		amount of pulled tuples should be 0
+	6_test:	run process which push some tuple
+		next it pull it, push some, pull that, and so on
+		final result should be as sequence with only 1 inside eg. 111..11
 
 More info in X_test.sh scripts
 
