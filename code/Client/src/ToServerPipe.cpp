@@ -1,14 +1,22 @@
-///////////////////////////////////////////////////////////
-//  ToServerPipe.cpp
-//  Implementation of the Class ToServerPipe
-//  Created on:      24-kwi-2013 11:04:00
-//  Original author: kopasiak
-///////////////////////////////////////////////////////////
+/**
+ * @file ToServerPipe.cpp
+ *
+ * @date 29-04-2013
+ *
+ * @author Sosnowski Jacek
+ *
+ * @brief Implementation of the Class UXP1A_project::Client::ToServerPipe
+ *
+ * @par Project
+ * This is a part of project realized on Warsaw University of Technology
+ * on UXP1A lectures. Project was created to ensure interprocess communication
+ * with Linda communication language.
+ */
 
 #include "ToServerPipe.h"
 #include "Configuration.h"
 #include <QObject>
-#include <iostream>
+#include "ServerFifoException.h"
 
 namespace UXP1A_project {
 namespace Client {
@@ -23,10 +31,8 @@ ToServerPipe::ToServerPipe()
 
     m_fifo = open(fifo.c_str(), O_WRONLY);
 
-    if (m_fifo <= 0) {
-        qDebug() << "No server found!!!";
-        throw std::string("Error while opening server FIFO.");
-    }
+    if (m_fifo <= 0)
+        throw ServerFifoException("Error while opening server FIFO.");
 
 }
 
@@ -100,7 +106,8 @@ void ToServerPipe::writePushDataMessage(const QString& pattern,
     memcpy(buf + writtenBytes, data_array.constData(), data_array_length);
     // no require to end with '\0' - because data_array include this sign
 
-    write(m_fifo, buf, writtenBytes + data_array_length);
+    if (write(m_fifo, buf, writtenBytes + data_array_length) <= 0)
+        throw ServerFifoException("Server doesn't response.");
 }
 
 QByteArray ToServerPipe::getPid() const
@@ -142,7 +149,8 @@ void ToServerPipe::writeToFifo(char code, const QString& pattern,
     writtenBytes += currLen;
     buf[writtenBytes++] = 0;
 
-    write(m_fifo, buf, writtenBytes);
+    if(write(m_fifo, buf, writtenBytes) <= 0 )
+        throw ServerFifoException("Server doesn't response.");
 }
 
 int ToServerPipe::initialWriteToFifo(char code, const long length,

@@ -1,9 +1,17 @@
-///////////////////////////////////////////////////////////
-//  ServerCommunication.h
-//  Implementation of the Class ServerCommunication
-//  Created on:      24-kwi-2013 11:03:59
-//  Original author: kopasiak
-///////////////////////////////////////////////////////////
+/**
+ * @file ServerCommunication.h
+ *
+ * @date 29-04-2013
+ *
+ * @author Sosnowski Jacek
+ *
+ * @brief Implementation of the Class UXP1A_project::Client::ServerCommunication
+ *
+ * @par Project
+ * This is a part of project realized on Warsaw University of Technology
+ * on UXP1A lectures. Project was created to ensure interprocess communication
+ * with Linda communication language.
+ */
 
 #if !defined(EA_CB6AB119_B8C2_46c4_ABFA_E406179A4D60__INCLUDED_)
 #define EA_CB6AB119_B8C2_46c4_ABFA_E406179A4D60__INCLUDED_

@@ -1,9 +1,17 @@
-///////////////////////////////////////////////////////////
-//  LindaClient.cpp
-//  Implementation of the Class LindaClient
-//  Created on:      24-kwi-2013 11:03:59
-//  Original author: kopasiak
-///////////////////////////////////////////////////////////
+/**
+ * @file LindaClient.cpp
+ *
+ * @date 29-04-2013
+ *
+ * @author Opasiak Krzysztof, Markiewicz Mikołaj, Klara Mateusz, Sosnowski Jacek
+ *
+ * @brief Implementation of the Class UXP1A_project::Client::LindaClient
+ *
+ * @par Project
+ * This is a part of project realized on Warsaw University of Technology
+ * on UXP1A lectures. Project was created to ensure interprocess communication
+ * with Linda communication language.
+ */
 
 #include "LindaClient.h"
 #include "ParserException.h"

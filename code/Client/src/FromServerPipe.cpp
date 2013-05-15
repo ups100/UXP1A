@@ -1,9 +1,17 @@
-///////////////////////////////////////////////////////////
-//  FromServerPipe.cpp
-//  Implementation of the Class FromServerPipe
-//  Created on:      24-kwi-2013 11:03:59
-//  Original author: kopasiak
-///////////////////////////////////////////////////////////
+/**
+ * @file FromServerPipe.cpp
+ *
+ * @date 29-04-2013
+ *
+ * @author Sosnowski Jacek
+ *
+ * @brief Implementation of the Class UXP1A_project::Client::FromServerPipe
+ *
+ * @par Project
+ * This is a part of project realized on Warsaw University of Technology
+ * on UXP1A lectures. Project was created to ensure interprocess communication
+ * with Linda communication language.
+ */
 
 #include "FromServerPipe.h"
 #include <exception>
@@ -35,9 +43,6 @@ const QString FromServerPipe::getPipeName() const
     return path;
 }
 
-/**
- * Pusta lista albo wyjatekjak po timeoucie
- */
 QVariantList FromServerPipe::waitForMessage(const QString& pattern)
 {
     using Shared::Configuration;

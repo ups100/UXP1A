@@ -1,9 +1,17 @@
-///////////////////////////////////////////////////////////
-//  FromServerPipe.h
-//  Implementation of the Class FromServerPipe
-//  Created on:      24-kwi-2013 11:03:59
-//  Original author: kopasiak
-///////////////////////////////////////////////////////////
+/**
+ * @file FromServerPipe.h
+ *
+ * @date 29-04-2013
+ *
+ * @author Sosnowski Jacek
+ *
+ * @brief Implementation of the Class UXP1A_project::Client::FromServerPipe
+ *
+ * @par Project
+ * This is a part of project realized on Warsaw University of Technology
+ * on UXP1A lectures. Project was created to ensure interprocess communication
+ * with Linda communication language.
+ */
 
 #if !defined(EA_20C0297F_C43E_42ec_B37A_3F47C0968D67__INCLUDED_)
 #define EA_20C0297F_C43E_42ec_B37A_3F47C0968D67__INCLUDED_

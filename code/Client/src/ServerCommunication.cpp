@@ -1,9 +1,17 @@
-///////////////////////////////////////////////////////////
-//  ServerCommunication.cpp
-//  Implementation of the Class ServerCommunication
-//  Created on:      24-kwi-2013 11:03:59
-//  Original author: kopasiak
-///////////////////////////////////////////////////////////
+/**
+ * @file ServerCommunication.cpp
+ *
+ * @date 29-04-2013
+ *
+ * @author Sosnowski Jacek
+ *
+ * @brief Implementation of the Class UXP1A_project::Client::ServerCommunication
+ *
+ * @par Project
+ * This is a part of project realized on Warsaw University of Technology
+ * on UXP1A lectures. Project was created to ensure interprocess communication
+ * with Linda communication language.
+ */
 
 #include "ServerCommunication.h"
 
@@ -20,9 +28,6 @@ ServerCommunication::~ServerCommunication()
 
 }
 
-/**
- * Empty list after timeout
- */
 QVariantList ServerCommunication::sendPreview(const QString& pattern,
         long timeout)
 {
@@ -36,9 +41,6 @@ QVariantList ServerCommunication::sendPreview(const QString& pattern,
     return m_FromServerPipe->waitForMessage(Shared::Parser::parseStruct(pattern));
 }
 
-/**
- * Empty list after timeout
- */
 QVariantList ServerCommunication::sendPullData(const QString& pattern,
         long timeout)
 {
@@ -55,10 +57,6 @@ QVariantList ServerCommunication::sendPullData(const QString& pattern,
 void ServerCommunication::sendPushData(const QString& pattern,
         const QVariantList& data)
 {
-//    Shared::SearchPattern *searchPattern = Shared::Parser::parseConditions(
-//            pattern);
-//    m_ToServerPipe.writePushDataMessage(searchPattern->getTypesPattern(), data);
-    // ostatecznie bedzie to tak wygladac
     m_ToServerPipe.writePushDataMessage(pattern, data);
 }
 

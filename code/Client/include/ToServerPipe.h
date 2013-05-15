@@ -1,9 +1,17 @@
-///////////////////////////////////////////////////////////
-//  ToServerPipe.h
-//  Implementation of the Class ToServerPipe
-//  Created on:      24-kwi-2013 11:04:00
-//  Original author: kopasiak
-///////////////////////////////////////////////////////////
+/**
+ * @file ToServerPipe.h
+ *
+ * @date 29-04-2013
+ *
+ * @author Sosnowski Jacek
+ *
+ * @brief Implementation of the Class UXP1A_project::Client::ToServerPipe
+ *
+ * @par Project
+ * This is a part of project realized on Warsaw University of Technology
+ * on UXP1A lectures. Project was created to ensure interprocess communication
+ * with Linda communication language.
+ */
 
 #if !defined(EA_61525155_5086_42f4_A1F9_AB47015C5EA5__INCLUDED_)
 #define EA_61525155_5086_42f4_A1F9_AB47015C5EA5__INCLUDED_
@@ -26,13 +34,43 @@ class ToServerPipe
 
 public:
     /**
-     * @throw std::string while couldn't open server FIFO file.
+     * @throw ServerFifoException while couldn't open server FIFO file.
      */
     ToServerPipe();
     virtual ~ToServerPipe();
 
+    /**
+     * @brief Manage with sending PREVIEW message to Server FIFO with given condition pattern and time for waiting.
+     *
+     * @param[in] pattern   Correctly parsed pattern in long form. This won't be check again in this method.
+     * @param[in] timeout   Client process will be block for this time (in milliseconds)
+     * in waiting for required tuple occurs.
+     *
+     * @throw ServerFifoException when any error of writing to server fifo occurs.
+     * Usually when server doesn't response - for example when server process is manually finished.
+     */
     void writePreviewMessage(const QString& pattern, long timeout);
+    /**
+     * @brief Manage with sending PULL message to Server FIFO with given condition pattern and time for waiting.
+     *
+     * @param[in] condition   Correctly parsed pattern in long form. This won't be check again in this method.
+     * @param[in] timeout   Client process will be block for this time (in milliseconds)
+     * in waiting for required tuple occurs.
+     *
+     * @throw ServerFifoException when any error of writing to server fifo occurs.
+     * Usually when server doesn't response - for example when server process is manually finished.
+     */
     void writePullDataMessage(const QString& condition, long timeout);
+    /**
+     * @brief Manage with sending PUSH message to Server FIFO with given pattern and list of data.
+     *
+     * @param[in] pattern   Correctly parsed pattern in short form. This won't be check again in this method.
+     * @param[in] data      QVariantList with data related to pattern - type of data must be also correct
+     * and it will be not check again.
+     *
+     * @throw ServerFifoException when any error of writing to server fifo occurs.
+     * Usually when server doesn't response - for example when server process is manually finished.
+     */
     void writePushDataMessage(const QString& pattern, const QVariantList& data);
 
 private:
