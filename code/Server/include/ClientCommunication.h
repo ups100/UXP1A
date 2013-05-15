@@ -1,9 +1,17 @@
-///////////////////////////////////////////////////////////
-//  ClientCommunication.h
-//  Implementation of the Class ClientCommunication
-//  Created on:      24-kwi-2013 11:07:18
-//  Original author: kopasiak
-///////////////////////////////////////////////////////////
+/**
+ * @file ClientCommunication.h
+ *
+ * @date 29-04-2013
+ *
+ * @author Sosnowski Jacek
+ *
+ * @brief Implementation of the Class UXP1A_project::Server::ClientCommunication
+ *
+ * @par Project
+ * This is a part of project realized on Warsaw University of Technology
+ * on UXP1A lectures. Project was created to ensure interprocess communication
+ * with Linda communication language.
+ */
 
 #if !defined(EA_E5ED41B2_C079_426d_84A5_B5150BB1C442__INCLUDED_)
 #define EA_E5ED41B2_C079_426d_84A5_B5150BB1C442__INCLUDED_
@@ -26,6 +34,12 @@ class ClientCommunication
 {
 
 public:
+    /**
+     * @brief Create ClientCommunication object with specifying client's pid number
+     * which is clientFifoPath also
+     *
+     * @param[in] clientFifoPath contains client PID
+     */
     ClientCommunication(const QString& clientFifoPath);
     virtual ~ClientCommunication();
 

@@ -48,6 +48,8 @@ public:
      *
      * @throws Exceptions are throws when pattern has incorrect syntax
      * or when some errors occurred while opening any FIFO object (for example: server doesn't response).
+     * @throw Shared::ParserException - pattern incorrect
+     * @throw Shared::NumericLimitException - pattern incorrect
      */
     static QVariantList preview(const QString& pattern, long timeout = -1);
 
@@ -70,6 +72,8 @@ public:
      *
      * @throws Exceptions are throws when pattern has incorrect syntax
      * or when some errors occurred while opening any FIFO object (for example: server doesn't response).
+     * @throw Shared::ParserException - pattern incorrect
+     * @throw Shared::NumericLimitException - pattern incorrect
      */
     static QVariantList pull(const QString& pattern, long timeout = -1);
 
@@ -87,6 +91,9 @@ public:
      * Only if server FIFO hasn't got enough free space this operation is blocking until free space will be available.
      *
      * @throws Exception are throws when record contains wrong type of QVariant variable.
+     * @throw ServerFifoException which means that write to server fifo ends with failure. Message: Server doesn't response.
+     * @throw Shared::ParserException - record has wrong type elements
+     * @throw Shared::NumericLimitException - record has wrong type elements
      */
     static void push(const QVariantList& record);
 

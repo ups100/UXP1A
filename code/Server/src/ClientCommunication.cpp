@@ -1,9 +1,17 @@
-///////////////////////////////////////////////////////////
-//  ClientCommunication.cpp
-//  Implementation of the Class ClientCommunication
-//  Created on:      24-kwi-2013 11:07:18
-//  Original author: kopasiak
-///////////////////////////////////////////////////////////
+/**
+ * @file ClientCommunication.cpp
+ *
+ * @date 29-04-2013
+ *
+ * @author Sosnowski Jacek
+ *
+ * @brief Implementation of the Class UXP1A_project::Server::ClientCommunication
+ *
+ * @par Project
+ * This is a part of project realized on Warsaw University of Technology
+ * on UXP1A lectures. Project was created to ensure interprocess communication
+ * with Linda communication language.
+ */
 
 #include "ClientCommunication.h"
 

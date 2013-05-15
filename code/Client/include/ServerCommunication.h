@@ -47,7 +47,8 @@ public:
      * @details After send request this wait for reply.
      * If it is first use of sending request there is creating a client FIFO
      * file to receive answer from server
-     * @throws ClientFifoException when can not creating FIFO file which is needed to receive data from server.
+     * @throw ClientFifoException when can not creating FIFO file which is needed to receive data from server.
+     * @throw ServerFifoException when write to server FIFO ends with failure - Server doesn't response.
      */
     QVariantList sendPreview(const QString& pattern, long timeout);
 
@@ -56,7 +57,8 @@ public:
      * @details After send request this wait for reply.
      * If it is first use of sending request there is creating a client FIFO
      * file to receive answer from server
-     * @throws ClientFifoException when can not creating FIFO file which is needed to receive data from server.
+     * @throw ClientFifoException when can not creating FIFO file which is needed to receive data from server.
+     * @throw ServerFifoException when write to server FIFO ends with failure - Server doesn't response.
      */
     QVariantList sendPullData(const QString& pattern, long timeout);
 
@@ -66,7 +68,7 @@ public:
      * @details Don't wait for any response from server. Just send and return as quickly as possible.
      * Only if server FIFO hasn't got enough free space this operation is blocking until free space will be available.
      *
-     * @throw ServerFifoException when any error of writing to server fifo occurs.
+     * @throw ServerFifoException when any error of writing to server FIFO occurs.
      */
     void sendPushData(const QString& pattern, const QVariantList& data);
 
