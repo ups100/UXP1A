@@ -29,23 +29,43 @@ namespace Tests {
 using namespace std;
 using namespace UXP1A_project::Shared;
 
-void ManualLinda::start()
+ManualLinda::ManualLinda(bool testOutput, bool testSleep)
+        : m_testOutput(testOutput), m_testSleep(testSleep)
 {
+
+}
+
+QString ManualLinda::start()
+{
+    m_pushed.clear();
+    m_pulled.clear();
+    m_testChain = "";
+
+    if (m_testOutput)
+        cout.setstate(ios::failbit);
+
     cout << "\nHello! This is test of manual Linda use.";
 
     loop();
 
-    qDebug() << "\n\tPushed " << m_pushed.size() << " tuples:";
-    foreach (QVariantList list, m_pushed){
-    qDebug()<<list;
-}
+    if (!m_testOutput) {
+        qDebug() << "\n\tPushed " << m_pushed.size() << " tuples:";
+        foreach (QVariantList list, m_pushed){
+        qDebug()<<list;
+    }
 
-    qDebug() << "\n\tPulled " << m_pulled.size() << " tuples:";
-    foreach (QVariantList list, m_pulled){
-    qDebug()<<list;
+        qDebug() << "\n\tPulled " << m_pulled.size() << " tuples:";
+        foreach (QVariantList list, m_pulled){
+        qDebug()<<list;
+    }
 }
 
     cout << "\n\nBye!\n\n";
+
+    if (m_testOutput)
+        cout.clear();
+
+    return m_testChain;
 }
 
 void ManualLinda::loop()
@@ -61,14 +81,20 @@ void ManualLinda::loop()
             if (c == '1') {
                 pushTuple();
                 cout << "\nTuple successful pushed.";
+
+                m_testChain.append("1");
             } else if (c == '2') {
                 const QVariantList list = pullTuple();
 
                 if (list.size()) {
                     cout << "\nTuple successful pulled:\n";
                     printTupleList(list);
+
+                    m_testChain.append("1");
                 } else {
                     cout << "\nTimeout.";
+
+                    m_testChain.append("0");
                 }
             } else if (c == '3') {
                 const QVariantList list = previewTuple();
@@ -76,8 +102,12 @@ void ManualLinda::loop()
                 if (list.size()) {
                     cout << "\nTuple preview successful:\n";
                     printTupleList(list);
+
+                    m_testChain.append("1");
                 } else {
                     cout << "\nTimeout.";
+
+                    m_testChain.append("0");
                 }
             } else {
                 cout << "\tMistake\n";
@@ -89,6 +119,9 @@ void ManualLinda::loop()
         } catch (...) {
             cout << "Unknown exception, probably server.\n";
         }
+
+        if (m_testSleep)
+            sleep(rand() % 2);
 
         showMenu();
     }
@@ -187,7 +220,7 @@ std::pair<QString, int> ManualLinda::getRequest()
 void ManualLinda::printTupleList(const QVariantList &list)
 {
     int i = list.size();
-    cout << "\t";
+    cout << "\t( ";
 
     foreach (QVariant l, list){
     switch (l.type()) {
@@ -205,6 +238,7 @@ void ManualLinda::printTupleList(const QVariantList &list)
     if (--i != 0)
     cout<<", ";
 }
+    cout << " )";
 }
 
 void ManualLinda::showMenu()

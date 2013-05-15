@@ -38,12 +38,36 @@ class ManualLinda
      */
     QList<QVariantList> m_pulled;
 
+    /**
+     * @brief Used in test to track push/pulls
+     */
+    QString m_testChain;
+
+    /**
+     * @brief Whether disable stdout anything during test
+     */
+    bool m_testOutput;
+
+    /**
+     * @brief Whether do random sleeps after push/pull/preview
+     */
+    bool m_testSleep;
+
 public:
+
+    /**
+     * @brief C-tor
+     *
+     * @param[in] testOutput Whether disable stdout while test is running
+     *
+     * @param[in] testSleep Whether enable random sleep after push/pull/preview
+     */
+    ManualLinda(bool testOutput = false, bool testSleep = false);
 
     /**
      * @brief Start manual Linda test
      */
-    void start();
+    QString start();
 
 private:
 
