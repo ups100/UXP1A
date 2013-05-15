@@ -36,8 +36,10 @@ public:
      * Client doesn't obtain pattern of request and response.
      *
      * @details Client FIFO is recognized by Client PID number - obtain in constructor
+     *
+     * @returns True if server opens client FIFO and False otherwise
      */
-    void sendRecord(const QString& pattern, const QVariantList& data);
+    bool sendRecord(const QString& pattern, const QVariantList& data);
 
     /**
      * @brief Sending response to client with Timeout message only.
@@ -63,7 +65,7 @@ private:
      * @details If open client FIFO fail this is false
      * and all operation: sendRecord and sendTimeoutInfo are empty.
      */
-    bool m_fifoState;
+    //bool m_fifoState;
 };
 
 } //namespace Server

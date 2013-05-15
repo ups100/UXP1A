@@ -14,24 +14,25 @@ ClientCommunication::ClientCommunication(const QString& clientFifoPath)
         : m_clientPath(clientFifoPath), m_fifo(0)
 {
     // store state of open operation
-    m_fifoState = openFifo();
+//    m_fifoState = openFifo();
 }
 
 ClientCommunication::~ClientCommunication()
 {
-    if (m_fifoState)
+    if (m_fifo > 0)
         close(m_fifo);
 }
 
-void ClientCommunication::sendRecord(const QString& pattern,
+bool ClientCommunication::sendRecord(const QString& pattern,
         const QVariantList& data)
 {
     using Shared::Configuration;
 
-    if (!m_fifoState) // if server can't open client FIFO
-        return;
+    if (!openFifo()) // if server can't open client FIFO
+        return false;
+
     qDebug() << "To " << m_clientPath << " sending record " << data;
-    qDebug(); // TOD del
+    qDebug();
 
     // PREPARING DATA
     QByteArray data_array;
@@ -62,8 +63,6 @@ void ClientCommunication::sendRecord(const QString& pattern,
     // create sending buffer
     const int MAX_BUF = 7 + length + len.size(); // +7 because of separators number
     char buf[MAX_BUF];
-//    for (int i = 0; i < MAX_BUF; ++i)
-//        buf[i] = 0;        // TODO del this
 
     // Operation preview CODE
     buf[0] = Configuration::getMesCode(Configuration::FOUND);
@@ -83,22 +82,30 @@ void ClientCommunication::sendRecord(const QString& pattern,
     // no require to end with '\0' - because data_array include this sign
 
     write(m_fifo, buf, ptr);
+
+    close(m_fifo);
+    m_fifo = -1; //FIFO is closed
+
+    return true;
 }
 
 void ClientCommunication::sendTimeoutInfo()
 {
     using Shared::Configuration;
 
-    if (!m_fifoState) // if server can't open client FIFO
+    if (!openFifo()) // if server can't open client FIFO
         return;
 
     qDebug() << "To " << m_clientPath << " sending Timeout";
-    qDebug();   // TODO del
+    qDebug();
 
     char timeoutCode[2];
     timeoutCode[0] = Configuration::getMesCode(Configuration::TIME);
     timeoutCode[1] = '\0';
     write(m_fifo, timeoutCode, 2);
+
+    close(m_fifo);
+    m_fifo = -1; //FIFO is closed
 }
 
 bool ClientCommunication::openFifo()
