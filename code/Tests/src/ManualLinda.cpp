@@ -20,6 +20,7 @@
 #include <QRegExp>
 #include <QMetaType>
 #include <QTime>
+#include <QDate>
 #include <boost/lexical_cast.hpp>
 #include <boost/thread/thread.hpp>
 #include <QDebug>
@@ -143,10 +144,22 @@ void ManualLinda::loop()
             }
         } catch (ParserException &e) {
             cout << "Bad pattern: " << e.what() << "\n";
+
+            qPrintPidInfo("PattermException!");
+
+            m_testChain.append("0");
         } catch (NumericLimitException &e) {
             cout << "Out of limit: " << e.what() << "\n";
+
+            qPrintPidInfo("NumericLimitException!");
+
+            m_testChain.append("0");
         } catch (...) {
             cout << "Unknown exception, probably server.\n";
+
+            qPrintPidInfo("Unknown exception!");
+
+            m_testChain.append("0");
         }
 
         if (m_testSleep) {
@@ -181,7 +194,7 @@ void ManualLinda::pushTuple()
 
     QVariantList list = Parser::parseValuesToList(str);
 
-    if (list.contains(QVariant(0.)))
+    if (list.contains(QVariant(QDate())))
         throw ParserException("Only int, float, string.");
 
     qPrintPidInfo(QString("Push:\t") + printTupleList(list));

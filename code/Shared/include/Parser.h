@@ -164,14 +164,14 @@ public:
 
     /**
      * @brief Parse values from proper pattern string into list of variables.
-     *      Values with ANYTHING as value, treat as 0. -> double
+     *      Values with ANYTHING as value, treat as QDate() -> pair of doubles
      *
      * @param[in] pattern String with pattern
      * <br /> Example:
      * @code
      *      string:*, int:>2, float:<=5.2, string:"ex", float:<4, int:*, float*
      * @endcode
-     *  Will produce QVariantList: { 0., 2, 5.2, "ex", 4, 0., 0. }
+     *  Will produce QVariantList: { QDate(), 2, 5.2, "ex", 4, QDate(), QDate() }
      *
      * @note Pattern must be appropriate and checked!
      *
