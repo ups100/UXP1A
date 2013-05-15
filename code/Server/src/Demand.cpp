@@ -68,12 +68,12 @@ bool Demand::isPullDemand() const
     return m_isPullDemand;
 }
 
-void Demand::sendRecord(const QVariantList& record)
+bool Demand::sendRecord(const QVariantList& record)
 {
     m_finalized = true;
     m_timer.stop();
 
-    m_clientCommunication.sendRecord(m_searchPattern->getTypesPattern(),
+    return m_clientCommunication.sendRecord(m_searchPattern->getTypesPattern(),
             record);
 }
 

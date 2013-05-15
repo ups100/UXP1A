@@ -41,8 +41,7 @@ void RecordTable::addDemand(Demand* demand)
 {
     foreach(QVariantList *record, m_records) {
         if (demand->checkRecord(*record)) {
-            demand->sendRecord(*record);
-            if (demand->isPullDemand()) {
+            if (demand->sendRecord(*record) && demand->isPullDemand() ) {
                 m_records.removeOne(record);
                 delete record;
             }
@@ -71,8 +70,7 @@ void RecordTable::addRecord(const QVariantList& record)
     bool addIt = true;
     foreach(Demand *demand, m_demands) {
         if (demand->checkRecord(record)) {
-            demand->sendRecord(record);
-            if (demand->isPullDemand()) {
+            if ( demand->sendRecord(record) && demand->isPullDemand()) {
                 addIt = false;
             }
 

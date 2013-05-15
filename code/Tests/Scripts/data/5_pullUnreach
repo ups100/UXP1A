@@ -1,0 +1,16 @@
+2
+100
+int: 4214
+2
+100
+int: 4124
+2
+100
+float : < -123124.2
+2
+100
+string:"some txt"
+2
+100
+int : > 2, float : < 124.0, string : < " DASDAG"
+q

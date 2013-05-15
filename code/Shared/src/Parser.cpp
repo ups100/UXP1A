@@ -17,6 +17,7 @@
 #include <QRegExp>
 #include <boost/lexical_cast.hpp>
 #include <QMetaType>
+#include <QDate>
 #include "ParserException.h"
 #include "NumericLimitException.h"
 
@@ -127,7 +128,7 @@ QVariantList Parser::parseValuesToList(const QString& pattern)
     val = r.cap(3).trimmed();
 
     if (val == ANYTHING) {
-        list << 0.;
+        list << QVariant(QDate());
     } else {
         try {
             if (type == INT) {

@@ -84,7 +84,7 @@ public:
      *
      * @param[in] record to be sent
      */
-    void sendRecord(const QVariantList& record);
+    bool sendRecord(const QVariantList& record);
 
     /**
      * @brief Sends information that demand has been timeout

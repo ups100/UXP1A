@@ -1,0 +1,26 @@
+1
+int : 4214
+2
+0
+int: 4214
+1
+int: 11
+2
+0
+int: <= 4124
+1
+float : > -200000
+2
+0
+float : < -123124.2
+1
+string: "some txt"
+2
+0
+string:"some txt"
+1
+int:  535, float  : > 0, string : "  "
+2
+0
+int : > 2, float : < 124.0, string : < "  niAAAb"
+q
