@@ -22,6 +22,7 @@ add_executable( testProgram ${TESTS_SRC} )
 TARGET_LINK_LIBRARIES(	testProgram
 		${QT_LIBRARIES}
 		${Boost_LIBRARIES}
+		${Boost_THREAD_LIBRARY}
 		${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/liblindaCommunication.a
 		${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/liblindaShared.a
 )

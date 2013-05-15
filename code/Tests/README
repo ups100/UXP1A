@@ -1,0 +1,40 @@
+	/********************************************************
+	*	TestProgram and Scripts/* scripts information:	*
+	********************************************************/
+
+Those test assume that server is run and it's clear from any tuples inside
+Also assume that file structure of data and scripts are not changed
+It's important to provide testProgram called in the same way into Scripts/ directory
+
+
+Test program is written to be run in a specific way -> specific args so,
+it suppose to show debug information about what is happening during the test
+like what is pushed, what pulled etc, and what timeout or sleep is on for what time.
+
+On the end on test with those args, there is printed string with 0 and 1
+1 means that operation has been successful
+0 means timeout
+
+
+4 tests are defined:
+	1_test:	push specified int tuples
+		3 other process try to get them
+		each tuple should be get once
+	2_test:	same as 1_test but first one process preview all tuples
+		each tuple should be get once
+	3_test:	push specified mixed tuples
+		each process can get prepared for it tuple
+		last tuple is single so it can be received by anyone
+		each tuple should be get once
+	4_test:	push specified int tuples
+		each process get int:*
+		amount of pulled tuples == amount of pushed tuples =>
+		=> each tuple should be get once
+
+More info in X_test.sh scripts
+
+Those args are:
+bool Whether we want to show menu and other couts
+uint Random sleep from 0 to given value after each operation, 0 if no sleep
+uint Random timeout from 0 to given value instead of specified timeout in data file, 0 if wanted to use value from data file
+uint Random sleep from 0 to given value after each successful pull operation, 0 if no sleep

@@ -1,0 +1,31 @@
+2
+200
+float:>= 24.2, int : *, string : *
+2
+200
+string: "insze", int: *
+2
+200
+float: < -13.34
+2
+200
+int: *, string: "dla 1"
+2
+200
+int: *, string: "dla 1"
+2
+200
+int: *, string: "dla 1"
+2
+200
+float: > 0, float: < 5, float : >=3, float : <=4
+2
+200
+int : 25, int: -1, int : 243, int : 2356
+2
+200
+string: "K", string :"", string: "cos", string: > "aaa !@#%@#5t^"
+2
+200
+string: *, float: *
+q
