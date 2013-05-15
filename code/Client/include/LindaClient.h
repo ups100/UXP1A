@@ -84,6 +84,7 @@ public:
      *
      * @details To push record Client application should prepare tuple - QList of QVariant (QVariantList typedef)
      * and call this method which should return immediately after write this tuple to Server FIFO.
+     * Only if server FIFO hasn't got enough free space this operation is blocking until free space will be available.
      *
      * @throws Exception are throws when record contains wrong type of QVariant variable.
      */
