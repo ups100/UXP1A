@@ -4,7 +4,7 @@ cmake_minimum_required (VERSION 2.6)
 project (UXP1A) 
 
 #look for boost library (required for this project)
-FIND_PACKAGE( Boost COMPONENTS random REQUIRED )
+FIND_PACKAGE( Boost COMPONENTS thread random REQUIRED )
 
 #look for qt library (required for this project)
 FIND_PACKAGE( Qt4 REQUIRED )

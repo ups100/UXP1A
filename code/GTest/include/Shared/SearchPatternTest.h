@@ -17,6 +17,7 @@
 
 #include <gtest/gtest.h>
 #include "SearchPattern.h"
+#include "ParserTest.h"
 #include <QVariantList>
 
 namespace UXP1A_project {
@@ -28,7 +29,7 @@ namespace GTest {
  *
  * @brief Test for SearchPattern class
  */
-class SearchPatternTest : public ::testing::Test
+class SearchPatternTest : public ParserTest
 {
 
 protected:

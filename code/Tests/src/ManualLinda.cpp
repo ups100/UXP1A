@@ -19,7 +19,9 @@
 #include "NumericLimitException.h"
 #include <QRegExp>
 #include <QMetaType>
+#include <QTime>
 #include <boost/lexical_cast.hpp>
+#include <boost/thread/thread.hpp>
 #include <QDebug>
 #include <iostream>
 
@@ -29,10 +31,14 @@ namespace Tests {
 using namespace std;
 using namespace UXP1A_project::Shared;
 
-ManualLinda::ManualLinda(bool testOutput, bool testSleep)
-        : m_testOutput(testOutput), m_testSleep(testSleep)
+ManualLinda::ManualLinda(bool testOutput, unsigned int testSleep,
+        unsigned int testTimeout, unsigned int testAfterPulledSleep)
+        : m_testOutput(testOutput), m_testSleep(testSleep),
+                m_testTimeout(testTimeout),
+                m_testAfterPulledSleep(testAfterPulledSleep),
+                m_intGenerator(m_generator, IntNumberDistribution())
 {
-
+    m_generator.seed((uint) QTime::currentTime().msec());
 }
 
 QString ManualLinda::start()
@@ -46,7 +52,11 @@ QString ManualLinda::start()
 
     cout << "\nHello! This is test of manual Linda use.";
 
+    qPrintPidInfo("START");
+
     loop();
+
+    qPrintPidInfo("END");
 
     if (!m_testOutput) {
         qDebug() << "\n\tPushed " << m_pushed.size() << " tuples:";
@@ -82,17 +92,32 @@ void ManualLinda::loop()
                 pushTuple();
                 cout << "\nTuple successful pushed.";
 
+                qPrintPidInfo("Successfully pushed!");
+
                 m_testChain.append("1");
             } else if (c == '2') {
                 const QVariantList list = pullTuple();
 
                 if (list.size()) {
                     cout << "\nTuple successful pulled:\n";
-                    printTupleList(list);
+                    cout << printTupleList(list).toStdString();
+
+                    qPrintPidInfo("Successfully pulled!");
+
+                    if (m_testAfterPulledSleep) {
+                        int slp = randInt(m_testAfterPulledSleep);
+                        qPrintPidInfo(
+                                QString("Random ") + QString::number(slp)
+                                        + " ms sleep after successful pull.");
+                        boost::this_thread::sleep(
+                                boost::posix_time::milliseconds(slp));
+                    }
 
                     m_testChain.append("1");
                 } else {
                     cout << "\nTimeout.";
+
+                    qPrintPidInfo("Pull timeout!");
 
                     m_testChain.append("0");
                 }
@@ -101,11 +126,15 @@ void ManualLinda::loop()
 
                 if (list.size()) {
                     cout << "\nTuple preview successful:\n";
-                    printTupleList(list);
+                    cout << printTupleList(list).toStdString();
+
+                    qPrintPidInfo("Preview successful!");
 
                     m_testChain.append("1");
                 } else {
                     cout << "\nTimeout.";
+
+                    qPrintPidInfo("Preview timeout!");
 
                     m_testChain.append("0");
                 }
@@ -120,8 +149,15 @@ void ManualLinda::loop()
             cout << "Unknown exception, probably server.\n";
         }
 
-        if (m_testSleep)
-            sleep(rand() % 2);
+        if (m_testSleep) {
+            int slp = randInt(m_testSleep);
+
+            qPrintPidInfo(
+                    QString("Sleep for ") + QString::number(slp)
+                            + " ms after linda operation.");
+
+            boost::this_thread::sleep(boost::posix_time::milliseconds(slp));
+        }
 
         showMenu();
     }
@@ -148,6 +184,8 @@ void ManualLinda::pushTuple()
     if (list.contains(QVariant(0.)))
         throw ParserException("Only int, float, string.");
 
+    qPrintPidInfo(QString("Push:\t") + printTupleList(list));
+
     Client::LindaClient::push(list);
 
     m_pushed << list;
@@ -156,6 +194,10 @@ void ManualLinda::pushTuple()
 QVariantList ManualLinda::pullTuple()
 {
     pair<QString, int> pr = getRequest();
+
+    qPrintPidInfo(
+            QString("Pull with timeout: ") + QString::number(pr.second)
+                    + "\tPattern: \"" + pr.first + "\"");
 
     QVariantList list = Client::LindaClient::pull(pr.first, pr.second);
 
@@ -168,6 +210,10 @@ QVariantList ManualLinda::pullTuple()
 QVariantList ManualLinda::previewTuple()
 {
     pair<QString, int> pr = getRequest();
+
+    qPrintPidInfo(
+            QString("Preview with timeout: ") + QString::number(pr.second)
+                    + "\tPattern: \"" + pr.first + "\"");
 
     QVariantList list = Client::LindaClient::preview(pr.first, pr.second);
 
@@ -183,24 +229,29 @@ std::pair<QString, int> ManualLinda::getRequest()
     /*
      * Timeout
      */
-    cout << "Type timeout (-1 | 0 | X sec.):\n\t";
+    cout << "Type timeout (-1 | 0 | X msec.):\n\t";
 
     while ((c = getchar()) != '\n') {
         str.append(c);
     }
 
-    try {
-        timeout = boost::lexical_cast<int>(str.toStdString());
-    } catch (boost::bad_lexical_cast &e) {
-        cout << "\t0 has been choosen ;)\n";
-        timeout = 0;
+    if (m_testTimeout) {
+        timeout = randInt(m_testTimeout);
+    } else {
+
+        try {
+            timeout = boost::lexical_cast<int>(str.toStdString());
+        } catch (boost::bad_lexical_cast &e) {
+            cout << "\t0 has been choosen ;)\n";
+            timeout = 0;
+        }
     }
     str.clear();
 
     if (timeout < 0)
         timeout = -1;
-    else
-        timeout *= 1000;
+//    else
+//        timeout *= 1000;
 
     /*
      * Tuple pattern
@@ -217,28 +268,33 @@ std::pair<QString, int> ManualLinda::getRequest()
     return make_pair(str, timeout);
 }
 
-void ManualLinda::printTupleList(const QVariantList &list)
+QString ManualLinda::printTupleList(const QVariantList &list)
 {
+    QString str;
     int i = list.size();
-    cout << "\t( ";
+    str.append("\t( ");
 
     foreach (QVariant l, list){
     switch (l.type()) {
         case QVariant::Int:
-        cout<<l.value<int>();
+        str.append(QString::number(l.value<int>()));
         break;
         case QMetaType::Float:
-        cout<<l.value<float>();
+        str.append(QString::number(l.value<float>()));
         break;
         case QVariant::String:
-        cout<<"\""<<l.value<QString>().toStdString()<<"\"";
+        str.append("\"");
+        str.append(l.value<QString>());
+        str.append("\"");
         break;
     }
 
     if (--i != 0)
-    cout<<", ";
+    str.append(", ");
 }
-    cout << " )";
+    str.append(" )");
+
+    return str;
 }
 
 void ManualLinda::showMenu()
@@ -252,6 +308,20 @@ void ManualLinda::showMenu()
     cout << "\n | q Quit    |";
     cout << "\n +-----------+";
     cout << "\n   $> ";
+}
+
+void ManualLinda::qPrintPidInfo(const QString &info)
+{
+    if (m_testOutput)
+        qDebug() << getpid() << ": " << info;
+}
+
+int ManualLinda::randInt(int rangeMax, int rangeMin)
+{
+    m_intGenerator.distribution().param(
+            boost::uniform_int<>::param_type(rangeMin, rangeMax));
+
+    return m_intGenerator();
 }
 
 } //namespace Tests

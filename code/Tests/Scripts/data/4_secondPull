@@ -1,0 +1,31 @@
+2
+200
+float:< 24.2, int : 18, string : "test owy"
+2
+200
+string: "tekst", int: -213
+2
+200
+float: < -13.34
+2
+200
+int: 142412, string: "dla 1"
+2
+200
+int: *, string: "dla 2"
+2
+200
+int: 95044, string: "dla 2"
+2
+200
+float: > 11, float: >2, float :> 3, float :>4
+2
+200
+int : 25, int: -1, int : 243, int : 235
+2
+200
+string: < "A", string :"", string: "cos", string:" !@#%@#5t^"
+2
+200
+string: *, float: *
+q
