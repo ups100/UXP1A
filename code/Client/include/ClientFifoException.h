@@ -42,6 +42,11 @@ public:
     {
 
     }
+    ClientFifoException(const std::string& message)
+            : ClientException(message.c_str())
+    {
+
+    }
 
 };
 

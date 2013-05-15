@@ -52,20 +52,26 @@ private:
      * @brief Create client FIFO file.
      * @details FIFO is create in the same folder where server has his own FIFO.
      * FIFO name is client process PID number
-     * @returns true if operation succeed; false otherwise - and
-     * and print some info using checkFifoErrors() method
+     * @returns true if operation succeed; exception otherwise
+     *
+     * @throw ClientFifoException with error message when can't make fifo file.
+     * This exception will be catch end re-throw by constructor.
      */
     bool makeFifoFile() const;
     /**
      * @brief Checks state of errno variable.
-     * @details It is call after makeFifoFile() fails.
-     * NO exception throws - just prints info about fail.
+     * @details It is call in makeFifoFile() when mkfifo fails.
+     * NO exception throws - just returns text about fail.
+     *
+     * @return QString with all errors messages.
      */
-    void checkFifoErrors() const;
+    QString checkFifoErrors() const;
     /**
      * @brief Opening client FIFO file which is made before by makeFifoFile()
-     * @details NO exception throws - just prints info when fails.
-     * @returns true if operation successful; false - otherwise - and prints some info
+     * @details When fails for some reasons the exception is throw.
+     * @returns true if operation successful; false - otherwise - throws exception
+     * @throw ClientFifoException with error message.
+     * This exception will be catch end re-throw by constructor.
      */
     bool openFifo();
     /**

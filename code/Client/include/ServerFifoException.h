@@ -41,6 +41,11 @@ public:
     {
 
     }
+    ServerFifoException(std::string& message)
+            : ClientException(message.c_str())
+    {
+
+    }
 
 };
 
