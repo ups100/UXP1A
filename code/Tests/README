@@ -16,7 +16,7 @@ On the end on test with those args, there is printed string with 0 and 1
 0 means timeout
 
 
-4 tests are defined:
+There is 6 tests defined:
 	1_test:	push specified int tuples
 		3 other process try to get them
 		each tuple should be get once
