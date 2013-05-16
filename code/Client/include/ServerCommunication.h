@@ -73,7 +73,7 @@ public:
     void sendPushData(const QString& pattern, const QVariantList& data);
 
 private:
-    ToServerPipe m_ToServerPipe;
+    boost::shared_ptr<ToServerPipe> m_ToServerPipe;
     boost::shared_ptr<FromServerPipe> m_FromServerPipe;
 
 };
