@@ -17,6 +17,7 @@
 #include "LindaClient.h"
 #include "ParserException.h"
 #include "NumericLimitException.h"
+#include "ClientException.h"
 #include <QRegExp>
 #include <QMetaType>
 #include <QTime>
@@ -152,6 +153,12 @@ void ManualLinda::loop()
             cout << "Out of limit: " << e.what() << "\n";
 
             qPrintPidInfo("NumericLimitException!");
+
+            m_testChain.append("0");
+        } catch (Client::ClientException &e) {
+            cout << "Client exception, probably server is off.\n";
+
+            qPrintPidInfo("Client exception!");
 
             m_testChain.append("0");
         } catch (...) {

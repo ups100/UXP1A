@@ -25,7 +25,7 @@ namespace UXP1A_project {
 namespace Client {
 
 /**
- * @brief Class represents exception during 'parsing'
+ * @brief Class represents exception when FIFO error occurs
  */
 class ClientFifoException : public virtual ClientException
 {

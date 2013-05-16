@@ -62,24 +62,33 @@ xor() {
 
 j=`expr length $ar`
 res=''
+aj=0
+ej=0
+rj=0
 
 for i in `seq 1 $j`
 do
 	ac=$(at $ar $i)
+	ec=$(at $er $i)
 	bc=$(at $br $i)
 	cc=$(at $cr $i)
 	dc=$(at $dr $i)
+	
+	aj=`expr $aj + $ac`
+	ej=`expr $ej + $ec`
 
 	x="$bc"
 	x=$(xor $x $cc)
 	x=$(xor $x $dc)
+
+	rj=`expr $rj + $x`
 
 	res="$res$x"
 done
 
 echo "\tXor:\t$res"
 
-if [ "$res" -eq "$ar" ]; then
+if [ "$res" -eq "$ar" ] && [ "$ar" -eq "$er" ] && [ "$aj" -eq "$j" ] ; then
 	echo "\nTEST PASSED\n"
 else
 	echo "\nTEST FAILED\n"
