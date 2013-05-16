@@ -23,31 +23,46 @@
 namespace UXP1A_project {
 namespace Client {
 
+/**
+ * @brief Client's interface
+ */
 class LindaClient
 {
 
 public:
+    /**
+     * @brief Constructor.
+     *
+     * @details You may create object of this class for more convenient
+     *          usage of static methods of this class.
+     */
     LindaClient();
+
+    /**
+     * @brief Destructor
+     */
     virtual ~LindaClient();
 
     /**
      * @brief Execute preview command in Linda Client application.
-     * This method doesn't causes received tuple deletion from server.
+     *        This method doesn't cause tuple deletion from server.
      *
-     * @param[in]   pattern which returned tuple should fulfill. This is not parsed pattern.
-     * @param[in]   timeout is max time in milliseconds which client's process will be waiting (blocking)
-     *              for appear required tuple.
+     * @param[in]   pattern which returned tuple should fulfill.
+     * @param[in]   timeout is max time in milliseconds which server will wait for tuple
+     *              since begin of serving this command, before it sends timeout message
      *
      * @return  QVariantList which contains required tuple
-     * or empty QVariantList which means that there is no such tuple and timeout occurs.
+     *          or empty QVariantList which means that there is no such tuple and timeout occurs.
      *
      * @details This method send preview request to server and wait for answer ( until timeout ).
-     * First calling of this method opens client's FIFO which is use to receive tuples from server
-     * in this method and pull() also. FIFO is opening only one per client - only if it is necessary
-     * (after first use of preview() or pull() method).
+     *          First calling of this method opens client's FIFO which is use to receive tuples from server
+     *          in this method and pull() also. FIFO is opening only one per client - only if it is necessary
+     *          (after first use of preview() or pull() method).
      *
-     * @throws Exceptions are throws when pattern has incorrect syntax
-     * or when some errors occurred while opening any FIFO object (for example: server doesn't response).
+     * @throws Shared::ParserException if pattern is incorrect
+     * @throws Shared::NumericLimitException if some numeric values exceeds integer or float limits
+     * @throws ServerFifoException if function was unable to open server's FIFO
+     * @throws ClientFifoException if function was unable to create or open client's FIFO
      */
     static QVariantList preview(const QString& pattern, long timeout = -1);
 
@@ -56,20 +71,23 @@ public:
      * This method DELETES tuple from server!
      *
      * @param[in]   pattern which returned tuple should fulfill. This is not parsed pattern.
-     * @param[in]   timeout is max time in milliseconds which client's process will be waiting (blocking)
-     *              for appear required tuple.
+     * @param[in]   timeout is max time in milliseconds which server will wait for tuple
+     *              since begin of serving this command, before it sends timeout message
      *
-     * @return  QVariantList which contains required tuple
-     * or empty QVariantList which means that there is no such tuple and timeout occurs.
-     * This tuple won't be available on the server any more.
+     * @return QVariantList which contains required tuple
+     *         or empty QVariantList which means that there is no such tuple and timeout occurs.
      *
      * @details This method send pull request to server and wait for answer ( until timeout ).
-     * First calling of this method opens client's FIFO which is use to receive tuples from server
-     * in this method and preview() also. FIFO is opening only one per client - only if it is necessary
-     * (after first use of preview() or pull() method).
+     *          First calling of this method opens client's FIFO which is use to receive tuples from server
+     *          in this method and preview() also. FIFO is opening only one per client - only if it is necessary
+     *          (after first use of preview() or pull() method).
      *
-     * @throws Exceptions are throws when pattern has incorrect syntax
-     * or when some errors occurred while opening any FIFO object (for example: server doesn't response).
+     * @note Returned tuple won't be available on the server any more.
+     *
+     * @throws Shared::ParserException if pattern is incorrect
+     * @throws Shared::NumericLimitException if some numeric values exceeds integer or float limits
+     * @throws ServerFifoException if function was unable to open server's FIFO
+     * @throws ClientFifoException if function was unable to create or open client's FIFO
      */
     static QVariantList pull(const QString& pattern, long timeout = -1);
 
@@ -77,15 +95,16 @@ public:
      * @brief Execute push command in Linda Client application.
      * This method will send record to the Linda Server via its FIFO.
      *
-     * @param[in]   record - type QVariantList which must contains list of QVariant objects.
-     * This record will be send and store in Server only
-     * if types of QVariant will be one from the list below:
-     * string, int or float
+     * @param[in]   record to be sent. This record will be send and store in Server only
+     *              if types of each QVariant will be one from the list below:
+     *              string, int or float
      *
      * @details To push record Client application should prepare tuple - QList of QVariant (QVariantList typedef)
-     * and call this method which should return immediately after write this tuple to Server FIFO.
+     *          and call this method which should return immediately after write this tuple to Server FIFO.
      *
-     * @throws Exception are throws when record contains wrong type of QVariant variable.
+     * @throws Shared::ParserException if record consist of from types diferen than integer, float, string
+     * @throws ServerFifoException if function was unable to open server's FIFO
+     * @throws ClientFifoException if function was unable to create or open client's FIFO
      */
     static void push(const QVariantList& record);
 
