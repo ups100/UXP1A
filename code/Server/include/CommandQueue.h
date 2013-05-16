@@ -3,9 +3,9 @@
  *
  * @date 27-04-2013
  *
- * @author Opasiak Krzsztof <ups100@tlen.pl>
+ * @author Opasiak Krzsztof <ups100@tlen.pl>, Sosnowski Jacek
  *
- * @brief Implementation of the Class UXP1A_project::Server::RecordTable
+ * @brief Implementation of the Class UXP1A_project::Server::CommandQueue
  *
  * @par Project
  * This is a part of project realized on Warsaw University of Technology

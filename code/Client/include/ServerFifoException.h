@@ -30,7 +30,7 @@ class ServerFifoException : public virtual ClientException
 {
 public:
     /**
-     * @brief C-tor, calls runtime_error c-tor with proper param
+     * @brief C-tor, calls ClientException c-tor with proper param
      *
      * @details This exception class covers communication with server errors.
      *
@@ -41,6 +41,14 @@ public:
     {
 
     }
+
+    /**
+     * @brief C-tor, calls ClientException c-tor with proper param
+     *
+     * @details This exception class covers communication with server errors.
+     *
+     * @param[in] message Exception message
+     */
     ServerFifoException(std::string& message)
             : ClientException(message.c_str())
     {

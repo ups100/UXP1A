@@ -37,7 +37,7 @@ public:
      * @brief With this object is create also ToServerPipe
      * This opens server FIFO, so it could end with exception.
      *
-     * @throw std::string from constructor of ToServerPipe when no server is running.
+     * @throw ServerFifoException from constructor of ToServerPipe when no server is running.
      */
     ServerCommunication();
     virtual ~ServerCommunication();
@@ -47,11 +47,29 @@ public:
      * @details After send request this wait for reply.
      * If it is first use of sending request there is creating a client FIFO
      * file to receive answer from server
-     * @throws std::exception when can not creating FIFO file.
+     * @throw ClientFifoException when can not creating FIFO file which is needed to receive data from server.
+     * @throw ServerFifoException when write to server FIFO ends with failure - Server doesn't response.
      */
     QVariantList sendPreview(const QString& pattern, long timeout);
+
+    /**
+     * @brief Manage sending Pull request to server. Pull erase tuple from server.
+     * @details After send request this wait for reply.
+     * If it is first use of sending request there is creating a client FIFO
+     * file to receive answer from server
+     * @throw ClientFifoException when can not creating FIFO file which is needed to receive data from server.
+     * @throw ServerFifoException when write to server FIFO ends with failure - Server doesn't response.
+     */
     QVariantList sendPullData(const QString& pattern, long timeout);
-    //QVariantList processData(const QString& pattern, const QVariantList& qvl) const;
+
+    /**
+     * @brief Manage sending Push request with pushing data (list).
+     *
+     * @details Don't wait for any response from server. Just send and return as quickly as possible.
+     * Only if server FIFO hasn't got enough free space this operation is blocking until free space will be available.
+     *
+     * @throw ServerFifoException when any error of writing to server FIFO occurs.
+     */
     void sendPushData(const QString& pattern, const QVariantList& data);
 
 private:
